@@ -1,19 +1,19 @@
 {
-    "version": "1.1.4",
-    "notes": "v1.1.4: Fixed update URL patterns to match automated release asset names.",
-    "pub_date": "2026-02-14T17:30:00Z",
+    "version": "1.1.5",
+    "notes": "v1.1.5: Project Structure & Community Standards Update. Added contributing guidelines, security policy, and professional GitHub issue templates.",
+    "pub_date": "2026-02-14T17:40:00Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "PLACEHOLDER_SIGNATURE",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.4/League-Profile-Tool_1.1.4_x64-setup.exe"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.5/League-Profile-Tool_1.1.5_x64-setup.exe"
         },
         "macosx-x86_64": {
             "signature": "PLACEHOLDER_SIGNATURE",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.4/League-Profile-Tool.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.5/League-Profile-Tool.app.tar.gz"
         },
         "macosx-aarch64": {
             "signature": "PLACEHOLDER_SIGNATURE",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.4/League-Profile-Tool.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.5/League-Profile-Tool.app.tar.gz"
         }
     }
 }

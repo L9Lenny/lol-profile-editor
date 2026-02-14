@@ -1,7 +1,7 @@
 {
   "name": "league-profile-tool",
   "private": true,
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A professional tool for League of Legends profile customization via LCU API.",
   "author": "L9Lenny",
   "type": "module",
