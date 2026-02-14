@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-02-14
+
+### Added
+- **Dynamic Version Display**: The application now automatically displays the version defined in configuration files.
+- **Selective Release Notes**: Automated CI/CD script now extracts only the latest version's changes for GitHub releases.
+- **Robust Extraction Logic**: Switched to `awk` for changelog extraction to ensure cross-platform compatibility in GitHub Actions.
+
+### Changed
+- **UI Refinement**: Updated "What's New" section with relevant project milestones.
+- **Improved UX**: Replaced the placeholder status message with a more professional example.
+
 ## [1.0.1] - 2026-02-14
 
 ### Added
