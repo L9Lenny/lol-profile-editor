@@ -51,9 +51,15 @@ jobs:
         id: changelog
         shell: bash
         run: |
-          # Read CHANGELOG.md, skipping the first few header lines if needed, or just send the whole file
-          # For a professional look, we'll take everything from the first ## [ version ] down
-          CONTENT=$(cat CHANGELOG.md)
+          # Extract only the latest version from CHANGELOG.md
+          # It takes everything between the first '## ' and the second '## '
+          CONTENT=$(sed -n '/## \[/,/## \[/{/## \[/!p;}' CHANGELOG.md | head -n -1)
+          
+          # If sed fails or doesn't find a second ##, fallback to first section after first ##
+          if [ -z "$CONTENT" ]; then
+            CONTENT=$(sed -n '/## \[/,$p' CHANGELOG.md)
+          fi
+
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT

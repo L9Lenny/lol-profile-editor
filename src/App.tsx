@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { getVersion } from "@tauri-apps/api/app";
 import "./App.css";
 
 interface LcuInfo {
@@ -13,7 +14,11 @@ function App() {
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
-  const [clientVersion] = useState("1.0.0");
+  const [clientVersion, setClientVersion] = useState("0.0.0");
+
+  useEffect(() => {
+    getVersion().then(setClientVersion);
+  }, []);
 
   const checkConnection = async () => {
     try {
@@ -116,11 +121,11 @@ function App() {
             </div>
 
             <div className="card" style={{ marginTop: '20px' }}>
-              <h3 className="card-title">What's New</h3>
+              <h3 className="card-title">Latest Updates</h3>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                • Hextech UI update implemented.<br />
-                • LCU API v2 support.<br />
-                • Improved connection monitoring system.
+                • Automated CI/CD pipeline for Windows/macOS.<br />
+                • Real-time LCU connection monitoring.<br />
+                • Optimized build performance and auto-releases.
               </p>
             </div>
           </div>
@@ -134,7 +139,7 @@ function App() {
               <div className="input-group">
                 <label>New Status Message</label>
                 <textarea
-                  placeholder="Example: Challenger Grinding... 🚀"
+                  placeholder="Tell your friends what you're up to..."
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   disabled={!lcu || loading}
