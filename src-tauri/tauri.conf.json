@@ -20,14 +20,14 @@
     ],
     "security": {
       "csp": null
-    },
-    "plugins": {
-      "updater": {
-        "active": true,
-        "endpoints": [
-          "https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json"
-        ]
-      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json"
+      ]
     }
   },
   "bundle": {
