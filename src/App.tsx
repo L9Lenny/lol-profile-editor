@@ -204,8 +204,8 @@ function App() {
                     <RefreshCw size={24} className="spin-slow" />
                   </div>
                   <div className="update-text">
-                    <h3>Hextech Advancement Detected</h3>
-                    <p>A new version of the engine (<b>v{latestVersion}</b>) is ready to enhance your experience.</p>
+                    <h3>New Version Available</h3>
+                    <p>A new version of <b>League Profile Tool (v{latestVersion})</b> is ready to enhance your experience.</p>
                   </div>
                   <a
                     href={`https://github.com/L9Lenny/lol-profile-editor/releases/latest`}
@@ -366,7 +366,7 @@ function App() {
         </div>
 
         <div style={{ marginLeft: 'auto', opacity: 0.5, fontSize: '0.65rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
-          HEXTECH ENGINE v{clientVersion}
+          LEAGUE PROFILE TOOL v{clientVersion}
         </div>
       </footer>
 
