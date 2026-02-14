@@ -2,10 +2,21 @@
 
 A professional-grade, premium tool built with **Tauri v2** and **React** for seamless League of Legends profile customization via the LCU (League Client Update) API.
 
-![Version](https://img.shields.io/badge/version-1.1.14-c89b3c)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Platform](https://img.shields.io/badge/platform-Windows%20|%20macOS-0ac1ff)
-![Downloads](https://img.shields.io/github/downloads/L9Lenny/lol-profile-editor/total?color=gold)
+[![Release](https://img.shields.io/github/v/release/L9Lenny/lol-profile-editor?color=c89b3c&label=latest&style=flat-square)](https://github.com/L9Lenny/lol-profile-editor/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/L9Lenny/lol-profile-editor/release.yml?style=flat-square)](https://github.com/L9Lenny/lol-profile-editor/actions)
+[![Security Scan](https://img.shields.io/github/actions/workflow/status/L9Lenny/lol-profile-editor/codeql-analysis.yml?label=security&style=flat-square)](https://github.com/L9Lenny/lol-profile-editor/actions/workflows/codeql-analysis.yml)
+[![Downloads](https://img.shields.io/github/downloads/L9Lenny/lol-profile-editor/total?color=0ac1ff&style=flat-square)](https://github.com/L9Lenny/lol-profile-editor/releases)
+[![License](https://img.shields.io/github/license/L9Lenny/lol-profile-editor?color=785a28&style=flat-square)](LICENSE)
+
+---
+
+## ☕ Support the Project
+
+If this tool helped you customize your profile and you enjoy the Hextech experience, consider supporting the development! Every coffee helps keep the engine running and the UI polished.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/l9lenny)
+
+---
 
 ## ✨ Features
 
