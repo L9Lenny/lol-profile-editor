@@ -6,6 +6,10 @@ on:
       - 'v*'
       - '[0-9]*'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   publish-tauri:
     permissions:
@@ -101,11 +105,11 @@ jobs:
           
           # Download Windows signature
           curl -L -o windows.sig \
-            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_${VERSION}_x64-setup.exe.sig"
+            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_${VERSION}_x64-setup.exe.sig"
           
           # Download macOS signature (same for both architectures)
           curl -L -o macos.sig \
-            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_aarch64.app.tar.gz.sig"
+            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_aarch64.app.tar.gz.sig"
 
       - name: Update updater.json with signatures
         run: |
@@ -121,8 +125,8 @@ jobs:
             --arg date "$PUB_DATE" \
             --arg win_sig "$(cat windows.sig || echo "Not Found")" \
             --arg mac_sig "$(cat macos.sig || echo "Not Found")" \
-            --arg win_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_${VERSION}_x64-setup.exe" \
-            --arg mac_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_aarch64.app.tar.gz" \
+            --arg win_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_${VERSION}_x64-setup.exe" \
+            --arg mac_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_aarch64.app.tar.gz" \
             '{
               version: $ver,
               notes: $notes,

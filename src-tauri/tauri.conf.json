@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "League Profile Tool",
+  "productName": "League-Profile-Tool",
   "version": "1.1.6",
   "identifier": "com.leenny.league-profile-tool",
   "build": {
