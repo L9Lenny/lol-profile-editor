@@ -42,13 +42,29 @@ jobs:
       - name: install frontend dependencies
         run: npm install
 
+      - name: install rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: get changelog content
+        id: changelog
+        shell: bash
+        run: |
+          # Read CHANGELOG.md, skipping the first few header lines if needed, or just send the whole file
+          # For a professional look, we'll take everything from the first ## [ version ] down
+          CONTENT=$(cat CHANGELOG.md)
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v__VERSION__ # the action automatically replaces this with the app version
+          tagName: v__VERSION__
           releaseName: "League Profile Tool v__VERSION__"
-          releaseBody: "See the CHANGELOG.md for a detailed list of changes."
-          releaseDraft: true
+          releaseBody: ${{ steps.changelog.outputs.body }}
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
