@@ -1,19 +1,16 @@
 version: 2
 updates:
-  # Mantieni aggiornate le GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
 
-  # Mantieni aggiornate le dipendenze del Frontend (npm)
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 5
 
-  # Mantieni aggiornate le dipendenze del Backend (Rust/Cargo)
   - package-ecosystem: "cargo"
     directory: "/src-tauri"
     schedule:
