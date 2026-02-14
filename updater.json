@@ -1,0 +1,19 @@
+{
+    "version": "1.0.2",
+    "notes": "Initial stable release with LCU integration and Hextech UI.",
+    "pub_date": "2026-02-14T15:00:00Z",
+    "platforms": {
+        "windows-x86_64": {
+            "signature": "PLACEHOLDER_SIGNATURE",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.0.2/league-profile-tool_1.0.2_x64-setup.exe"
+        },
+        "macosx-x86_64": {
+            "signature": "PLACEHOLDER_SIGNATURE",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.0.2/League.Profile.Tool.app.tar.gz"
+        },
+        "macosx-aarch64": {
+            "signature": "PLACEHOLDER_SIGNATURE",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.0.2/League.Profile.Tool.app.tar.gz"
+        }
+    }
+}
