@@ -51,13 +51,13 @@ jobs:
         id: changelog
         shell: bash
         run: |
-          # Extract only the latest version from CHANGELOG.md
-          # It takes everything between the first '## ' and the second '## '
-          CONTENT=$(sed -n '/## \[/,/## \[/{/## \[/!p;}' CHANGELOG.md | head -n -1)
+          # Extract only the latest version from CHANGELOG.md using awk
+          # This captures everything from the first '## [' to the next one (exclusive)
+          CONTENT=$(awk '/^## \[/{if (count++) exit} {if (count) print}' CHANGELOG.md)
           
-          # If sed fails or doesn't find a second ##, fallback to first section after first ##
+          # If awk fails or CONTENT is empty, fallback to reading the first section
           if [ -z "$CONTENT" ]; then
-            CONTENT=$(sed -n '/## \[/,$p' CHANGELOG.md)
+            CONTENT=$(cat CHANGELOG.md | sed -n '/^## \[/,$p')
           fi
 
           echo "body<<EOF" >> $GITHUB_OUTPUT
