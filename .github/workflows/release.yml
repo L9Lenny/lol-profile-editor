@@ -6,10 +6,10 @@ on:
       - 'v*'
       - '[0-9]*'
 
+permissions: write-all
+
 jobs:
   publish-tauri:
-    permissions:
-      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -27,10 +27,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm' # This caches node_modules and npm cache automatically
+          cache: 'npm'
 
       - name: install frontend dependencies
-        run: npm ci # Faster and more reliable than 'install' in CI
+        run: npm ci
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -41,25 +41,27 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
-          # Better keying for cache
           key: ${{ matrix.platform }}-cargo
 
       - name: get changelog content
         id: changelog
         shell: bash
         run: |
-          # Extract only the latest version from CHANGELOG.md using awk
-          # This captures everything from the first '## [' to the next one (exclusive)
           CONTENT=$(awk '/^## \[/{if (count++) exit} {if (count) print}' CHANGELOG.md)
-          
-          # If awk fails or CONTENT is empty, fallback to reading the first section
           if [ -z "$CONTENT" ]; then
             CONTENT=$(cat CHANGELOG.md | sed -n '/^## \[/,$p')
           fi
-
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: create release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(echo $GITHUB_REF | cut -d/ -f3)
+          gh release view "$TAG" || gh release create "$TAG" --title "League-Profile-Tool $TAG" --notes "Release $TAG"
 
       - uses: tauri-apps/tauri-action@v0
         env:
@@ -68,7 +70,7 @@ jobs:
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
           tagName: v__VERSION__
-          releaseName: "League Profile Tool v__VERSION__"
+          releaseName: "League-Profile-Tool v__VERSION__"
           releaseBody: ${{ steps.changelog.outputs.body }}
           releaseDraft: false
           prerelease: false
@@ -77,8 +79,6 @@ jobs:
   update-updater-json:
     needs: publish-tauri
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -101,49 +101,45 @@ jobs:
           
           # Download Windows signature
           curl -L -o windows.sig \
-            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_${VERSION}_x64-setup.exe.sig"
+            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_${VERSION}_x64-setup.exe.sig"
           
-          # Download macOS signature (same for both architectures)
+          # Download macOS signature
           curl -L -o macos.sig \
-            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_aarch64.app.tar.gz.sig"
+            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_aarch64.app.tar.gz.sig"
 
       - name: Update updater.json with signatures
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           TAG="${{ steps.version.outputs.tag }}"
+          PUB_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          NOTES=$(awk '/^## \[/{if (count++) exit} {if (count) print}' CHANGELOG.md)
           
-          # Read signatures
+          if [ ! -s windows.sig ] || [ ! -s macos.sig ]; then
+            echo "Error: Signatures not found or empty!"
+            exit 1
+          fi
+          
           WIN_SIG=$(cat windows.sig)
           MAC_SIG=$(cat macos.sig)
           
-          # Get current date in ISO format
-          PUB_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          
-          # Get release notes from CHANGELOG
-          NOTES=$(awk '/^## \[/{if (count++) exit} {if (count) print}' CHANGELOG.md | sed 's/"/\\"/g' | tr '\n' ' ')
-          
-          # Create updated updater.json
-          cat > updater.json << EOF
-          {
-              "version": "${VERSION}",
-              "notes": "${NOTES}",
-              "pub_date": "${PUB_DATE}",
-              "platforms": {
-                  "windows-x86_64": {
-                      "signature": "${WIN_SIG}",
-                      "url": "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_${VERSION}_x64-setup.exe"
-                  },
-                  "darwin-x86_64": {
-                      "signature": "${MAC_SIG}",
-                      "url": "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_aarch64.app.tar.gz"
-                  },
-                  "darwin-aarch64": {
-                      "signature": "${MAC_SIG}",
-                      "url": "https://github.com/${{ github.repository }}/releases/download/${TAG}/League.Profile.Tool_aarch64.app.tar.gz"
-                  }
+          jq -n \
+            --arg ver "$VERSION" \
+            --arg notes "$NOTES" \
+            --arg date "$PUB_DATE" \
+            --arg win_sig "$WIN_SIG" \
+            --arg mac_sig "$MAC_SIG" \
+            --arg win_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_${VERSION}_x64-setup.exe" \
+            --arg mac_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_aarch64.app.tar.gz" \
+            '{
+              version: $ver,
+              notes: $notes,
+              pub_date: $date,
+              platforms: {
+                "windows-x86_64": { signature: $win_sig, url: $win_url },
+                "darwin-x86_64": { signature: $mac_sig, url: $mac_url },
+                "darwin-aarch64": { signature: $mac_sig, url: $mac_url }
               }
-          }
-          EOF
+            }' > updater.json
 
       - name: Commit and push updated updater.json
         run: |
