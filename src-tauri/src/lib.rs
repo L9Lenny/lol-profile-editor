@@ -5,7 +5,7 @@ use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
 
 #[tauri::command]
 async fn get_lcu_connection() -> Result<lcu::LcuInfo, String> {
-    lcu::find_lcu_info().ok_or_else(|| "League of Legends non è avviato o lockfile non trovato".to_string())
+    lcu::find_lcu_info().ok_or_else(|| "League of Legends is not running or lockfile not found".to_string())
 }
 
 #[tauri::command]
@@ -31,9 +31,9 @@ async fn update_bio(port: String, token: String, new_bio: String) -> Result<Stri
         .map_err(|e| e.to_string())?;
 
     if res.status().is_success() {
-        Ok("Bio aggiornata con successo!".to_string())
+        Ok("Bio updated successfully!".to_string())
     } else {
-        Err(format!("Errore LCU: {}", res.status()))
+        Err(format!("LCU Error: {}", res.status()))
     }
 }
 
