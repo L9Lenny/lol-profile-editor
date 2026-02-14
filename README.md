@@ -2,7 +2,7 @@
 
 A professional-grade, premium tool built with **Tauri v2** and **React** for seamless League of Legends profile customization via the LCU (League Client Update) API.
 
-![Version](https://img.shields.io/badge/version-1.1.2-c89b3c)
+![Version](https://img.shields.io/badge/version-1.1.3-c89b3c)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20|%20macOS-0ac1ff)
 

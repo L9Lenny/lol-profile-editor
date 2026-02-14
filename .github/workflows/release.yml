@@ -14,8 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: "macos-13" # Intel-based runner for better DMG compatibility
-            args: "" # Standard build for compatibility
+          - platform: "macos-latest"
+            args: ""
           - platform: "windows-latest"
             args: ""
 
