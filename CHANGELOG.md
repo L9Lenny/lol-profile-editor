@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.15] - 2026-02-14
+
+### Added
+- **Infrastructure Security**: Integrated GitHub CodeQL for automated security vulnerability scanning.
+- **Support & Funding**: Added Ko-fi sponsorship support and GitHub Funding configuration.
+- **Enhanced README**: Added dynamic badges for release tracking, build status, and security monitoring.
+- **Automation**: Configured Dependabot for daily dependency and security updates.
+
+### Fixed
+- **Updater Consistency**: Improved the manual update recommendation banner flow.
+
+## [1.1.14] - 2026-02-14
+
+### Added
+- **Premium Update Banner**: Introduced a marketing-focused update recommendation banner in the Home dashboard.
+- **Project Vision**: Added a new "Project Vision" section to the dashboard highlighting the core values of the tool.
+
+### Changed
+- **User Interface**: Refined the dashboard layout with better spacing and Hextech-inspired gold accents.
+- **Workflow**: Removed the manual "Update Check" button in favor of the automated dashboard notification.
+- **Experience**: Switched from forceful auto-updates to a non-intrusive recommendation flow.
+
+## [1.1.13] - 2026-02-14
+
+### Fixed
+- **Signature Stabilization**: Final adjustments to the signing process to ensure all artifacts are correctly verified.
+
+## [1.1.12] - 2026-02-14
+
+### Fixed
+- **Release Automation**: Added a release deletion step to the CI/CD pipeline to resolve "already exists" errors during re-runs.
+- **Artifact Naming**: Corrected macOS naming conventions to include architecture suffixes.
+
+## [1.1.11] - 2026-02-14
+
+### Fixed
+- **CI/CD Reliability**: Resolved 404 errors during artifact signature downloads by aligning paths with actual build outputs.
+
+## [1.1.7] - [1.1.10] - 2026-02-14
+
+### Fixed
+- **Permissions**: Hardened GitHub Actions permissions using Personal Access Tokens (PAT).
+- **Network Stability**: Added error handling for intermittent DNS/Network issues during the release process.
+- **Release Logic**: Switched to manual release creation via GitHub CLI to bypass recurring API restrictions.
+
 ## [1.1.6] - 2026-02-14
 
 ### Fixed
