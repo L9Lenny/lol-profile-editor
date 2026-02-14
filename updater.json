@@ -1,19 +1,19 @@
 {
-  "version": "1.2.0",
+  "version": "1.1.11",
   "notes": "## [1.1.6] - 2026-02-14\n\n### Fixed\n- **Auto-Updater**: Fixed the GitHub Actions workflow to correctly generate and sign update artifacts.\n- **CI/CD**: Added missing signing keys to the release pipeline and corrected environment variable names.",
-  "pub_date": "2026-02-14T19:40:08Z",
+  "pub_date": "2026-02-14T19:51:00Z",
   "platforms": {
     "windows-x86_64": {
       "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.0/League-Profile-Tool_1.2.0_x64-setup.exe"
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.11/League-Profile-Tool_1.1.11_x64-setup.exe"
     },
     "darwin-x86_64": {
       "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.0/League-Profile-Tool_aarch64.app.tar.gz"
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.11/League-Profile-Tool_aarch64.app.tar.gz"
     },
     "darwin-aarch64": {
       "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.0/League-Profile-Tool_aarch64.app.tar.gz"
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.11/League-Profile-Tool_aarch64.app.tar.gz"
     }
   }
 }
