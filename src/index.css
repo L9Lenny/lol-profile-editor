@@ -380,3 +380,51 @@ input:checked+.slider:before {
     transform: translateY(0);
   }
 }
+
+/* Update Banner Styles */
+.update-banner-premium {
+  margin-bottom: 30px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(200, 155, 60, 0.15) 0%, rgba(9, 20, 40, 0.4) 100%);
+  border: 1px solid var(--hextech-gold-dark);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(200, 155, 60, 0.05);
+  overflow: hidden;
+}
+
+.update-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.update-icon-wrapper {
+  background: rgba(200, 155, 60, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  color: var(--hextech-gold);
+  border: 1px solid rgba(200, 155, 60, 0.2);
+}
+
+.update-text {
+  flex: 1;
+}
+
+.update-link-btn {
+  padding: 12px 24px;
+  font-size: 0.8rem;
+  box-shadow: 0 0 15px rgba(200, 155, 60, 0.3);
+}
+
+.spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { getVersion } from "@tauri-apps/api/app";
-import { check } from "@tauri-apps/plugin-updater";
-import { relaunch } from "@tauri-apps/plugin-process";
 import { enable, disable, isEnabled } from "@tauri-apps/plugin-autostart";
 import {
   Home,
@@ -108,49 +106,6 @@ function App() {
     }
   };
 
-  const checkForUpdates = async () => {
-    setMessage({ text: "Checking for updates...", type: "info" });
-    try {
-      addLog("Starting update check...");
-      const update = await check();
-      console.log("Update object:", update);
-      if (update) {
-        setMessage({ text: `Update v${update.version} found. Downloading...`, type: "info" });
-
-        let downloaded = 0;
-        let contentLength = 0;
-
-        await update.downloadAndInstall((event) => {
-          switch (event.event) {
-            case 'Started':
-              contentLength = event.data.contentLength || 0;
-              setMessage({ text: `Downloading update...`, type: "info" });
-              break;
-            case 'Progress':
-              downloaded += event.data.chunkLength;
-              if (contentLength > 0) {
-                const percent = Math.round((downloaded / contentLength) * 100);
-                setMessage({ text: `Downloading: ${percent}%`, type: "info" });
-              }
-              break;
-            case 'Finished':
-              setMessage({ text: "Installation complete. Relaunching...", type: "success" });
-              break;
-          }
-        });
-
-        await relaunch();
-      } else {
-        setMessage({ text: "Software is already up to date.", type: "success" });
-        setTimeout(() => setMessage({ text: "", type: "" }), 3000);
-      }
-    } catch (err) {
-      addLog(`Update check encountered an error: ${err}`);
-      setMessage({ text: `Check failed: ${String(err)}`, type: "error" });
-      setTimeout(() => setMessage({ text: "", type: "" }), 5000);
-    }
-  };
-
   const toggleAutostart = async () => {
     try {
       if (isAutostartEnabled) {
@@ -208,11 +163,6 @@ function App() {
           </div>
         </div>
 
-        <div className="nav-actions">
-          <button className="update-btn" onClick={checkForUpdates}>
-            <RefreshCw size={14} className={message.text.includes("Checking") ? "spin" : ""} /> Update Check
-          </button>
-        </div>
       </nav>
 
       {/* Main Content */}
@@ -220,13 +170,39 @@ function App() {
         {activeTab === 'home' && (
           <div className="tab-content fadeIn">
             <header style={{ marginBottom: '30px', textAlign: 'center' }}>
-              <h2 style={{ color: 'var(--hextech-gold)', margin: '0 0 10px 0', fontSize: '2rem' }}>WELCOME</h2>
+              <h2 style={{ color: 'var(--hextech-gold)', margin: '0 0 10px 0', fontSize: '2rem', letterSpacing: '2px' }}>WELCOME</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Manage your League profile with elegance.</p>
             </header>
 
+            {/* Update Recommendation Banner */}
+            {clientVersion !== latestVersion && latestVersion !== "Checking..." && latestVersion !== "N/A" && (
+              <div className="card update-banner-premium">
+                <div className="update-banner-content">
+                  <div className="update-icon-wrapper">
+                    <RefreshCw size={24} className="spin-slow" />
+                  </div>
+                  <div className="update-text">
+                    <h3 style={{ color: 'var(--hextech-gold)', margin: '0 0 5px 0' }}>Elevate Your Experience</h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
+                      Version <b>v{latestVersion}</b> is now available. We've refined the engine for better stability and introduced new aesthetic improvements. Stay ahead with the latest Hextech refinements.
+                    </p>
+                  </div>
+                  <a
+                    href={`https://github.com/L9Lenny/lol-profile-editor/releases/latest`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="primary-btn update-link-btn"
+                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', minWidth: 'fit-content' }}
+                  >
+                    GET v{latestVersion}
+                  </a>
+                </div>
+              </div>
+            )}
+
             <div className="dashboard-grid">
               <div className="card stat-box">
-                <span className="stat-label">Current Version</span>
+                <span className="stat-label">Installed Version</span>
                 <span className="stat-value">{clientVersion}</span>
               </div>
               <div className="card stat-box">
@@ -238,12 +214,12 @@ function App() {
             </div>
 
             <div className="card" style={{ marginTop: '20px' }}>
-              <h3 className="card-title">What's New</h3>
+              <h3 className="card-title">Project Vision</h3>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                • <b>Window Management:</b> You can now resize the application window.<br />
-                • <b>Custom Exit Behavior:</b> Toggle between closing the app or minimizing to tray.<br />
-                • <b>Better Performance:</b> Refined backend logic for faster LCU detection.<br />
-                • <b>Refined UI:</b> Softened borders and improved navigation aesthetics.
+                • <b>Absolute Precision:</b> LCU interaction optimized for speed.<br />
+                • <b>Tailored UI:</b> A premium interface inspired by the Hextech aesthetic.<br />
+                • <b>User-Centric:</b> Configurable behavior to fit your ritual.<br />
+                • <b>Open Excellence:</b> Community-driven improvements and transparency.
               </p>
             </div>
           </div>
