@@ -6,16 +6,10 @@ on:
       - 'v*'
       - '[0-9]*'
 
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
+permissions: write-all
 
 jobs:
   publish-tauri:
-    permissions:
-      contents: write
-      id-token: write
     strategy:
       fail-fast: false
       matrix:
@@ -66,6 +60,14 @@ jobs:
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: create release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(echo $GITHUB_REF | cut -d/ -f3)
+          gh release view "$TAG" || gh release create "$TAG" --title "League-Profile-Tool $TAG" --notes "Release $TAG"
 
       - uses: tauri-apps/tauri-action@v0
         env:
