@@ -1,7 +1,7 @@
 {
     "version": "1.1.6",
     "notes": "## [1.1.6] - 2026-02-14  ### Fixed - **Auto-Updater**: Fixed the GitHub Actions workflow to correctly generate and sign update artifacts. - **CI/CD**: Added missing signing keys to the release pipeline and corrected environment variable names.  ",
-    "pub_date": "2026-02-14T18:01:40Z",
+    "pub_date": "2026-02-14T18:23:25Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
