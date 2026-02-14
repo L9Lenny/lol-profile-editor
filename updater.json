@@ -1,19 +1,19 @@
 {
-  "version": "1.1.14",
-  "notes": "## [1.1.6] - 2026-02-14\n\n### Fixed\n- **Auto-Updater**: Fixed the GitHub Actions workflow to correctly generate and sign update artifacts.\n- **CI/CD**: Added missing signing keys to the release pipeline and corrected environment variable names.",
-  "pub_date": "2026-02-14T20:32:25Z",
-  "platforms": {
-    "windows-x86_64": {
-      "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.14/League-Profile-Tool_1.1.14_x64-setup.exe"
-    },
-    "darwin-x86_64": {
-      "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.14/League-Profile-Tool_aarch64.app.tar.gz"
-    },
-    "darwin-aarch64": {
-      "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.14/League-Profile-Tool_aarch64.app.tar.gz"
+    "version": "1.2.0",
+    "notes": "## [1.2.0] - 2026-02-15  ### Added - **Rank Tab (New)**: Dedicated module for Rank overrides with live \"Draft Preview\" and native LCU bridge integration. - **Master Tier Aesthetic**: Radical UI overhaul with borderless design, holographic grids, and refined gold-trim glassmorphism. - **Hextech Toast System**: Top-center animated notifications with glassmorphism and contextual icons for immediate user feedback. - **Update Intelligence**: Contextual navigation beacons and a dedicated system management panel in Settings to replace intrusive banners.  ### Changed - **Messaging Humanization**: Simplified technical jargon (e.g., \"Bridge Interface\" instead of \"Kernel Optimization\") for better user accessibility. - **Home Dashboard**: Purged visual clutter and hero badges for a cleaner, more professional \"mission-control\" feel. - **Performance Architecture**: Deduplicated imports and optimized asset loading for improved runtime efficiency.  ### Fixed - **Layout Integrity**: Forced strict overflow controls to eliminate scrollbars and maintain the \"borderless client\" immersion. - **Import Conflicts**: Resolved duplicate icon and state declarations in the main application logic.    ",
+    "pub_date": "2026-02-14T23:42:03Z",
+    "platforms": {
+        "windows-x86_64": {
+            "signature": "Not Found",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.0/League.Profile.Tool_1.2.0_x64-setup.exe"
+        },
+        "darwin-x86_64": {
+            "signature": "Not Found",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.0/League.Profile.Tool_aarch64.app.tar.gz"
+        },
+        "darwin-aarch64": {
+            "signature": "Not Found",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.0/League.Profile.Tool_aarch64.app.tar.gz"
+        }
     }
-  }
 }
