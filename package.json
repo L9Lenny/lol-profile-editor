@@ -1,7 +1,7 @@
 {
   "name": "league-profile-tool",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A professional tool for League of Legends profile customization via LCU API.",
   "author": "L9Lenny",
   "type": "module",
@@ -13,9 +13,12 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-autostart": "^2.5.1",
+    "@tauri-apps/plugin-notification": "^2.3.3",
     "@tauri-apps/plugin-opener": "^2",
     "@tauri-apps/plugin-process": "^2.3.1",
     "@tauri-apps/plugin-updater": "^2.10.0",
+    "lucide-react": "^0.564.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

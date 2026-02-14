@@ -3,11 +3,26 @@ import { invoke } from "@tauri-apps/api/core";
 import { getVersion } from "@tauri-apps/api/app";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
+import { enable, disable, isEnabled } from "@tauri-apps/plugin-autostart";
+import {
+  Home,
+  Settings,
+  Terminal,
+  RefreshCw,
+  ShieldCheck,
+  Trash2,
+  Cpu
+} from 'lucide-react';
 import "./App.css";
 
 interface LcuInfo {
   port: string;
   token: string;
+}
+
+interface LogEntry {
+  time: string;
+  msg: string;
 }
 
 function App() {
@@ -18,6 +33,14 @@ function App() {
   const [message, setMessage] = useState({ text: "", type: "" });
   const [clientVersion, setClientVersion] = useState("0.0.0");
   const [latestVersion, setLatestVersion] = useState("Checking...");
+  const [isAutostartEnabled, setIsAutostartEnabled] = useState(false);
+  const [minimizeToTray, setMinimizeToTray] = useState(true);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+
+  const addLog = (msg: string) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setLogs(prev => [{ time: timestamp, msg }, ...prev].slice(0, 50));
+  };
 
   useEffect(() => {
     getVersion().then(setClientVersion);
@@ -27,13 +50,22 @@ function App() {
       .then(res => res.json())
       .then(data => setLatestVersion(data.version))
       .catch(() => setLatestVersion("N/A"));
+
+    // Check autostart status
+    isEnabled().then(setIsAutostartEnabled);
+
+    addLog("Application initialized.");
   }, []);
 
   const checkConnection = async () => {
     try {
       const info = await invoke<LcuInfo>("get_lcu_connection");
+      if (!lcu && info) {
+        addLog("League of Legends client detected.");
+      }
       setLcu(info);
     } catch (err) {
+      if (lcu) addLog("League of Legends client disconnected.");
       setLcu(null);
     }
   };
@@ -42,7 +74,7 @@ function App() {
     checkConnection();
     const interval = setInterval(checkConnection, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [lcu]);
 
   const handleUpdateBio = async () => {
     if (!lcu) return;
@@ -54,16 +86,18 @@ function App() {
         token: lcu.token,
         newBio: bio,
       });
+      addLog(`Bio updated: "${bio}"`);
       setMessage({ text: res, type: "success" });
       setTimeout(() => setMessage({ text: "", type: "" }), 3000);
     } catch (err) {
+      addLog(`Error updating bio: ${err}`);
       setMessage({ text: String(err), type: "error" });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleUpdate = async () => {
+  const checkForUpdates = async () => {
     setMessage({ text: "Checking for updates...", type: "info" });
     try {
       const update = await check();
@@ -98,7 +132,34 @@ function App() {
         setTimeout(() => setMessage({ text: "", type: "" }), 3000);
       }
     } catch (err) {
+      addLog(`Update check failed: ${err}`);
       setMessage({ text: `Update error: ${err}`, type: "error" });
+    }
+  };
+
+  const toggleAutostart = async () => {
+    try {
+      if (isAutostartEnabled) {
+        await disable();
+        addLog("Auto-launch disabled.");
+      } else {
+        await enable();
+        addLog("Auto-launch enabled.");
+      }
+      setIsAutostartEnabled(!isAutostartEnabled);
+    } catch (err) {
+      addLog(`Failed to toggle auto-launch: ${err}`);
+    }
+  };
+
+  const toggleMinimizeToTray = async () => {
+    try {
+      const newState = !minimizeToTray;
+      await invoke("set_minimize_to_tray", { enabled: newState });
+      setMinimizeToTray(newState);
+      addLog(`Minimize to tray ${newState ? 'enabled' : 'disabled'}.`);
+    } catch (err) {
+      addLog(`Failed to toggle minimize to tray: ${err}`);
     }
   };
 
@@ -111,30 +172,32 @@ function App() {
             className={`nav-item ${activeTab === 'home' ? 'active' : ''}`}
             onClick={() => setActiveTab('home')}
           >
-            Home
+            <Home size={16} /> <span>Home</span>
           </div>
           <div
-            className={`nav-item ${activeTab === 'custom-status' ? 'active' : ''}`}
-            onClick={() => setActiveTab('custom-status')}
+            className={`nav-item ${activeTab === 'status' ? 'active' : ''}`}
+            onClick={() => setActiveTab('status')}
           >
-            Custom Status
+            <ShieldCheck size={16} /> <span>Custom Status</span>
+          </div>
+          <div
+            className={`nav-item ${activeTab === 'logs' ? 'active' : ''}`}
+            onClick={() => setActiveTab('logs')}
+          >
+            <Terminal size={16} /> <span>Logs</span>
+          </div>
+          <div
+            className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => setActiveTab('settings')}
+          >
+            <Settings size={16} /> <span>Settings</span>
           </div>
         </div>
 
         <div className="nav-actions">
-          <button className="update-btn" onClick={handleUpdate}>
-            Update
+          <button className="update-btn" onClick={checkForUpdates}>
+            <RefreshCw size={14} className={message.text.includes("Checking") ? "spin" : ""} /> Update Check
           </button>
-          <a
-            href="https://github.com/L9Lenny/lol-profile-editor"
-            target="_blank"
-            className="icon-btn"
-            title="GitHub Repository"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-            </svg>
-          </a>
         </div>
       </nav>
 
@@ -161,17 +224,18 @@ function App() {
             </div>
 
             <div className="card" style={{ marginTop: '20px' }}>
-              <h3 className="card-title">Latest Updates</h3>
+              <h3 className="card-title">What's New</h3>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                • Real-time updates now fully functional.<br />
-                • Added update signing and capability management.<br />
-                • Maximum build speed with npm and Rust caching.
+                • <b>Window Management:</b> You can now resize the application window.<br />
+                • <b>Custom Exit Behavior:</b> Toggle between closing the app or minimizing to tray.<br />
+                • <b>Better Performance:</b> Refined backend logic for faster LCU detection.<br />
+                • <b>Refined UI:</b> Softened borders and improved navigation aesthetics.
               </p>
             </div>
           </div>
         )}
 
-        {activeTab === 'custom-status' && (
+        {activeTab === 'status' && (
           <div className="tab-content fadeIn">
             <div className="card">
               <h3 className="card-title">Edit Profile Bio</h3>
@@ -200,6 +264,79 @@ function App() {
                   ⚠ Start League of Legends to enable this feature.
                 </p>
               )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="tab-content fadeIn">
+            <div className="card">
+              <h3 className="card-title">Technical Settings</h3>
+
+              <div className="settings-row">
+                <div className="settings-info">
+                  <span className="settings-label">Auto-launch</span>
+                  <p className="settings-desc">Launch the app automatically when your PC starts.</p>
+                </div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={isAutostartEnabled}
+                    onChange={toggleAutostart}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+
+              <div className="settings-row" style={{ marginTop: '20px' }}>
+                <div className="settings-info">
+                  <span className="settings-label">Minimize to Tray</span>
+                  <p className="settings-desc">When you close the app, it will stay active in the system tray.</p>
+                </div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={minimizeToTray}
+                    onChange={toggleMinimizeToTray}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+            </div>
+
+            <div className="card" style={{ marginTop: '20px' }}>
+              <h3 className="card-title">System Information</h3>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <Cpu size={14} /> <span>OS: Windows</span>
+                </div>
+                <p>Tauri Version: 2.0</p>
+                <p>Identifier: com.leenny.league-profile-tool</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'logs' && (
+          <div className="tab-content fadeIn">
+            <div className="log-card" style={{ height: '400px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <h2 className="card-title" style={{ margin: 0, border: 'none' }}>System Logs</h2>
+                <button className="icon-btn" onClick={() => setLogs([])} title="Clear Logs">
+                  <Trash2 size={18} />
+                </button>
+              </div>
+              <div className="log-container">
+                {logs.length > 0 ? (
+                  logs.map((log, i) => (
+                    <div key={i} className="log-entry">
+                      <span style={{ color: '#c89b3c' }}>[{log.time}]</span> {log.msg}
+                    </div>
+                  ))
+                ) : (
+                  <div className="empty-logs">No logs recorded yet...</div>
+                )}
+              </div>
             </div>
           </div>
         )}

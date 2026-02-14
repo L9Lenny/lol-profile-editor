@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-02-14
+
+### Added
+- **Window Management**: Enabled support for window resizing.
+- **Custom Exit Behavior**: Added a new "Minimize to Tray" toggle in Settings, allowing users to choose between closing the app or keeping it active in the system tray.
+- **High-Contrast Logs**: Redesigned the logging console for better readability and professional look.
+
+### Changed
+- **Visual Overhaul (v2)**: Completely redesigned the UI with a refined "Hextech Glass" aesthetic.
+- **Improved Navigation**: Tabs now feature a soft-glow background highlight instead of standard underlines.
+- **Softened UI Components**: Replaced harsh gold borders with subtle glass borders and increased corner rounding for a modern feel.
+- **Micro-Interactions**: Enhanced buttons and settings rows with refined hover and active states.
+
+### Fixed
+- **Plugin Panics**: Fixed a sequence of startup panics related to `notification`, `autostart`, and `log` plugin initialization in Tauri v2.
+- **Rust Type Inference**: Resolved various backend compilation errors by adding explicit type annotations to closures.
+
 ## [1.0.3] - 2026-02-14
 
 ### Added
