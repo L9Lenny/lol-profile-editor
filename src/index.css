@@ -380,3 +380,106 @@ input:checked+.slider:before {
     transform: translateY(0);
   }
 }
+
+/* Update Notification - Modern Gold-Trim Frame */
+.update-banner-premium {
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, rgba(5, 15, 30, 0.95) 0%, rgba(1, 10, 19, 0.98) 100%);
+  border: 1px solid var(--hextech-gold-dark);
+  border-radius: 15px;
+  /* Softer balance between square and circle */
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(200, 155, 60, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.update-banner-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(200, 155, 60, 0.1);
+  border-radius: 14px;
+  margin: 5px;
+  pointer-events: none;
+}
+
+.update-banner-content {
+  display: flex;
+  align-items: center;
+  padding: 22px 30px;
+  gap: 25px;
+  z-index: 2;
+  position: relative;
+}
+
+.update-icon-wrapper {
+  color: var(--hextech-gold);
+  background: radial-gradient(circle, rgba(200, 155, 60, 0.15) 0%, transparent 80%);
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 155, 60, 0.2);
+}
+
+.update-text {
+  flex: 1;
+}
+
+.update-text h3 {
+  color: var(--hextech-gold-light) !important;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 0 0 4px 0 !important;
+}
+
+.update-text p {
+  color: var(--text-secondary);
+  font-size: 0.85rem !important;
+  margin: 0 !important;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.update-link-btn {
+  background: var(--hextech-gold) !important;
+  color: #010a13 !important;
+  padding: 10px 24px !important;
+  border-radius: 5px !important;
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.update-link-btn:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 20px rgba(200, 155, 60, 0.4);
+}
+
+.spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

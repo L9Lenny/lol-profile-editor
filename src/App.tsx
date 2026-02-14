@@ -173,27 +173,24 @@ function App() {
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Manage your League profile with elegance.</p>
             </header>
 
-            {/* Update Recommendation Banner */}
+            {/* Modern Hextech Update Banner */}
             {clientVersion !== latestVersion && latestVersion !== "Checking..." && latestVersion !== "N/A" && (
-              <div className="card update-banner-premium">
+              <div className="update-banner-premium fadeIn">
                 <div className="update-banner-content">
                   <div className="update-icon-wrapper">
                     <RefreshCw size={24} className="spin-slow" />
                   </div>
                   <div className="update-text">
-                    <h3 style={{ color: 'var(--hextech-gold)', margin: '0 0 5px 0' }}>Elevate Your Experience</h3>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
-                      Version <b>v{latestVersion}</b> is now available. We've refined the engine for better stability and introduced new aesthetic improvements. Stay ahead with the latest Hextech refinements.
-                    </p>
+                    <h3>Hextech Advancement Detected</h3>
+                    <p>A new version of the engine (<b>v{latestVersion}</b>) is ready to enhance your experience.</p>
                   </div>
                   <a
                     href={`https://github.com/L9Lenny/lol-profile-editor/releases/latest`}
                     target="_blank"
                     rel="noreferrer"
-                    className="primary-btn update-link-btn"
-                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', minWidth: 'fit-content' }}
+                    className="update-link-btn"
                   >
-                    GET v{latestVersion}
+                    INSTALL NOW
                   </a>
                 </div>
               </div>
