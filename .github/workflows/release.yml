@@ -61,7 +61,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           TAG=$(echo $GITHUB_REF | cut -d/ -f3)
-          gh release view "$TAG" || gh release create "$TAG" --title "League-Profile-Tool $TAG" --notes "Release $TAG"
+          gh release delete "$TAG" --yes --repo ${{ github.repository }} || true
+          gh release create "$TAG" --title "League-Profile-Tool $TAG" --notes "Release $TAG"
 
       - uses: tauri-apps/tauri-action@v0
         env:
@@ -103,9 +104,9 @@ jobs:
           curl -L -o windows.sig \
             "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_${VERSION}_x64-setup.exe.sig"
           
-          # Download macOS signature (Standard update archive name)
+          # Download macOS signature (Updated naming to include arch)
           curl -L -o macos.sig \
-            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool.app.tar.gz.sig"
+            "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_aarch64.app.tar.gz.sig"
 
       - name: Update updater.json with signatures
         run: |
@@ -129,7 +130,7 @@ jobs:
             --arg win_sig "$WIN_SIG" \
             --arg mac_sig "$MAC_SIG" \
             --arg win_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_${VERSION}_x64-setup.exe" \
-            --arg mac_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool.app.tar.gz" \
+            --arg mac_url "https://github.com/${{ github.repository }}/releases/download/${TAG}/League-Profile-Tool_aarch64.app.tar.gz" \
             '{
               version: $ver,
               notes: $notes,
