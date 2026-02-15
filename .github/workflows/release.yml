@@ -50,11 +50,11 @@ jobs:
         run: |
           # Extract only the latest version from CHANGELOG.md using awk
           # This captures everything from the first '## [' to the next one (exclusive)
-          CONTENT=$(awk '/^## \[/{if (count++) exit} {if (count) print}' CHANGELOG.md)
+          CONTENT=$(awk '/^## \[/{if (count++) exit} {if (count) print}' res/docs/CHANGELOG.md)
           
           # If awk fails or CONTENT is empty, fallback to reading the first section
           if [ -z "$CONTENT" ]; then
-            CONTENT=$(cat CHANGELOG.md | sed -n '/^## \[/,$p')
+            CONTENT=$(cat res/docs/CHANGELOG.md | sed -n '/^## \[/,$p')
           fi
 
           echo "body<<EOF" >> $GITHUB_OUTPUT
@@ -120,7 +120,7 @@ jobs:
           PUB_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           
           # Get release notes from CHANGELOG
-          NOTES=$(awk '/^## \[/{if (count++) exit} {if (count) print}' CHANGELOG.md | sed 's/"/\\"/g' | tr '\n' ' ')
+          NOTES=$(awk '/^## \[/{if (count++) exit} {if (count) print}' res/docs/CHANGELOG.md | sed 's/"/\\"/g' | tr '\n' ' ')
           
           # Create updated updater.json
           cat > updater.json << EOF
