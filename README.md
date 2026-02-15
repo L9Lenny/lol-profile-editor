@@ -70,6 +70,17 @@ npm run tauri build
 - [Lucide React](https://lucide.dev/) - Beautifully simple icons.
 - [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling.
 
+## 🔒 Code Quality & Security
+
+This project maintains high standards through automated quality gates and security scanning:
+
+- **🛡️ Snyk Security**: Continuous vulnerability scanning of dependencies to ensure your installation is secure.
+- **📊 SonarCloud**: Automated code quality analysis tracking code smells, bugs, and security hotspots.
+- **✅ PullApprove**: Structured code review process ensuring all changes are properly vetted.
+- **👥 All Contributors**: Recognition system for everyone who contributes to the project.
+
+All security scans and quality checks run automatically on every commit and pull request.
+
 ## 📄 License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
