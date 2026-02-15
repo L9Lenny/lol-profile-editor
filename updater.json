@@ -1,19 +1,19 @@
 {
-    "version": "1.2.1",
+    "version": "1.3.0",
     "notes": "## [1.2.1] - 2026-02-15  ### Added - **Project Showcase**: Integrated a high-definition tool demonstration image in the README for immediate visual impact. - **Root Cleanup**: Advanced project restructuring by moving ancillary documentation (`CHANGELOG`, `CONTRIBUTING`, etc.) into `res/docs/` to maintain a professional repository root.  ### Changed - **Documentation Engineering**: Re-authored the `README.md` with detailed feature descriptions, technical highlighting, and improved navigation links.  ",
-    "pub_date": "2026-02-15T12:32:17Z",
+    "pub_date": "2026-02-15T14:49:54Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.1/League.Profile.Tool_1.2.1_x64-setup.exe"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_1.3.0_x64-setup.exe"
         },
         "darwin-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.1/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_aarch64.app.tar.gz"
         },
         "darwin-aarch64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.1/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_aarch64.app.tar.gz"
         }
     }
 }
