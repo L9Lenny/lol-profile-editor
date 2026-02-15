@@ -1,19 +1,19 @@
 {
-    "version": "1.3.1",
-    "notes": "## [1.3.1] - 2026-02-15  ### Changed - **Dependencies**: Bumped TypeScript from 5.8.3 to 5.9.3.  ",
-    "pub_date": "2026-02-15T15:32:37Z",
+    "version": "1.3.3",
+    "notes": "## [1.3.3] - 2026-02-15  ### Changed - **README Redesign**: Improved badge styling with centered layout and better visual hierarchy - **Features Documentation**: Reorganized features into clear categories (Core Functionality, Premium Interface, Advanced Features) - **Badge Style**: Updated from flat-square to modern flat-square with custom colors and logos  ### Fixed - **CI/CD**: Resolved GitHub Actions permissions issue preventing automatic updater.json updates - **Release Workflow**: Added proper authentication for automated commits during release process  ",
+    "pub_date": "2026-02-15T21:34:03Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.1/League.Profile.Tool_1.3.1_x64-setup.exe"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.3/League.Profile.Tool_1.3.3_x64-setup.exe"
         },
         "darwin-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.1/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.3/League.Profile.Tool_aarch64.app.tar.gz"
         },
         "darwin-aarch64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.1/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.3/League.Profile.Tool_aarch64.app.tar.gz"
         }
     }
 }
