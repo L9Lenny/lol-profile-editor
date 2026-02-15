@@ -1,19 +1,19 @@
 {
-    "version": "1.3.0",
-    "notes": "## [1.2.1] - 2026-02-15  ### Added - **Project Showcase**: Integrated a high-definition tool demonstration image in the README for immediate visual impact. - **Root Cleanup**: Advanced project restructuring by moving ancillary documentation (`CHANGELOG`, `CONTRIBUTING`, etc.) into `res/docs/` to maintain a professional repository root.  ### Changed - **Documentation Engineering**: Re-authored the `README.md` with detailed feature descriptions, technical highlighting, and improved navigation links.  ",
-    "pub_date": "2026-02-15T14:49:54Z",
-    "platforms": {
-        "windows-x86_64": {
-            "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_1.3.0_x64-setup.exe"
-        },
-        "darwin-x86_64": {
-            "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_aarch64.app.tar.gz"
-        },
-        "darwin-aarch64": {
-            "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_aarch64.app.tar.gz"
-        }
+  "version": "1.3.0",
+  "notes": "## [1.3.0] - 2026-02-15\n\n### Added\n- **Global Icon Swapper**: Integrated complete Data Dragon icon library (6,000+ items) with high-definition previews.\n- **Force Apply Proxy**: New dual-method bypass (Summoner + Chat API) to equip unowned icons, making them visible in friends lists and profile hovers.\n- **Smart Search**: High-performance real-time filtering by icon name (e.g., 'Poro', 'El Tigre') or numerical ID.\n- **Technical Tab Enhancement**: Restored full Settings UI with 'Minimize to Tray' controls and LCU Bridge technical info.\n\n### Changed\n- **Performance Engine**: Re-engineered the Icons grid with infinite scroll and chunked rendering for a lag-free experience.\n- **Heartbeat System**: Reduced LCU detection latency by 60% (from 5s to 2s) with an immediate check on startup.\n- **UI Polishing**: Reworked search bar and icon grid styles for better density and premium aesthetic.",
+  "pub_date": "2026-02-15T15:55:00Z",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "Not Found",
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League-Profile-Tool_1.3.0_x64-setup.exe"
+    },
+    "darwin-x86_64": {
+      "signature": "Not Found",
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League-Profile-Tool_aarch64.app.tar.gz"
+    },
+    "darwin-aarch64": {
+      "signature": "Not Found",
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League-Profile-Tool_aarch64.app.tar.gz"
     }
+  }
 }
