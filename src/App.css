@@ -2,6 +2,9 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 @keyframes fadeIn {
@@ -20,11 +23,6 @@
   animation: fadeIn 0.4s ease-out forwards;
 }
 
-.tab-content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
