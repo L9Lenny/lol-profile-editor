@@ -1,19 +1,19 @@
 {
-  "version": "1.1.14",
-  "notes": "## [1.1.6] - 2026-02-14\n\n### Fixed\n- **Auto-Updater**: Fixed the GitHub Actions workflow to correctly generate and sign update artifacts.\n- **CI/CD**: Added missing signing keys to the release pipeline and corrected environment variable names.",
-  "pub_date": "2026-02-14T20:32:25Z",
+  "version": "1.2.1",
+  "notes": "## [1.2.1] - 2026-02-15\n\n### Added\n- **Project Showcase**: Added a high-quality demo image to the main documentation.\n- **Documentation Restructure**: Migrated legal and contribution documents to a dedicated `res/docs/` directory for a cleaner project root.\n- **README Refresh**: Re-engineered the README with detailed feature breakdowns and improved aesthetic formatting.",
+  "pub_date": "2026-02-15T13:20:00Z",
   "platforms": {
     "windows-x86_64": {
       "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.14/League-Profile-Tool_1.1.14_x64-setup.exe"
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.1/League-Profile-Tool_1.2.1_x64-setup.exe"
     },
     "darwin-x86_64": {
       "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.14/League-Profile-Tool_aarch64.app.tar.gz"
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.1/League-Profile-Tool_aarch64.app.tar.gz"
     },
     "darwin-aarch64": {
       "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.1.14/League-Profile-Tool_aarch64.app.tar.gz"
+      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.2.1/League-Profile-Tool_aarch64.app.tar.gz"
     }
   }
 }

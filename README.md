@@ -10,6 +10,10 @@ A professional-grade, premium tool built with **Tauri v2** and **React** for sea
 
 ---
 
+![League Profile Tool Demo](res/docs/img/demo.png)
+
+---
+
 ## ☕ Support the Project
 
 If this tool helped you customize your profile and you enjoy the Hextech experience, consider supporting the development! Every coffee helps keep the engine running and the UI polished.
@@ -20,13 +24,15 @@ If this tool helped you customize your profile and you enjoy the Hextech experie
 
 ## ✨ Features
 
-- 📝 **Profile Bio Management**: Update your chat status and bio with a single click.
-- 🔗 **Smart LCU Sync**: Automated, real-time discovery and connection to the League Client.
-- 🎨 **Hextech Glass UI**: A stunning, high-performance interface inspired by the official LoL client aesthetics.
-- 📥 **One-Click Updates**: Keep your tool current with a built-in automated update system.
-- 📥 **Tray Integration**: Fully managed system tray lifecycle with custom "Minimize to Tray" support.
-- 🖥️ **Window Management**: Modern, resizable window support for all desktop resolutions.
-- 📜 **Technical Console**: Built-in developer logs for real-time monitoring of client interactions.
+- 🏆 **Rank Overrides**: Effortlessly modify your visible Solo/Duo rank (from Iron to Challenger) and divisions directly in the social engine and hover cards.
+- 🎨 **Hextech Glass UI**: A breathtaking, borderless interface featuring holographic grids, gold-trim glassmorphism, and smooth animations inspired by the official LoL client.
+- � **Profile Bio Management**: Update your chat status and biographical information with high-performance LCU bridge integration.
+- � **Smart LCU Sync**: Seamless, real-time discovery and connection to the League of Legends client without manual configuration.
+- 📜 **Technical Console**: A built-in developer logging system for real-time monitoring and debugging of LCU API interactions.
+- ⚙️ **Advanced Management**: 
+  - **Minimize to Tray**: Fully managed lifecycle to keep the tool active in the background.
+  - **Auto-Launch**: Option to start the toolkit automatically with Windows.
+  - **Update Intelligence**: Automated update beacons and one-click installation system.
 
 ## 🚀 Getting Started
 
@@ -68,7 +74,11 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests to improve the tool.
+Contributions are welcome! Check out our [Contributing Guidelines](res/docs/CONTRIBUTING.md) and [Code of Conduct](res/docs/CODE_OF_CONDUCT.md).
+
+## 📜 Changelog
+
+Stay up to date with the latest changes in the [CHANGELOG](res/docs/CHANGELOG.md).
 
 ---
 *Disclaimer: This tool is not affiliated with, endorsed by, or integrated with Riot Games in any official capacity.*
