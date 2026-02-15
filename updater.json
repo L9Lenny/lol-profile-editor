@@ -1,19 +1,19 @@
 {
-  "version": "1.3.0",
-  "notes": "## [1.3.0] - 2026-02-15\n\n### Added\n- **Global Icon Library**: Integrated Data Dragon to browse thousands of LoL icons instantly.\n- **Smart Search**: Search icons by name (e.g., 'Poro', 'El Tigre') or ID with real-time filtering.\n- **Hextech Performance Engine**: Infinite scroll and chunked rendering for a lag-free experience with 6,000+ icons.\n- **Force Apply Proxy**: New dual-method bypass to equip unowned icons (visible in friends list and profile hover).\n- **Instant Connection**: Reduced LCU detection latency by 60% with the new heartbeat system.\n\n## [1.2.1] - 2026-02-15\n\n### Added\n- **Project Showcase**: Integrated a high-definition tool demonstration image in the README.\n- **Root Cleanup**: Advanced project restructuring by moving ancillary documentation to `res/docs/`.\n- **README Refresh**: Re-authored the README with detailed feature descriptions and technical highlighting.",
-  "pub_date": "2026-02-15T15:38:00Z",
-  "platforms": {
-    "windows-x86_64": {
-      "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League-Profile-Tool_1.3.0_x64-setup.exe"
-    },
-    "darwin-x86_64": {
-      "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League-Profile-Tool_aarch64.app.tar.gz"
-    },
-    "darwin-aarch64": {
-      "signature": "Not Found",
-      "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League-Profile-Tool_aarch64.app.tar.gz"
+    "version": "1.3.0",
+    "notes": "## [1.3.0] - 2026-02-15  ### Added - **Global Icon swapper**: Integrated the complete Data Dragon icon library (over 6,000 icons) with high-definition previews. - **Smart Search**: Real-time filtering by icon name or ID.  ### Changed * **UI Polishing**: Reworked search bar and icon grid styles for better density and premium aesthetic.   ",
+    "pub_date": "2026-02-15T15:13:35Z",
+    "platforms": {
+        "windows-x86_64": {
+            "signature": "Not Found",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_1.3.0_x64-setup.exe"
+        },
+        "darwin-x86_64": {
+            "signature": "Not Found",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_aarch64.app.tar.gz"
+        },
+        "darwin-aarch64": {
+            "signature": "Not Found",
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.0/League.Profile.Tool_aarch64.app.tar.gz"
+        }
     }
-  }
 }
