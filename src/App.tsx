@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { getVersion } from "@tauri-apps/api/app";
 import { enable, disable, isEnabled } from "@tauri-apps/plugin-autostart";
@@ -6,7 +6,6 @@ import {
   Home,
   Settings,
   ShieldCheck,
-  Trash2,
   Cpu,
   Github,
   Coffee,
@@ -15,7 +14,9 @@ import {
   Layout,
   Terminal,
   RefreshCw,
-  AlertCircle
+  UserCircle,
+  Search,
+  Loader2
 } from 'lucide-react';
 import "./App.css";
 
@@ -34,6 +35,7 @@ function App() {
   const [lcu, setLcu] = useState<LcuInfo | null>(null);
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
+  const [appReady, setAppReady] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [clientVersion, setClientVersion] = useState("0.0.0");
   const [latestVersion, setLatestVersion] = useState("");
@@ -45,89 +47,91 @@ function App() {
   const [soloTier, setSoloTier] = useState("CHALLENGER");
   const [soloDiv, setSoloDiv] = useState("I");
 
+  // Icon Swapper State
+  const [selectedIcon, setSelectedIcon] = useState<number | null>(null);
+  const [allIcons, setAllIcons] = useState<{ id: number; name: string }[]>([]);
+  const [iconSearchTerm, setIconSearchTerm] = useState("");
+  const [ddragonVersion, setDdragonVersion] = useState("14.3.1");
+  const [visibleIconsCount, setVisibleIconsCount] = useState(100);
+  const gridRef = useRef<HTMLDivElement>(null);
+
   const addLog = (msg: string) => {
     const timestamp = new Date().toLocaleTimeString();
     setLogs(prev => [{ time: timestamp, msg }, ...prev].slice(0, 50));
   };
 
   useEffect(() => {
-    getVersion().then(setClientVersion);
+    const init = async () => {
+      try {
+        const v = await getVersion();
+        setClientVersion(v);
 
-    // Fetch latest version from GitHub with cache-buster
-    fetch(`https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json?t=${Date.now()}`)
-      .then(res => res.json())
-      .then(data => {
-        setLatestVersion(data.version);
-        addLog(`Latest version available: v${data.version}`);
-      })
-      .catch((err) => {
-        addLog(`Failed to fetch latest version: ${err}`);
-      });
+        const resV = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
+        const versions = await resV.json();
+        const latest = versions[0];
+        setDdragonVersion(latest);
 
-    // Check autostart status
-    isEnabled().then(setIsAutostartEnabled);
+        const resI = await fetch(`https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/profileicon.json`);
+        const data = await resI.json();
+        const icons = Object.values(data.data).map((icon: any) => ({
+          id: parseInt(icon.id),
+          name: icon.name || `Icon ${icon.id}`
+        }));
+        setAllIcons(icons);
 
-    // Load minimize to tray setting
-    invoke<boolean>("get_minimize_to_tray")
-      .then(setMinimizeToTray)
-      .catch(() => setMinimizeToTray(true));
+        const autostart = await isEnabled();
+        setIsAutostartEnabled(autostart);
 
-    addLog("Application initialized.");
+        const tray = await invoke<boolean>("get_minimize_to_tray").catch(() => true);
+        setMinimizeToTray(tray);
+
+        // Fetch latest version from GitHub
+        fetch(`https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json?t=${Date.now()}`)
+          .then(res => res.json())
+          .then(updateData => {
+            setLatestVersion(updateData.version);
+          })
+          .catch(() => { });
+
+        setAppReady(true);
+        addLog(`Application ready. v${v}`);
+      } catch (err) {
+        setAppReady(true);
+        addLog(`Init Error: ${err}`);
+      }
+    };
+
+    init();
   }, []);
 
   const checkConnection = async () => {
     try {
       const info = await invoke<LcuInfo>("get_lcu_connection");
-      if (!lcu && info) {
-        addLog("League of Legends client detected.");
-      }
+      if (!lcu && info) addLog("League client detected.");
       setLcu(info);
     } catch (err) {
-      if (lcu) addLog("League of Legends client disconnected.");
+      if (lcu) addLog("League client disconnected.");
       setLcu(null);
     }
   };
 
   useEffect(() => {
-    checkConnection();
-    const interval = setInterval(checkConnection, 5000);
+    checkConnection(); // Immediate check
+    const interval = setInterval(checkConnection, 2000); // Check every 2 seconds instead of 5
     return () => clearInterval(interval);
-  }, [lcu]);
+  }, []); // Remove lcu from dependencies to prevent interval churn
 
   const handleUpdateBio = async () => {
     if (!lcu) return;
     setLoading(true);
-    setMessage({ text: "Updating...", type: "" });
     try {
-      const res = await invoke<string>("update_bio", {
-        port: lcu.port,
-        token: lcu.token,
-        newBio: bio,
-      });
+      await invoke("update_bio", { port: lcu.port, token: lcu.token, newBio: bio });
       addLog(`Bio updated: "${bio}"`);
-      setMessage({ text: res, type: "success" });
+      setMessage({ text: "Bio Updated!", type: "success" });
       setTimeout(() => setMessage({ text: "", type: "" }), 3000);
     } catch (err) {
-      addLog(`Error updating bio: ${err}`);
-      setMessage({ text: String(err), type: "error" });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const toggleAutostart = async () => {
-    try {
-      if (isAutostartEnabled) {
-        await disable();
-        addLog("Auto-launch disabled.");
-      } else {
-        await enable();
-        addLog("Auto-launch enabled.");
-      }
-      setIsAutostartEnabled(!isAutostartEnabled);
-    } catch (err) {
-      addLog(`Failed to toggle auto-launch: ${err}`);
-    }
+      setMessage({ text: "Failed to update bio", type: "error" });
+    } finally { setLoading(false); }
   };
 
   const toggleMinimizeToTray = async () => {
@@ -141,104 +145,100 @@ function App() {
     }
   };
 
+  const filteredIcons = useMemo(() => {
+    const term = iconSearchTerm.trim().toLowerCase();
+    if (!term) return allIcons;
+    return allIcons.filter(icon =>
+      icon.name.toLowerCase().includes(term) ||
+      icon.id.toString().includes(term)
+    );
+  }, [allIcons, iconSearchTerm]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop <= clientHeight + 100) {
+      if (visibleIconsCount < filteredIcons.length) {
+        setVisibleIconsCount(prev => prev + 100);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setVisibleIconsCount(100);
+    if (gridRef.current) gridRef.current.scrollTop = 0;
+  }, [iconSearchTerm]);
+
+  if (!appReady) {
+    return (
+      <div className="main-app" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <Loader2 className="intel-spinner" size={48} style={{ color: 'var(--hextech-gold)', marginBottom: '20px' }} />
+          <h2 style={{ color: 'var(--hextech-gold)', letterSpacing: '4px', fontSize: '0.8rem' }}>INITIALIZING LCU BRIDGE...</h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="main-app">
-      {/* Top Navigation */}
       <nav className="nav-bar">
         <div className="nav-links">
-          <div
-            className={`nav-item ${activeTab === 'home' ? 'active' : ''}`}
-            onClick={() => setActiveTab('home')}
-          >
+          <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
             <Home size={16} /> <span>Home</span>
           </div>
-          <div
-            className={`nav-item ${activeTab === 'bio' ? 'active' : ''}`}
-            onClick={() => setActiveTab('bio')}
-          >
+          <div className={`nav-item ${activeTab === 'bio' ? 'active' : ''}`} onClick={() => setActiveTab('bio')}>
             <ShieldCheck size={16} /> <span>Bio</span>
           </div>
-          <div
-            className={`nav-item ${activeTab === 'rank' ? 'active' : ''}`}
-            onClick={() => setActiveTab('rank')}
-          >
+          <div className={`nav-item ${activeTab === 'rank' ? 'active' : ''}`} onClick={() => setActiveTab('rank')}>
             <Trophy size={16} /> <span>Rank</span>
           </div>
-          <div
-            className={`nav-item ${activeTab === 'logs' ? 'active' : ''}`}
-            onClick={() => setActiveTab('logs')}
-          >
+          <div className={`nav-item ${activeTab === 'icons' ? 'active' : ''}`} onClick={() => setActiveTab('icons')}>
+            <UserCircle size={16} /> <span>Icons</span>
+          </div>
+          <div className={`nav-item ${activeTab === 'logs' ? 'active' : ''}`} onClick={() => setActiveTab('logs')}>
             <Terminal size={16} /> <span>Logs</span>
           </div>
-          <div
-            className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('settings')}
-          >
-            <Settings size={16} />
-            <span>Settings</span>
+          <div className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
+            <Settings size={16} /> <span>Settings</span>
             {latestVersion && clientVersion !== latestVersion && (
               <div className="nav-update-beacon"></div>
             )}
           </div>
         </div>
-
         <div className="nav-social">
-          <a
-            href="https://github.com/L9Lenny/lol-profile-editor"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link-top"
-            title="View Repository"
-          >
-            <Github size={18} />
-          </a>
-          <a
-            href="https://ko-fi.com/profumato"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link-top"
-            title="Support Development"
-          >
-            <Coffee size={18} />
-          </a>
+          <a href="https://github.com/L9Lenny/lol-profile-editor" target="_blank" rel="noreferrer" className="social-link-top"><Github size={18} /></a>
+          <a href="https://ko-fi.com/profumato" target="_blank" rel="noreferrer" className="social-link-top"><Coffee size={18} /></a>
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="content-area">
         {activeTab === 'home' && (
           <div className="tab-content fadeIn">
             <div className="home-hero">
               <h1 className="hero-title">League Profile Tool</h1>
-              <p className="hero-subtitle">Elevate your presence in the League of Legends ecosystem with precision overrides and aesthetic controls.</p>
-
+              <p className="hero-subtitle">Elevate your presence in the League of Legends ecosystem with precision overrides.</p>
               <div className={`connection-status-pill ${lcu ? 'connected' : 'disconnected'}`}>
                 <div className="status-dot"></div>
                 {lcu ? 'CLIENT CONNECTED' : 'WAITING FOR CLIENT'}
               </div>
             </div>
-
             <div className="quick-start-grid">
               <div className="feature-card" onClick={() => setActiveTab('bio')}>
                 <div className="feature-icon"><Layout size={24} /></div>
-                <div className="feature-body">
-                  <h3>Profile Bio</h3>
-                  <p>Update your status message and biographical data instantly.</p>
-                </div>
+                <div className="feature-body"><h3>Profile Bio</h3><p>Update status message and biography.</p></div>
                 <ChevronRight size={18} className="feature-arrow" />
               </div>
-
               <div className="feature-card" onClick={() => setActiveTab('rank')}>
                 <div className="feature-icon"><Trophy size={24} /></div>
-                <div className="feature-body">
-                  <h3>Rank Overrides</h3>
-                  <p>Override your visible Solo/Duo rankings in the social engine.</p>
-                </div>
+                <div className="feature-body"><h3>Rank Overrides</h3><p>Modify visible Solo/Duo rankings.</p></div>
+                <ChevronRight size={18} className="feature-arrow" />
+              </div>
+              <div className="feature-card" onClick={() => setActiveTab('icons')}>
+                <div className="feature-icon"><UserCircle size={24} /></div>
+                <div className="feature-body"><h3>Icon Swapper</h3><p>Equip hidden summoner icons instantly.</p></div>
                 <ChevronRight size={18} className="feature-arrow" />
               </div>
             </div>
-
-            {/* Version Footer */}
             <div className="home-footer">
               <span className="version-label">Application Build</span>
               <span className="version-value">v{clientVersion}</span>
@@ -250,7 +250,6 @@ function App() {
           <div className="tab-content fadeIn">
             <div className="card">
               <h3 className="card-title">Profile Bio</h3>
-
               <div className="input-group">
                 <label>New Status Message</label>
                 <textarea
@@ -261,21 +260,8 @@ function App() {
                   rows={4}
                 />
               </div>
-
-              <button
-                className="primary-btn"
-                onClick={handleUpdateBio}
-                disabled={!lcu || loading || !bio.trim()}
-                style={{ width: '100%' }}
-              >
-                APPLY
-              </button>
-
-              {!lcu && (
-                <p style={{ color: '#ff3232', fontSize: '0.8rem', marginTop: '15px', textAlign: 'center' }}>
-                  ⚠ Start League of Legends to enable this feature.
-                </p>
-              )}
+              <button className="primary-btn" onClick={handleUpdateBio} disabled={!lcu || loading || !bio.trim()} style={{ width: '100%', marginTop: '20px' }}>APPLY</button>
+              {!lcu && <p style={{ color: '#ff3232', fontSize: '0.8rem', marginTop: '15px', textAlign: 'center' }}>⚠ Start League of Legends to enable this feature.</p>}
             </div>
           </div>
         )}
@@ -284,30 +270,15 @@ function App() {
           <div className="tab-content fadeIn">
             <div className="card">
               <h3 className="card-title">Rank Override</h3>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '30px' }}>
-                Modify how your rank is displayed in the chat system and on hover cards.
-              </p>
-
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '25px' }}>Modify your visible rank in the chat and hover cards.</p>
               <div className="input-group">
                 <label>Solo/Duo Ranking</label>
                 <div style={{ display: 'flex', gap: '10px' }}>
-                  <select
-                    value={soloTier}
-                    onChange={(e) => setSoloTier(e.target.value)}
-                    style={{ flex: 2 }}
-                  >
-                    {["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"].map(r => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
+                  <select value={soloTier} onChange={(e) => setSoloTier(e.target.value)} style={{ flex: 2 }}>
+                    {["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"].map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
-                  <select
-                    value={soloDiv}
-                    onChange={(e) => setSoloDiv(e.target.value)}
-                    style={{ flex: 1 }}
-                  >
-                    {["I", "II", "III", "IV"].map(d => (
-                      <option key={d} value={d}>{d}</option>
-                    ))}
+                  <select value={soloDiv} onChange={(e) => setSoloDiv(e.target.value)} style={{ flex: 1 }}>
+                    {["I", "II", "III", "IV"].map(d => <option key={d} value={d}>{d}</option>)}
                   </select>
                 </div>
               </div>
@@ -317,64 +288,126 @@ function App() {
                 <span style={{ fontSize: '1rem', fontWeight: 700, color: '#fff' }}>{soloTier} <span style={{ color: 'var(--hextech-gold)' }}>{soloDiv}</span></span>
               </div>
 
+              <button className="primary-btn" style={{ width: '100%', marginTop: '20px' }} onClick={async () => {
+                if (!lcu) return;
+                setLoading(true);
+                try {
+                  await invoke("lcu_request", {
+                    method: "PUT", endpoint: "/lol-chat/v1/me",
+                    body: { lol: { rankedLeagueTier: soloTier, rankedLeagueDivision: soloDiv, rankedLeagueQueue: "RANKED_SOLO_5x5" } },
+                    port: lcu.port, token: lcu.token
+                  });
+                  setMessage({ text: "Rank Applied!", type: "success" });
+                  addLog(`Rank override applied: ${soloTier} ${soloDiv}`);
+                } catch (err) { setMessage({ text: "Error", type: "error" }); }
+                finally { setLoading(false); }
+              }}>APPLY</button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'icons' && (
+          <div className="tab-content fadeIn">
+            <div className="card">
+              <h3 className="card-title">Icon Swapper</h3>
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ position: 'relative', width: '100%' }}>
+                  <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                  <input
+                    type="text"
+                    placeholder="Search by name or ID..."
+                    value={iconSearchTerm}
+                    onChange={(e) => setIconSearchTerm(e.target.value)}
+                    style={{ width: '100%', padding: '8px 10px 8px 35px', fontSize: '0.85rem' }}
+                  />
+                </div>
+              </div>
+
+              <div
+                ref={gridRef}
+                className="icon-grid"
+                onScroll={handleScroll}
+                style={{
+                  display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+                  gap: '12px', maxHeight: '400px', overflowY: 'auto', paddingRight: '10px'
+                }}
+              >
+                {filteredIcons.slice(0, visibleIconsCount).map((icon) => (
+                  <div
+                    key={icon.id}
+                    className={`icon-item ${selectedIcon === icon.id ? 'selected' : ''}`}
+                    onClick={() => {
+                      setSelectedIcon(icon.id);
+                    }}
+                    style={{
+                      cursor: 'pointer', borderRadius: '10px', background: 'rgba(255,255,255,0.03)',
+                      padding: '10px', textAlign: 'center', border: selectedIcon === icon.id ? '2px solid var(--hextech-gold)' : '2px solid transparent',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <img src={`https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/img/profileicon/${icon.id}.png`} alt={icon.name} style={{ width: '100%', borderRadius: '6px', marginBottom: '8px' }} loading="lazy" />
+                    <div style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{icon.name}</div>
+                    <div style={{ fontSize: '0.5rem', opacity: 0.5 }}>ID: {icon.id}</div>
+                  </div>
+                ))}
+              </div>
+
               <button
                 className="primary-btn"
-                style={{ marginTop: '20px', width: '100%' }}
+                style={{ width: '100%', marginTop: '20px' }}
                 onClick={async () => {
-                  if (!lcu) return;
+                  const id = selectedIcon;
+                  if (!lcu || id === null) return;
                   setLoading(true);
                   try {
+                    // Method 1: Official Endpoint (might fail for unowned)
+                    await invoke("lcu_request", {
+                      method: "PUT",
+                      endpoint: "/lol-summoner/v1/current-summoner/icon",
+                      body: { profileIconId: id },
+                      port: lcu.port,
+                      token: lcu.token
+                    }).catch(() => addLog("Official icon update failed (likely unowned). Trying Force method..."));
+
+                    // Method 2: Chat Overlay (often works for unowned icons visually)
                     await invoke("lcu_request", {
                       method: "PUT",
                       endpoint: "/lol-chat/v1/me",
-                      body: {
-                        lol: {
-                          rankedLeagueTier: soloTier,
-                          rankedLeagueDivision: soloDiv,
-                          rankedLeagueQueue: "RANKED_SOLO_5x5"
-                        }
-                      },
+                      body: { icon: id },
                       port: lcu.port,
                       token: lcu.token
                     });
-                    addLog(`Rank override: ${soloTier} ${soloDiv}`);
-                    setMessage({ text: "Rank Applied!", type: "success" });
+
+                    addLog(`Icon ID ${id} applied (Force sync).`);
+                    setMessage({ text: "Icon Applied!", type: "success" });
                     setTimeout(() => setMessage({ text: "", type: "" }), 3000);
                   } catch (err) {
-                    addLog(`Rank Error: ${err}`);
-                    setMessage({ text: "Failed to apply rank", type: "error" });
+                    addLog(`Icon Error: ${err}`);
+                    setMessage({ text: "Failed to apply icon", type: "error" });
                   } finally { setLoading(false); }
                 }}
+                disabled={!lcu || loading || selectedIcon === null}
               >
-                APPLY
+                APPLY ICON
               </button>
             </div>
           </div>
         )}
 
         {activeTab === 'logs' && (
-          <div className="tab-content fadeIn" style={{ height: 'calc(100vh - 180px)', display: 'flex', flexDirection: 'column' }}>
-            <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px' }}>
+          <div className="tab-content fadeIn">
+            <div className="card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 className="card-title" style={{ margin: 0 }}>System Logs</h3>
-                <button
-                  onClick={() => setLogs([])}
-                  style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.7rem' }}
-                >
-                  <Trash2 size={12} /> CLEAR
-                </button>
+                <button onClick={() => setLogs([])} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.7rem' }}>CLEAR</button>
               </div>
-              <div className="log-container">
-                {logs.length === 0 ? (
-                  <div style={{ color: 'var(--text-secondary)', opacity: 0.5, fontStyle: 'italic' }}>No logs yet...</div>
-                ) : (
-                  logs.map((log, i) => (
-                    <div key={i} className="log-entry">
-                      <span style={{ color: 'var(--hextech-gold-dark)', marginRight: '10px' }}>[{log.time}]</span>
-                      {log.msg}
-                    </div>
-                  ))
-                )}
+              <div className="log-container" style={{ height: '400px', overflowY: 'auto' }}>
+                {logs.map((log, i) => (
+                  <div key={i} className="log-entry">
+                    <span style={{ color: 'var(--hextech-gold-dark)', marginRight: '10px' }}>[{log.time}]</span>
+                    {log.msg}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -384,18 +417,18 @@ function App() {
           <div className="tab-content fadeIn">
             <div className="card">
               <h3 className="card-title">Technical Settings</h3>
-
-              <div className="settings-row" onClick={toggleAutostart}>
+              <div className="settings-row" onClick={async () => {
+                const newState = !isAutostartEnabled;
+                if (newState) await enable(); else await disable();
+                setIsAutostartEnabled(newState);
+                addLog(`Auto-launch ${newState ? 'enabled' : 'disabled'}.`);
+              }}>
                 <div className="settings-info">
                   <span className="settings-label">Auto-launch</span>
                   <p className="settings-desc">Launch the app automatically when your PC starts.</p>
                 </div>
                 <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={isAutostartEnabled}
-                    readOnly
-                  />
+                  <input type="checkbox" checked={isAutostartEnabled} readOnly />
                   <span className="slider"></span>
                 </label>
               </div>
@@ -406,11 +439,7 @@ function App() {
                   <p className="settings-desc">Close button will minimize the app to the system tray.</p>
                 </div>
                 <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={minimizeToTray}
-                    readOnly
-                  />
+                  <input type="checkbox" checked={minimizeToTray} readOnly />
                   <span className="slider"></span>
                 </label>
               </div>
@@ -426,12 +455,7 @@ function App() {
                       <p className="update-desc-hero">A fresh build of the toolkit is ready to be installed (<b>v{latestVersion}</b>).</p>
                     </div>
                   </div>
-                  <a
-                    href="https://github.com/L9Lenny/lol-profile-editor/releases/latest"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="update-action-btn-hero"
-                  >
+                  <a href="https://github.com/L9Lenny/lol-profile-editor/releases/latest" target="_blank" rel="noreferrer" className="update-action-btn-hero">
                     UPDATE NOW
                   </a>
                 </div>
@@ -453,25 +477,19 @@ function App() {
         )}
       </main>
 
-      {/* Status Bar */}
       <footer className="status-bar">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div className={`status-dot ${lcu ? 'online' : 'offline'}`}></div>
-          <span style={{ letterSpacing: '1px', textTransform: 'uppercase', fontWeight: 600, fontSize: '0.7rem' }}>
-            {lcu ? 'LCU Connected' : 'Waiting for League...'}
-          </span>
+          <span style={{ textTransform: 'uppercase', fontWeight: 700, fontSize: '0.7rem' }}>{lcu ? 'LCU Connected' : 'Waiting...'}</span>
         </div>
-
-        <div style={{ marginLeft: 'auto', opacity: 0.5, fontSize: '0.65rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
+        <div style={{ marginLeft: 'auto', opacity: 0.5, fontSize: '0.65rem', letterSpacing: '2px' }}>
           LEAGUE PROFILE TOOL v{clientVersion}
         </div>
       </footer>
 
-
       {message.text && (
         <div className={`toast ${message.type}`}>
-          {message.type === 'success' ? <ShieldCheck size={16} /> : <AlertCircle size={16} />}
-          <span>{message.text}</span>
+          {message.text}
         </div>
       )}
     </div>
