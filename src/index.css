@@ -344,6 +344,35 @@ option {
   margin-top: 4px;
 }
 
+.ghost-btn {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ghost-btn:hover {
+  color: var(--hextech-gold);
+  border-color: rgba(200, 155, 60, 0.4);
+  background: rgba(200, 155, 60, 0.05);
+}
+
+.ghost-btn:active {
+  transform: translateY(1px);
+}
+
+.ghost-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* Switch Styles */
 .switch {
   position: relative;

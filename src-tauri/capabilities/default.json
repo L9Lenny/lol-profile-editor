@@ -13,6 +13,7 @@
     "core:tray:default",
     "notification:default",
     "autostart:default",
-    "log:default"
+    "log:default",
+    "dialog:default"
   ]
 }

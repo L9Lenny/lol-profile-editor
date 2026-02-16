@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useDeferredValue } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { save } from "@tauri-apps/plugin-dialog";
 import { getVersion } from "@tauri-apps/api/app";
 import { enable, disable, isEnabled } from "@tauri-apps/plugin-autostart";
 import {
@@ -65,6 +66,48 @@ function App() {
     setLogs(prev => [{ time: timestamp, msg }, ...prev].slice(0, 50));
   };
 
+  const loadCachedIcons = () => {
+    try {
+      const cachedVersion = localStorage.getItem("ddragon_version");
+      const cachedIcons = localStorage.getItem("profile_icons");
+      if (cachedVersion) setDdragonVersion(cachedVersion);
+      if (cachedIcons) {
+        const parsed = JSON.parse(cachedIcons);
+        if (Array.isArray(parsed) && parsed.length) {
+          setAllIcons(parsed);
+        }
+      }
+    } catch {
+      // Ignore cache read errors
+    }
+  };
+
+  const exportLogs = async () => {
+    if (!logs.length) {
+      showToast("No logs to export", "error");
+      return;
+    }
+    const lines = logs.map(log => `[${log.time}] ${log.msg}`);
+    const content = lines.join("\n");
+    try {
+      const defaultName = `league-profile-tool-logs-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.txt`;
+      const path = await save({
+        defaultPath: defaultName,
+        filters: [{ name: "Text", extensions: ["txt"] }]
+      });
+      if (!path) {
+        return;
+      }
+      const target = Array.isArray(path) ? path[0] : path;
+      const saved = await invoke<string>("save_logs_to_path", { path: target, content });
+      addLog(`Logs exported to: ${saved}`);
+      showToast("Logs exported", "success");
+    } catch (err) {
+      addLog(`Log export failed: ${err}`);
+      showToast("Log export failed", "error");
+    }
+  };
+
   const showToast = (text: string, type: string) => {
     setMessage({ text, type });
     if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
@@ -89,27 +132,6 @@ function App() {
         setIsAutostartEnabled(autostart);
         setMinimizeToTray(tray);
 
-        const resV = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
-          signal: controller.signal
-        });
-        if (!resV.ok) throw new Error("Failed to load Data Dragon versions");
-        const versions = await resV.json();
-        const latest = versions[0];
-        if (!active) return;
-        setDdragonVersion(latest);
-
-        const resI = await fetch(`https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/profileicon.json`, {
-          signal: controller.signal
-        });
-        if (!resI.ok) throw new Error("Failed to load profile icons");
-        const data = await resI.json();
-        const icons = Object.values(data.data).map((icon: any) => ({
-          id: parseInt(icon.id),
-          name: icon.name || `Icon ${icon.id}`
-        }));
-        if (!active) return;
-        setAllIcons(icons);
-
         // Fetch latest version from GitHub
         fetch(`https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json?t=${Date.now()}`, {
           signal: controller.signal
@@ -122,6 +144,36 @@ function App() {
 
         setAppReady(true);
         addLog(`Application ready. v${v}`);
+
+        loadCachedIcons();
+
+        try {
+          const resV = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
+            signal: controller.signal
+          });
+          if (!resV.ok) throw new Error("Failed to load Data Dragon versions");
+          const versions = await resV.json();
+          const latest = versions[0];
+          if (!active) return;
+          setDdragonVersion(latest);
+
+          const resI = await fetch(`https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/profileicon.json`, {
+            signal: controller.signal
+          });
+          if (!resI.ok) throw new Error("Failed to load profile icons");
+          const data = await resI.json();
+          const icons = Object.values(data.data).map((icon: any) => ({
+            id: parseInt(icon.id),
+            name: icon.name || `Icon ${icon.id}`
+          }));
+          if (!active) return;
+          setAllIcons(icons);
+          localStorage.setItem("ddragon_version", latest);
+          localStorage.setItem("profile_icons", JSON.stringify(icons));
+        } catch (err) {
+          addLog(`Icon cache refresh failed: ${err}`);
+        }
+
       } catch (err) {
         if (!active) return;
         setAppReady(true);
@@ -442,7 +494,10 @@ function App() {
             <div className="card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 className="card-title" style={{ margin: 0 }}>System Logs</h3>
-                <button onClick={() => setLogs([])} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.7rem' }}>CLEAR</button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" className="ghost-btn" onClick={exportLogs}>EXPORT</button>
+                  <button type="button" className="ghost-btn" onClick={() => setLogs([])}>CLEAR</button>
+                </div>
               </div>
               <div className="log-container" style={{ height: '400px', overflowY: 'auto' }}>
                 {logs.map((log, i) => (
