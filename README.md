@@ -12,10 +12,6 @@ A professional-grade, premium tool built with **Tauri v2** and **React** for sea
   <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/lol-profile-editor/release.yml?style=flat-square&logo=githubactions&logoColor=white&color=238636" />
 </a>
 
-<a href="https://github.com/L9Lenny/lol-profile-editor/actions/workflows/snyk.yml">
-  <img src="https://img.shields.io/badge/Security-Snyk-4C4A73?style=flat-square&logo=snyk&logoColor=white" />
-</a>
-
 <a href="https://sonarcloud.io/summary/new_code?id=L9Lenny_lol-profile-editor">
   <img src="https://img.shields.io/badge/Code%20Quality-SonarCloud-F3702A?style=flat-square&logo=sonarcloud&logoColor=white" />
 </a>
