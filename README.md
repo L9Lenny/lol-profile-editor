@@ -42,7 +42,6 @@ A professional-grade, premium tool built with **Tauri v2** and **React** for sea
 - **🖼️ Icon Library**: Access to 6,000+ profile icons from Data Dragon with smart search and HD previews
 - **💬 Profile Bio Management**: Update your chat status and biographical information in real-time
 - **🟢 Status Control**: Set your LCU availability (Online, Away, Mobile, Offline) directly from the Bio tab
-- **🔁 Status Changer**: Quickly switch your presence without leaving the Profile Bio screen
 - **🗂️ Log Export**: Save your in-app logs to a file for troubleshooting
 - **📊 Live Preview**: See changes before applying them to your profile
 
