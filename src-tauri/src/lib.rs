@@ -74,7 +74,9 @@ async fn get_lcu_connection() -> Result<lcu::LcuInfo, String> {
 fn is_allowed_lcu_request(method: &str, endpoint: &str) -> bool {
     matches!(
         (method, endpoint),
-        ("PUT", "/lol-chat/v1/me") | ("PUT", "/lol-summoner/v1/current-summoner/icon")
+        ("PUT", "/lol-chat/v1/me")
+            | ("GET", "/lol-chat/v1/me")
+            | ("PUT", "/lol-summoner/v1/current-summoner/icon")
     )
 }
 

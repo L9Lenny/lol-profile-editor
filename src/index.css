@@ -269,6 +269,16 @@ select {
   border-radius: 8px;
 }
 
+.availability-select {
+  font-size: 0.85rem !important;
+  padding: 13px 42px 13px 22px !important;
+}
+
+.availability-apply {
+  font-size: 0.8rem !important;
+  padding: 13px 22px !important;
+}
+
 select:hover {
   border-color: rgba(200, 155, 60, 0.5) !important;
   background-color: rgba(1, 10, 19, 0.9) !important;
@@ -371,6 +381,54 @@ option {
 .ghost-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.availability-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text-secondary);
+}
+
+.availability-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.availability-pill.chat {
+  color: #00ff88;
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
+.availability-pill.away {
+  color: #ff4d4d;
+  border-color: rgba(255, 77, 77, 0.35);
+}
+
+.availability-pill.dnd {
+  color: #ff4d4d;
+  border-color: rgba(255, 77, 77, 0.35);
+}
+
+.availability-pill.mobile {
+  color: #6fb6ff;
+  border-color: rgba(111, 182, 255, 0.35);
+}
+
+.availability-pill.offline {
+  color: #a09b8c;
+  border-color: rgba(160, 155, 140, 0.3);
 }
 
 /* Switch Styles */

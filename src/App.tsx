@@ -57,6 +57,7 @@ function App() {
   const gridRef = useRef<HTMLDivElement>(null);
   const toastTimerRef = useRef<number | undefined>(undefined);
   const deferredSearchTerm = useDeferredValue(iconSearchTerm);
+  const [availability, setAvailability] = useState("chat");
 
   // Track previous connection state to detect changes
   const prevLcuRef = useRef<LcuInfo | null>(null);
@@ -114,6 +115,18 @@ function App() {
     toastTimerRef.current = window.setTimeout(() => {
       setMessage({ text: "", type: "" });
     }, 3000);
+  };
+
+  const lcuRequest = async (method: string, endpoint: string, body?: Record<string, unknown>) => {
+    if (!lcu) throw new Error("LCU not connected");
+    const payload: Record<string, unknown> = {
+      method,
+      endpoint,
+      port: lcu.port,
+      token: lcu.token
+    };
+    if (body) payload.body = body;
+    return invoke("lcu_request", payload);
   };
 
   useEffect(() => {
@@ -226,6 +239,57 @@ function App() {
     } finally { setLoading(false); }
   };
 
+  const refreshAvailability = async () => {
+    if (!lcu) return;
+    try {
+      const chatRes = await lcuRequest("GET", "/lol-chat/v1/me");
+      if ((chatRes as any)?.availability) {
+        const next = (chatRes as any).availability;
+        if (next !== availability) {
+          setAvailability(next);
+          addLog(`Status synced: ${statusLabel(next)}.`);
+        }
+      }
+    } catch (err) {
+      addLog(`Status sync failed: ${err}`);
+    }
+  };
+
+  const statusLabel = (value: string) => {
+    switch (value) {
+      case "chat":
+        return "ONLINE";
+      case "away":
+        return "AWAY";
+      case "mobile":
+        return "MOBILE";
+      case "offline":
+        return "OFFLINE";
+      default:
+        return value.toUpperCase();
+    }
+  };
+
+  const applyAvailability = async (next?: string) => {
+    if (!lcu) return;
+    const target = (next || availability).trim();
+    if (!target) return;
+    const previous = availability;
+    if (next) setAvailability(next);
+    setLoading(true);
+    try {
+      await lcuRequest("PUT", "/lol-chat/v1/me", { availability: target });
+      showToast(`Status set to ${statusLabel(target)}`, "success");
+      addLog(`Status updated: ${statusLabel(target)}.`);
+    } catch (err) {
+      if (next) setAvailability(previous);
+      showToast("Failed to update status", "error");
+      addLog(`Status update failed: ${err}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const toggleMinimizeToTray = async () => {
     try {
       const newState = !minimizeToTray;
@@ -263,6 +327,12 @@ function App() {
     setVisibleIconsCount(100);
     if (gridRef.current) gridRef.current.scrollTop = 0;
   }, [deferredSearchTerm]);
+
+  useEffect(() => {
+    if (activeTab === "bio" && lcu) {
+      refreshAvailability();
+    }
+  }, [activeTab, lcu]);
 
   if (!appReady) {
     return (
@@ -358,6 +428,36 @@ function App() {
               </div>
               <button className="primary-btn" onClick={handleUpdateBio} disabled={!lcu || loading || !bio.trim()} style={{ width: '100%', marginTop: '20px' }}>APPLY</button>
               {!lcu && <p style={{ color: '#ff3232', fontSize: '0.8rem', marginTop: '15px', textAlign: 'center' }}>⚠ Start League of Legends to enable this feature.</p>}
+
+              {lcu && (
+                <div style={{ marginTop: '25px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Chat Availability</span>
+                    <span className={`availability-pill ${availability}`}>
+                      <span className="availability-dot"></span>
+                      {availability.toUpperCase()}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <select className="availability-select" value={availability} onChange={(e) => setAvailability(e.target.value)} style={{ flex: 2 }}>
+                      {[
+                        { value: "chat", label: "ONLINE" },
+                        { value: "away", label: "AWAY" },
+                        { value: "mobile", label: "MOBILE" },
+                        { value: "offline", label: "OFFLINE" }
+                      ].map(state => (
+                        <option key={state.value} value={state.value}>{state.label}</option>
+                      ))}
+                    </select>
+                    <button className="primary-btn availability-apply" onClick={() => applyAvailability()} disabled={!lcu || loading} style={{ flex: 1 }}>
+                      APPLY
+                    </button>
+                  </div>
+                  <p style={{ margin: '8px 0 0 0', fontSize: '0.55rem', color: 'var(--text-secondary)' }}>
+                    Select a status and apply it to the League chat.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -573,6 +673,7 @@ function App() {
             </div>
           </div>
         )}
+
       </main>
 
       <footer className="status-bar">
