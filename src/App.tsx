@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useDeferredValue } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { getVersion } from "@tauri-apps/api/app";
 import { enable, disable, isEnabled } from "@tauri-apps/plugin-autostart";
@@ -54,6 +54,8 @@ function App() {
   const [ddragonVersion, setDdragonVersion] = useState("14.3.1");
   const [visibleIconsCount, setVisibleIconsCount] = useState(100);
   const gridRef = useRef<HTMLDivElement>(null);
+  const toastTimerRef = useRef<number | undefined>(undefined);
+  const deferredSearchTerm = useDeferredValue(iconSearchTerm);
 
   // Track previous connection state to detect changes
   const prevLcuRef = useRef<LcuInfo | null>(null);
@@ -63,48 +65,76 @@ function App() {
     setLogs(prev => [{ time: timestamp, msg }, ...prev].slice(0, 50));
   };
 
+  const showToast = (text: string, type: string) => {
+    setMessage({ text, type });
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => {
+      setMessage({ text: "", type: "" });
+    }, 3000);
+  };
+
   useEffect(() => {
+    let active = true;
+    const controller = new AbortController();
+
     const init = async () => {
       try {
-        const v = await getVersion();
+        const [v, autostart, tray] = await Promise.all([
+          getVersion(),
+          isEnabled(),
+          invoke<boolean>("get_minimize_to_tray").catch(() => true)
+        ]);
+        if (!active) return;
         setClientVersion(v);
+        setIsAutostartEnabled(autostart);
+        setMinimizeToTray(tray);
 
-        const resV = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
+        const resV = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
+          signal: controller.signal
+        });
+        if (!resV.ok) throw new Error("Failed to load Data Dragon versions");
         const versions = await resV.json();
         const latest = versions[0];
+        if (!active) return;
         setDdragonVersion(latest);
 
-        const resI = await fetch(`https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/profileicon.json`);
+        const resI = await fetch(`https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/profileicon.json`, {
+          signal: controller.signal
+        });
+        if (!resI.ok) throw new Error("Failed to load profile icons");
         const data = await resI.json();
         const icons = Object.values(data.data).map((icon: any) => ({
           id: parseInt(icon.id),
           name: icon.name || `Icon ${icon.id}`
         }));
+        if (!active) return;
         setAllIcons(icons);
 
-        const autostart = await isEnabled();
-        setIsAutostartEnabled(autostart);
-
-        const tray = await invoke<boolean>("get_minimize_to_tray").catch(() => true);
-        setMinimizeToTray(tray);
-
         // Fetch latest version from GitHub
-        fetch(`https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json?t=${Date.now()}`)
-          .then(res => res.json())
+        fetch(`https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json?t=${Date.now()}`, {
+          signal: controller.signal
+        })
+          .then(res => res.ok ? res.json() : Promise.reject(new Error("Failed to load updater.json")))
           .then(updateData => {
-            setLatestVersion(updateData.version);
+            if (active) setLatestVersion(updateData.version);
           })
           .catch(() => { });
 
         setAppReady(true);
         addLog(`Application ready. v${v}`);
       } catch (err) {
+        if (!active) return;
         setAppReady(true);
         addLog(`Init Error: ${err}`);
       }
     };
 
     init();
+    return () => {
+      active = false;
+      controller.abort();
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    };
   }, []);
 
   const checkConnection = async () => {
@@ -138,10 +168,9 @@ function App() {
     try {
       await invoke("update_bio", { port: lcu.port, token: lcu.token, newBio: bio });
       addLog(`Bio updated: "${bio}"`);
-      setMessage({ text: "Bio Updated!", type: "success" });
-      setTimeout(() => setMessage({ text: "", type: "" }), 3000);
+      showToast("Bio Updated!", "success");
     } catch (err) {
-      setMessage({ text: "Failed to update bio", type: "error" });
+      showToast("Failed to update bio", "error");
     } finally { setLoading(false); }
   };
 
@@ -157,13 +186,17 @@ function App() {
   };
 
   const filteredIcons = useMemo(() => {
-    const term = iconSearchTerm.trim().toLowerCase();
+    const term = deferredSearchTerm.trim().toLowerCase();
     if (!term) return allIcons;
     return allIcons.filter(icon =>
       icon.name.toLowerCase().includes(term) ||
       icon.id.toString().includes(term)
     );
-  }, [allIcons, iconSearchTerm]);
+  }, [allIcons, deferredSearchTerm]);
+
+  const visibleIcons = useMemo(() => {
+    return filteredIcons.slice(0, visibleIconsCount);
+  }, [filteredIcons, visibleIconsCount]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -177,7 +210,7 @@ function App() {
   useEffect(() => {
     setVisibleIconsCount(100);
     if (gridRef.current) gridRef.current.scrollTop = 0;
-  }, [iconSearchTerm]);
+  }, [deferredSearchTerm]);
 
   if (!appReady) {
     return (
@@ -308,9 +341,9 @@ function App() {
                     body: { lol: { rankedLeagueTier: soloTier, rankedLeagueDivision: soloDiv, rankedLeagueQueue: "RANKED_SOLO_5x5" } },
                     port: lcu.port, token: lcu.token
                   });
-                  setMessage({ text: "Rank Applied!", type: "success" });
+                  showToast("Rank Applied!", "success");
                   addLog(`Rank override applied: ${soloTier} ${soloDiv}`);
-                } catch (err) { setMessage({ text: "Error", type: "error" }); }
+                } catch (err) { showToast("Error", "error"); }
                 finally { setLoading(false); }
               }}>APPLY</button>
             </div>
@@ -343,7 +376,7 @@ function App() {
                   gap: '12px', maxHeight: '400px', overflowY: 'auto', paddingRight: '10px'
                 }}
               >
-                {filteredIcons.slice(0, visibleIconsCount).map((icon) => (
+                {visibleIcons.map((icon) => (
                   <div
                     key={icon.id}
                     className={`icon-item ${selectedIcon === icon.id ? 'selected' : ''}`}
@@ -390,11 +423,10 @@ function App() {
                     });
 
                     addLog(`Icon ID ${id} applied (Force sync).`);
-                    setMessage({ text: "Icon Applied!", type: "success" });
-                    setTimeout(() => setMessage({ text: "", type: "" }), 3000);
+                    showToast("Icon Applied!", "success");
                   } catch (err) {
                     addLog(`Icon Error: ${err}`);
-                    setMessage({ text: "Failed to apply icon", type: "error" });
+                    showToast("Failed to apply icon", "error");
                   } finally { setLoading(false); }
                 }}
                 disabled={!lcu || loading || selectedIcon === null}

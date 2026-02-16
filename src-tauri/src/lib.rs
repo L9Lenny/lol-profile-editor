@@ -11,6 +11,7 @@ use tauri::{
 use std::sync::Mutex;
 use std::fs;
 use std::path::PathBuf;
+use std::time::Duration;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -70,6 +71,13 @@ async fn get_lcu_connection() -> Result<lcu::LcuInfo, String> {
     lcu::find_lcu_info().ok_or_else(|| "League of Legends is not running or lockfile not found".to_string())
 }
 
+fn is_allowed_lcu_request(method: &str, endpoint: &str) -> bool {
+    matches!(
+        (method, endpoint),
+        ("PUT", "/lol-chat/v1/me") | ("PUT", "/lol-summoner/v1/current-summoner/icon")
+    )
+}
+
 #[tauri::command]
 async fn lcu_request(
     method: String,
@@ -78,12 +86,26 @@ async fn lcu_request(
     port: String,
     token: String
 ) -> Result<serde_json::Value, String> {
+    let method = method.trim().to_uppercase();
+    let endpoint = endpoint.trim().to_string();
+    if endpoint.is_empty() || !endpoint.starts_with('/') || endpoint.contains("..") {
+        return Err("Invalid endpoint".to_string());
+    }
+    if token.trim().is_empty() {
+        return Err("Missing token".to_string());
+    }
+    let port_num = port.parse::<u16>().map_err(|_| "Invalid port".to_string())?;
+    if !is_allowed_lcu_request(&method, &endpoint) {
+        return Err("Endpoint not allowed".to_string());
+    }
+
     let client = reqwest::Client::builder()
         .danger_accept_invalid_certs(true)
+        .timeout(Duration::from_secs(10))
         .build()
         .map_err(|e| e.to_string())?;
 
-    let url = format!("https://127.0.0.1:{}{}", port, endpoint);
+    let url = format!("https://127.0.0.1:{}{}", port_num, endpoint);
     let auth = lcu::get_auth_header(&token);
 
     let mut request = match method.as_str() {
