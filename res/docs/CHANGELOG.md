@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.6] - 2026-02-19
 
+### Added
+- **Security CI**: Added automated VirusTotal scanning workflow for release assets (`.github/workflows/virustotal-report.yml`).
+- **Security Report**: Added versioned report output at `res/docs/SECURITY_REPORT.md`, automatically updated by CI.
+
 ### Changed
+- **Documentation (README)**: Reworked structure with quicker onboarding, trust-focused sections, security links, and improved markdown presentation.
 - **Dependencies (Dependabot)**: Bumped `lucide-react` from 0.574.0 to 0.575.0.
 
 ## [1.3.5] - 2026-02-17
