@@ -1,6 +1,6 @@
 # 🏆 League Profile Tool
 
-A professional-grade, premium tool built with **Tauri v2** and **React** for seamless League of Legends profile customization via the LCU (League Client Update) API.
+A desktop tool built with **Tauri v2** and **React** for League of Legends profile customization through the LCU (League Client Update) API.
 
 <p align="center">
 
@@ -30,110 +30,103 @@ A professional-grade, premium tool built with **Tauri v2** and **React** for sea
 
 </p>
 
-
 ---
 
 ![League Profile Tool Demo](res/docs/img/demo.png)
 
-## ✨ Features
+> **Tip:** Fast links: [Download](https://github.com/L9Lenny/lol-profile-editor/releases) • [Security Report](res/docs/SECURITY_REPORT.md) • [Changelog](res/docs/CHANGELOG.md)
 
-### 🛠️ Core Functionality
-- **🏆 Rank Customization**: Modify your visible Solo/Duo rank from Iron to Challenger with live preview
-- **🖼️ Icon Library**: Access to 6,000+ profile icons from Data Dragon with smart search and HD previews
-- **💬 Profile Bio Management**: Update your chat status and biographical information in real-time
-- **🟢 Status Control**: Set your LCU availability (Online, Away, Mobile, Offline) directly from the Bio tab
-- **🗂️ Log Export**: Save your in-app logs to a file for troubleshooting
-- **📊 Live Preview**: See changes before applying them to your profile
+| 🚀 Start Here | 🔗 Link |
+|---|---|
+| Latest Release | [GitHub Releases](https://github.com/L9Lenny/lol-profile-editor/releases) |
+| CI Workflows | [GitHub Actions](https://github.com/L9Lenny/lol-profile-editor/actions) |
+| Security Report | [`res/docs/SECURITY_REPORT.md`](res/docs/SECURITY_REPORT.md) |
 
-### 🎨 Premium Interface
-- **Hextech Glass UI**: Borderless design with holographic grids and gold-trim glassmorphism
-- **Smooth Animations**: Polished transitions and micro-interactions throughout
-- **Dark Theme**: Eye-friendly interface inspired by the official League client
-- **Responsive Layout**: Optimized for different screen sizes
+## ✨ What You Can Do
 
-### ⚡ Advanced Features
-- **Smart LCU Sync**: Automatic discovery and connection to League Client (no manual configuration)
-- **Technical Console**: Built-in logging system for monitoring API interactions
-- **Minimize to Tray**: Keep the tool running in the background
-- **Auto-Launch**: Start automatically with Windows
-- **Auto-Updates**: One-click update system with secure signature verification
-- **Security First**: Continuous vulnerability scanning and code quality monitoring
+- Customize visible **Solo/Duo rank** with live preview.
+- Browse and apply **6,000+ profile icons** from Data Dragon.
+- Edit **bio/chat status** directly from the app.
+- Set LCU presence (**Online, Away, Mobile, Offline**) from the Bio tab.
+- Export internal logs for troubleshooting.
+- Use auto-update with signed update artifacts.
 
-## 🚀 Getting Started
+## ⚡ Quick Start (Users)
+
+1. Download the latest build from [Releases](https://github.com/L9Lenny/lol-profile-editor/releases).
+2. Start League Client.
+3. Open League Profile Tool.
+4. Apply changes from the app UI.
+
+## 🛠️ Development
 
 ### Prerequisites
 
-- **Node.js**: `v20.x` or higher.
-- **Rust**: Latest stable version installed via [rustup](https://rustup.rs/).
-- **League of Legends**: The client must be installed and running for the tool to interact with your profile.
+- **Node.js**: `v20.x` or newer
+- **Rust**: latest stable via [rustup](https://rustup.rs/)
+- **League of Legends** client installed
 
-### Development
+### Run locally
 
 ```bash
-# Clone the repository
 git clone https://github.com/L9Lenny/lol-profile-editor.git
-
-# Install dependencies
-npm install
-
-# Run in development mode
+cd lol-profile-editor
+npm ci
 npm run tauri dev
 ```
 
-### Build for Production
+### Production build
 
 ```bash
 npm run tauri build
 ```
 
-## 🛠️ Built With
+## 🔒 Security and Trust
 
-- [Tauri v2](https://v2.tauri.app/) - High-performance desktop application framework.
-- [React](https://react.dev/) - Modern UI library.
-- [Lucide React](https://lucide.dev/) - Beautifully simple icons.
-- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling.
+This project uses automated checks and public reporting:
 
-## 🔒 Code Quality & Security
+- **CodeQL** for static security analysis
+- **SonarCloud** for quality and hotspot analysis
+- **Dependabot** for dependency updates
+- **VirusTotal release report** generated in CI and published at [`res/docs/SECURITY_REPORT.md`](res/docs/SECURITY_REPORT.md)
 
-This project maintains high standards through automated quality gates and security scanning:
+All checks run in GitHub Actions and are publicly visible from the repository Actions tab.
 
-- **🛡️ Snyk Security**: Continuous vulnerability scanning of dependencies to ensure your installation is secure.
-- **🧪 VirusTotal Release Report**: Every published release asset is scanned automatically, with results committed to [`res/docs/SECURITY_REPORT.md`](res/docs/SECURITY_REPORT.md).
-- **📊 SonarCloud**: Automated code quality analysis tracking code smells, bugs, and security hotspots.
-- **✅ PullApprove**: Structured code review process ensuring all changes are properly vetted.
-- **👥 All Contributors**: Recognition system for everyone who contributes to the project.
+<details>
+<summary><strong>🧪 How release verification works</strong></summary>
 
-All security scans and quality checks run automatically through GitHub Actions.
+1. CI builds release artifacts.
+2. Release assets are scanned via VirusTotal.
+3. Results are published to `res/docs/SECURITY_REPORT.md`.
+4. Users can cross-check release notes, hashes/signatures, and scan report.
 
-### VirusTotal Automation Setup
+</details>
 
-To enable automatic reports in CI/CD, add this repository secret:
+## 🧰 Built With
 
-- `VT_API_KEY`: VirusTotal API key used by `.github/workflows/virustotal-report.yml`.
+- [Tauri v2](https://v2.tauri.app/)
+- [React](https://react.dev/)
+- [Lucide React](https://lucide.dev/)
+- [Vite](https://vitejs.dev/)
+
+## 📚 Project Docs
+
+- [Changelog](res/docs/CHANGELOG.md)
+- [Contributing](res/docs/CONTRIBUTING.md)
+- [Code of Conduct](res/docs/CODE_OF_CONDUCT.md)
+- [Security Policy](res/docs/SECURITY.md)
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE).
 
-## 🤝 Contributing
+## ☕ Support
 
-Contributions are welcome! Check out our [Contributing Guidelines](res/docs/CONTRIBUTING.md) and [Code of Conduct](res/docs/CODE_OF_CONDUCT.md).
-
----
-
-## ☕ Support the Project
-
-If this tool helped you customize your profile and you enjoy the Hextech experience, consider supporting the development! Every coffee helps keep the engine running and the UI polished.
+If the project is useful to you, you can support it here:
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/profumato)
 
----
-
-## 📜 Changelog
-
-Stay up to date with the latest changes in the [CHANGELOG](res/docs/CHANGELOG.md).
-
-## ✨ Contributors
+## 👥 Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -151,7 +144,8 @@ Stay up to date with the latest changes in the [CHANGELOG](res/docs/CHANGELOG.md
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 
 ---
+
 *Disclaimer: This tool is not affiliated with, endorsed by, or integrated with Riot Games in any official capacity.*
