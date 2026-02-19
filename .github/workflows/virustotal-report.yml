@@ -1,0 +1,168 @@
+name: virustotal-report
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to scan (example: v1.2.3)"
+        required: false
+        type: string
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      VT_API_KEY: ${{ secrets.VT_API_KEY }}
+      REPOSITORY: ${{ github.repository }}
+      EVENT_TAG: ${{ github.event.release.tag_name }}
+      INPUT_TAG: ${{ inputs.tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Validate configuration
+        run: |
+          set -euo pipefail
+          if [ -z "${VT_API_KEY:-}" ]; then
+            echo "Missing required secret: VT_API_KEY"
+            exit 1
+          fi
+
+      - name: Resolve release tag
+        id: tag
+        run: |
+          set -euo pipefail
+          TAG="${INPUT_TAG:-}"
+          if [ -z "$TAG" ]; then
+            TAG="${EVENT_TAG:-}"
+          fi
+          if [ -z "$TAG" ]; then
+            echo "Unable to resolve release tag."
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Collect release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          set -euo pipefail
+          API_URL="https://api.github.com/repos/$REPOSITORY/releases/tags/$TAG"
+          curl -sSfL \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "$API_URL" > release.json
+
+          jq -r '.name // empty' release.json > release_name.txt
+          jq -r '.published_at // empty' release.json > release_date.txt
+
+          jq -r '
+            .assets[]
+            | select((.name | test("\\.(exe|msi|zip|dmg|pkg|appimage|deb|rpm|tar\\.gz)$"; "i")))
+            | [.name, .browser_download_url]
+            | @tsv
+          ' release.json > assets.tsv
+
+          if [ ! -s assets.tsv ]; then
+            echo "No scan-compatible assets found in release $TAG."
+            exit 1
+          fi
+
+      - name: Scan assets with VirusTotal
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          {
+            echo "# Security Report"
+            echo
+            echo "- Repository: \`$REPOSITORY\`"
+            echo "- Release Tag: \`$TAG\`"
+            echo "- Release Name: $(cat release_name.txt)"
+            echo "- Published At: $(cat release_date.txt)"
+            echo "- Generated At (UTC): $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+            echo "- Source: [VirusTotal](https://www.virustotal.com/)"
+            echo
+            echo "## Asset Scan Results"
+            echo
+            echo "| Asset | Verdict | Malicious | Suspicious | Undetected | Harmless | Report |"
+            echo "|---|---:|---:|---:|---:|---:|---|"
+          } > res/docs/SECURITY_REPORT.md
+
+          while IFS=$'\t' read -r ASSET_NAME ASSET_URL; do
+            [ -z "$ASSET_NAME" ] && continue
+            [ -z "$ASSET_URL" ] && continue
+
+            SUBMIT_RESPONSE=$(curl -sSfL \
+              -X POST "https://www.virustotal.com/api/v3/urls" \
+              -H "x-apikey: $VT_API_KEY" \
+              --data-urlencode "url=$ASSET_URL")
+
+            ANALYSIS_ID=$(echo "$SUBMIT_RESPONSE" | jq -r '.data.id // empty')
+            if [ -z "$ANALYSIS_ID" ]; then
+              echo "| \`$ASSET_NAME\` | error | - | - | - | - | n/a |" >> res/docs/SECURITY_REPORT.md
+              continue
+            fi
+
+            ATTEMPTS=0
+            MAX_ATTEMPTS=20
+            STATS_JSON=""
+            while [ "$ATTEMPTS" -lt "$MAX_ATTEMPTS" ]; do
+              ATTEMPTS=$((ATTEMPTS + 1))
+              ANALYSIS_RESPONSE=$(curl -sSfL \
+                -H "x-apikey: $VT_API_KEY" \
+                "https://www.virustotal.com/api/v3/analyses/$ANALYSIS_ID")
+              ANALYSIS_STATUS=$(echo "$ANALYSIS_RESPONSE" | jq -r '.data.attributes.status // "queued"')
+              if [ "$ANALYSIS_STATUS" = "completed" ]; then
+                STATS_JSON=$(echo "$ANALYSIS_RESPONSE" | jq -c '.data.attributes.stats')
+                break
+              fi
+              sleep 15
+            done
+
+            if [ -z "$STATS_JSON" ]; then
+              echo "| \`$ASSET_NAME\` | timeout | - | - | - | - | n/a |" >> res/docs/SECURITY_REPORT.md
+              continue
+            fi
+
+            MALICIOUS=$(echo "$STATS_JSON" | jq -r '.malicious // 0')
+            SUSPICIOUS=$(echo "$STATS_JSON" | jq -r '.suspicious // 0')
+            UNDETECTED=$(echo "$STATS_JSON" | jq -r '.undetected // 0')
+            HARMLESS=$(echo "$STATS_JSON" | jq -r '.harmless // 0')
+
+            if [ "$MALICIOUS" -eq 0 ] && [ "$SUSPICIOUS" -eq 0 ]; then
+              VERDICT="clean"
+            else
+              VERDICT="attention"
+            fi
+
+            URL_ID=$(printf "%s" "$ASSET_URL" | openssl base64 -A | tr '+/' '-_' | tr -d '=')
+            REPORT_LINK="https://www.virustotal.com/gui/url/$URL_ID/detection"
+
+            echo "| \`$ASSET_NAME\` | $VERDICT | $MALICIOUS | $SUSPICIOUS | $UNDETECTED | $HARMLESS | [open]($REPORT_LINK) |" >> res/docs/SECURITY_REPORT.md
+          done < assets.tsv
+
+          {
+            echo
+            echo "## Notes"
+            echo
+            echo "- This report is generated automatically by \`.github/workflows/virustotal-report.yml\`."
+            echo "- VirusTotal verdicts should be interpreted together with code signing and release checksums."
+          } >> res/docs/SECURITY_REPORT.md
+
+      - name: Commit and push report
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add res/docs/SECURITY_REPORT.md
+          git diff --staged --quiet || git commit -m "docs: update VirusTotal report for ${{ steps.tag.outputs.tag }}"
+          git push

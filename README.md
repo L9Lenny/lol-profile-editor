@@ -12,6 +12,10 @@ A professional-grade, premium tool built with **Tauri v2** and **React** for sea
   <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/lol-profile-editor/release.yml?style=flat-square&logo=githubactions&logoColor=white&color=238636" />
 </a>
 
+<a href="https://github.com/L9Lenny/lol-profile-editor/actions/workflows/virustotal-report.yml">
+  <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/lol-profile-editor/virustotal-report.yml?style=flat-square&logo=virustotal&logoColor=white&label=VirusTotal&color=0b65d8" />
+</a>
+
 <a href="https://sonarcloud.io/summary/new_code?id=L9Lenny_lol-profile-editor">
   <img src="https://img.shields.io/badge/Code%20Quality-SonarCloud-F3702A?style=flat-square&logo=sonarcloud&logoColor=white" />
 </a>
@@ -94,11 +98,18 @@ npm run tauri build
 This project maintains high standards through automated quality gates and security scanning:
 
 - **🛡️ Snyk Security**: Continuous vulnerability scanning of dependencies to ensure your installation is secure.
+- **🧪 VirusTotal Release Report**: Every published release asset is scanned automatically, with results committed to [`res/docs/SECURITY_REPORT.md`](res/docs/SECURITY_REPORT.md).
 - **📊 SonarCloud**: Automated code quality analysis tracking code smells, bugs, and security hotspots.
 - **✅ PullApprove**: Structured code review process ensuring all changes are properly vetted.
 - **👥 All Contributors**: Recognition system for everyone who contributes to the project.
 
-All security scans and quality checks run automatically on every commit and pull request.
+All security scans and quality checks run automatically through GitHub Actions.
+
+### VirusTotal Automation Setup
+
+To enable automatic reports in CI/CD, add this repository secret:
+
+- `VT_API_KEY`: VirusTotal API key used by `.github/workflows/virustotal-report.yml`.
 
 ## 📄 License
 
