@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "v1.3.6"
+        description: "v1.3.7"
         required: false
         type: string
 
