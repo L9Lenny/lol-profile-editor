@@ -1,19 +1,19 @@
 {
-    "version": "1.3.6",
-    "notes": "## [1.3.6] - 2026-02-19  ### Added - **Security CI**: Added automated VirusTotal scanning workflow for release assets (`.github/workflows/virustotal-report.yml`). - **Security Report**: Added versioned report output at `res/docs/SECURITY_REPORT.md`, automatically updated by CI.  ### Changed - **Documentation (README)**: Reworked structure with quicker onboarding, trust-focused sections, security links, and improved markdown presentation. - **Dependencies (Dependabot)**: Bumped `lucide-react` from 0.574.0 to 0.575.0.  ",
-    "pub_date": "2026-02-19T19:14:29Z",
+    "version": "1.3.7",
+    "notes": "## [1.3.7] - 2026-02-19  ### Fixed - **Release CI/CD**: Added token fallback (`RELEASE_PAT` -> `GITHUB_TOKEN`) in `.github/workflows/release.yml` to avoid `Resource not accessible by integration` when creating GitHub releases.  ",
+    "pub_date": "2026-02-19T19:58:37Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.6/League.Profile.Tool_1.3.6_x64-setup.exe"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.7/League.Profile.Tool_1.3.7_x64-setup.exe"
         },
         "darwin-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.6/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.7/League.Profile.Tool_aarch64.app.tar.gz"
         },
         "darwin-aarch64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.6/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.3.7/League.Profile.Tool_aarch64.app.tar.gz"
         }
     }
 }
