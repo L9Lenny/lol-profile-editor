@@ -6,10 +6,13 @@ on:
       - 'v*'
       - '[0-9]*'
 
+permissions:
+  contents: write
+
 jobs:
   publish-tauri:
-    permissions:
-      contents: write
+    env:
+      RELEASE_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -63,7 +66,7 @@ jobs:
 
       - uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.RELEASE_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
@@ -77,13 +80,13 @@ jobs:
   update-updater-json:
     needs: publish-tauri
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    env:
+      RELEASE_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v6
         with:
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.RELEASE_TOKEN }}
           persist-credentials: true
 
       - name: Extract version from tag
@@ -96,7 +99,7 @@ jobs:
 
       - name: Download signatures from release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.RELEASE_TOKEN }}
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           TAG="${{ steps.version.outputs.tag }}"
@@ -149,7 +152,7 @@ jobs:
 
       - name: Commit and push updated updater.json
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.RELEASE_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
