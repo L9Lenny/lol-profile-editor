@@ -12,7 +12,7 @@ permissions:
 jobs:
   publish-tauri:
     env:
-      RELEASE_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
+      RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -64,6 +64,14 @@ jobs:
           echo "$CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Validate release token
+        run: |
+          set -euo pipefail
+          if [ -z "${RELEASE_TOKEN:-}" ]; then
+            echo "Missing required secret: RELEASE_TOKEN"
+            exit 1
+          fi
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ env.RELEASE_TOKEN }}
@@ -81,7 +89,7 @@ jobs:
     needs: publish-tauri
     runs-on: ubuntu-latest
     env:
-      RELEASE_TOKEN: ${{ secrets.RELEASE_PAT || secrets.GITHUB_TOKEN }}
+      RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
     steps:
       - uses: actions/checkout@v6
         with:
