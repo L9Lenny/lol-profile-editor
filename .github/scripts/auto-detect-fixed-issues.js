@@ -74,10 +74,10 @@ function makeRequest(url, options = {}) {
  */
 async function getSonarQubeIssues() {
   const url = `https://sonarcloud.io/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&organization=${SONAR_ORGANIZATION}&statuses=OPEN&ps=500`;
-  
+
   console.log(`📊 Fetching SonarQube issues...`);
   const response = await makeRequest(url);
-  
+
   return response.issues || [];
 }
 
@@ -87,10 +87,10 @@ async function getSonarQubeIssues() {
 async function getGitHubIssues() {
   const [owner, repo] = GITHUB_REPO.split('/');
   const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=open&labels=sonarqube&per_page=100`;
-  
+
   console.log(`📋 Fetching GitHub issues...`);
   const response = await makeRequest(url);
-  
+
   return response || [];
 }
 
@@ -99,7 +99,8 @@ async function getGitHubIssues() {
  * Pattern: "[SEVERITY] message (SONARKEY)"
  */
 function extractSonarKey(title) {
-  const match = title.match(/\(([A-Za-z0-9\-_]+)\)$/);
+  // Matches any sequence inside the last pair of parentheses
+  const match = title.match(/\(([^()]+)\)$/);
   return match ? match[1] : null;
 }
 
@@ -108,7 +109,7 @@ function extractSonarKey(title) {
  */
 async function addCommentToIssue(issueNumber, comment) {
   const [owner, repo] = GITHUB_REPO.split('/');
-  
+
   return await makeRequest(
     `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`,
     {
@@ -124,7 +125,7 @@ async function addCommentToIssue(issueNumber, comment) {
  */
 async function closeIssue(issueNumber) {
   const [owner, repo] = GITHUB_REPO.split('/');
-  
+
   return await makeRequest(
     `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}`,
     {
@@ -166,7 +167,7 @@ async function main() {
 
     // Create maps for comparison
     const sonarKeys = new Set(sonarIssues.map(i => i.key));
-    
+
     console.log(`🔍 Comparing issues...\n`);
 
     let closed = 0;
@@ -175,7 +176,7 @@ async function main() {
     // Check each GitHub issue
     for (const githubIssue of githubIssues) {
       const sonarKey = extractSonarKey(githubIssue.title);
-      
+
       if (!sonarKey) {
         console.log(`⏭️  Issue #${githubIssue.number}: Could not extract SonarQube key`);
         skipped++;

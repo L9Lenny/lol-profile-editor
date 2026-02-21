@@ -55,7 +55,7 @@ function makeRequest(url, options = {}) {
     }
 
     if (GITHUB_TOKEN && (hostname === 'github.com' || hostname.endsWith('.github.com'))) {
-      defaultHeaders['Authorization'] = `token ${GITHUB_TOKEN}`;
+      defaultHeaders['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
     } else if (SONAR_TOKEN && (hostname === 'sonarcloud.io' || hostname.endsWith('.sonarcloud.io'))) {
       defaultHeaders['Authorization'] = `Bearer ${SONAR_TOKEN}`;
     }
@@ -92,9 +92,9 @@ function makeRequest(url, options = {}) {
  */
 async function fetchSonarQubeIssues() {
   const url = `${SONAR_HOST}/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&organization=${SONAR_ORGANIZATION}&issueSeverities=BLOCKER,CRITICAL,MAJOR,MINOR&types=BUG,VULNERABILITY,CODE_SMELL&statuses=OPEN&ps=500`;
-  
+
   console.log(`📊 Fetching issues from SonarQube: ${url}`);
-  
+
   try {
     const response = await makeRequest(url);
     return response.issues || [];
@@ -109,7 +109,7 @@ async function fetchSonarQubeIssues() {
  */
 async function ensureLabel(name, color = 'f29513', description = '') {
   const url = `https://api.github.com/repos/${GITHUB_REPO}/labels`;
-  
+
   // Try to create the label
   const options = {
     method: 'POST',
@@ -141,7 +141,7 @@ async function ensureLabel(name, color = 'f29513', description = '') {
  */
 async function ensureAllLabels() {
   console.log('🏷️  Ensuring GitHub labels exist...\n');
-  
+
   const labelConfigs = [
     { name: 'sonarqube', color: '0052cc', description: 'Issues created from SonarQube analysis' },
     { name: 'blocker', color: 'd73a49', description: 'Blocker severity issue' },
@@ -157,7 +157,7 @@ async function ensureAllLabels() {
   for (const label of labelConfigs) {
     await ensureLabel(label.name, label.color, label.description);
   }
-  
+
   console.log('✅ Labels ready!\n');
 }
 
@@ -166,7 +166,7 @@ async function ensureAllLabels() {
  */
 async function getExistingIssues() {
   const url = `https://api.github.com/repos/${GITHUB_REPO}/issues?state=open&labels=sonarqube&per_page=100`;
-  
+
   try {
     const response = await makeRequest(url);
     return response || [];
@@ -181,7 +181,7 @@ async function getExistingIssues() {
  */
 async function createGitHubIssue(title, body, issueLabels) {
   const url = `https://api.github.com/repos/${GITHUB_REPO}/issues`;
-  
+
   const options = {
     method: 'POST',
     headers: {
