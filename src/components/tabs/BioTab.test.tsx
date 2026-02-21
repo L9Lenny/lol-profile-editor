@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import BioTab from './BioTab';
+import { invoke } from "@tauri-apps/api/core";
 
 // Mock Tauri invoke
 vi.mock('@tauri-apps/api/core', () => ({
@@ -19,6 +20,7 @@ describe('BioTab', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        vi.mocked(invoke).mockResolvedValue({});
     });
 
     it('should render profile bio card', async () => {
@@ -43,14 +45,16 @@ describe('BioTab', () => {
         });
 
         expect(props.setLoading).toHaveBeenCalledWith(true);
+        expect(invoke).toHaveBeenCalledWith("update_bio", expect.anything());
     });
 
     it('should handle update failure', async () => {
         const props = createProps();
-        props.lcuRequest.mockImplementation((method, endpoint) => {
-            if (method === 'GET') return Promise.resolve({ availability: 'away' });
-            return Promise.reject(new Error('LCU Error'));
-        });
+        // The first call to lcuRequest is GET /me in refreshAvailability
+        props.lcuRequest.mockResolvedValue({ availability: 'away' });
+
+        // Mock invoke to fail for the bio update
+        vi.mocked(invoke).mockRejectedValueOnce(new Error('LCU Error'));
 
         render(<BioTab {...props} />);
 
@@ -82,5 +86,6 @@ describe('BioTab', () => {
         });
 
         expect(props.setLoading).toHaveBeenCalledWith(true);
+        expect(props.lcuRequest).toHaveBeenCalledWith("PUT", "/lol-chat/v1/me", expect.anything());
     });
 });

@@ -20,8 +20,19 @@ describe('useLcu', () => {
     });
 
     it('should initialize with null lcu', async () => {
-        const { result } = renderHook(() => useLcu(mockAddLog));
+        // Mock a pending promise to avoid immediate state update and act warning
+        let resolveConn: any;
+        const connPromise = new Promise(resolve => { resolveConn = resolve; });
+        vi.mocked(invoke).mockReturnValue(connPromise as any);
+
+        const { result, unmount } = renderHook(() => useLcu(mockAddLog));
         expect(result.current.lcu).toBeNull();
+
+        // Cleanup
+        await act(async () => {
+            resolveConn(null);
+            unmount();
+        });
     });
 
     it('should detect LCU connection', async () => {
@@ -47,7 +58,6 @@ describe('useLcu', () => {
         const { result } = renderHook(() => useLcu(mockAddLog));
 
         // Trigger initial check
-        // Since it's in useEffect and we have fake timers, we might need to advance
         await act(async () => {
             vi.advanceTimersByTime(0);
         });
