@@ -32,6 +32,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                         <p className="settings-desc">Launch the app automatically when your PC starts.</p>
                     </div>
                     <label className="switch">
+                        <span className="sr-only">Toggle Auto-launch</span>
                         <input type="checkbox" checked={isAutostartEnabled} readOnly />
                         <span className="slider"></span>
                     </label>
@@ -43,6 +44,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                         <p className="settings-desc">Close button will minimize the app to the system tray.</p>
                     </div>
                     <label className="switch">
+                        <span className="sr-only">Toggle Minimize to Tray</span>
                         <input type="checkbox" checked={minimizeToTray} readOnly />
                         <span className="slider"></span>
                     </label>

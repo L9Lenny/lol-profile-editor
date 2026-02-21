@@ -78,8 +78,9 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
             <div className="card">
                 <h3 className="card-title">Profile Bio</h3>
                 <div className="input-group">
-                    <label>New Status Message</label>
+                    <label htmlFor="bio-input">New Status Message</label>
                     <textarea
+                        id="bio-input"
                         placeholder="Tell your friends what you're up to..."
                         value={bio}
                         onChange={(e) => setBio(e.target.value)}
@@ -93,14 +94,14 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
                 {lcu && (
                     <div style={{ marginTop: '25px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                            <span style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Chat Availability</span>
+                            <label htmlFor="availability-select" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Chat Availability</label>
                             <span className={`availability-pill ${availability}`}>
                                 <span className="availability-dot"></span>
                                 {availability.toUpperCase()}
                             </span>
                         </div>
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <select className="availability-select" value={availability} onChange={(e) => setAvailability(e.target.value)} style={{ flex: 2 }}>
+                            <select id="availability-select" className="availability-select" value={availability} onChange={(e) => setAvailability(e.target.value)} style={{ flex: 2 }}>
                                 {[
                                     { value: "chat", label: "ONLINE" },
                                     { value: "away", label: "AWAY" },

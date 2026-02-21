@@ -40,9 +40,9 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, loading, setLoading, showToast, 
                 <h3 className="card-title">Rank Override</h3>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '25px' }}>Modify your visible rank in the chat and hover cards.</p>
                 <div className="input-group">
-                    <label>Solo/Duo Ranking</label>
+                    <label htmlFor="solo-tier">Solo/Duo Ranking</label>
                     <div style={{ display: 'flex', gap: '10px' }}>
-                        <select value={soloTier} onChange={(e) => setSoloTier(e.target.value)} style={{ flex: 2 }}>
+                        <select id="solo-tier" value={soloTier} onChange={(e) => setSoloTier(e.target.value)} style={{ flex: 2 }}>
                             {["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"].map(r => <option key={r} value={r}>{r}</option>)}
                         </select>
                         <select value={soloDiv} onChange={(e) => setSoloDiv(e.target.value)} style={{ flex: 1 }}>

@@ -112,16 +112,18 @@ const MusicTab: React.FC<MusicTabProps> = ({ lcu, musicBio, setMusicBio, showToa
 
                 <div className="music-form-grid">
                     <div className="input-group" style={{ margin: 0 }}>
-                        <label>Last.fm Username or Profile URL</label>
+                        <label htmlFor="lastfm-user">Last.fm Username or Profile URL</label>
                         <input
+                            id="lastfm-user"
                             value={musicBio.lastfmUsername}
                             onChange={(e) => setMusicBio(prev => ({ ...prev, lastfmUsername: normalizeLastFmUsername(e.target.value) }))}
                             placeholder="last.fm/user/yourname or yourname"
                         />
                     </div>
                     <div className="input-group" style={{ margin: 0 }}>
-                        <label>Last.fm API Key</label>
+                        <label htmlFor="lastfm-key">Last.fm API Key</label>
                         <input
+                            id="lastfm-key"
                             value={musicBio.lastfmApiKey}
                             onChange={(e) => setMusicBio(prev => ({ ...prev, lastfmApiKey: e.target.value.trim() }))}
                             placeholder="paste your Last.fm API key"
@@ -131,8 +133,9 @@ const MusicTab: React.FC<MusicTabProps> = ({ lcu, musicBio, setMusicBio, showToa
 
                 <div className="music-form-grid" style={{ marginTop: '12px' }}>
                     <div className="input-group" style={{ margin: 0 }}>
-                        <label>Bio Template</label>
+                        <label htmlFor="bio-template">Bio Template</label>
                         <input
+                            id="bio-template"
                             value={musicBio.template}
                             onChange={(e) => setMusicBio(prev => ({ ...prev, template: e.target.value }))}
                             placeholder="Listening to {title} - {artist}"
@@ -140,8 +143,9 @@ const MusicTab: React.FC<MusicTabProps> = ({ lcu, musicBio, setMusicBio, showToa
                         <p className="music-help">Use: {"{title}"} {"{artist}"} {"{album}"} {"{source}"}</p>
                     </div>
                     <div className="input-group" style={{ margin: 0 }}>
-                        <label>Idle Text</label>
+                        <label htmlFor="idle-text">Idle Text</label>
                         <input
+                            id="idle-text"
                             value={musicBio.idleText}
                             onChange={(e) => setMusicBio(prev => ({ ...prev, idleText: e.target.value }))}
                             placeholder={DEFAULT_IDLE_BIO}
@@ -151,8 +155,9 @@ const MusicTab: React.FC<MusicTabProps> = ({ lcu, musicBio, setMusicBio, showToa
 
                 <div className="music-actions-row">
                     <div className="input-group" style={{ margin: 0, minWidth: 170 }}>
-                        <label>Sync Interval (sec)</label>
+                        <label htmlFor="sync-interval">Sync Interval (sec)</label>
                         <input
+                            id="sync-interval"
                             type="number"
                             min={5}
                             max={120}
