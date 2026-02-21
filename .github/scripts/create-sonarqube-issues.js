@@ -10,8 +10,9 @@
  * - GITHUB_REPOSITORY: owner/repo format
  */
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
+import process from 'process';
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const SONAR_TOKEN = process.env.SONAR_TOKEN;
@@ -235,3 +236,4 @@ async function main() {
 }
 
 main();
+
