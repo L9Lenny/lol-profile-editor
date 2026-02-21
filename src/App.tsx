@@ -95,7 +95,8 @@ const buildBioFromTemplate = (template: string, track: NowPlayingTrack) => {
 const normalizeLastFmUsername = (value: string) => {
   const trimmed = value.trim();
   if (!trimmed) return "";
-  const match = trimmed.match(/last\.fm\/user\/([^/?#]+)/i);
+  const lastFmUsernameRegex = /last\.fm\/user\/([^/?#]+)/i;
+  const match = lastFmUsernameRegex.exec(trimmed);
   return match ? decodeURIComponent(match[1]) : trimmed;
 };
 

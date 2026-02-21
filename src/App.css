@@ -1,3 +1,22 @@
+/* Reset button default styles while preserving custom CSS */
+button.settings-row,
+button.feature-card,
+button.icon-item {
+  border: none;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  text-align: inherit;
+}
+
+button.settings-row:focus,
+button.feature-card:focus,
+button.icon-item:focus {
+  outline: none;
+}
+
 .tab-content {
   width: 100%;
   max-width: 800px;
