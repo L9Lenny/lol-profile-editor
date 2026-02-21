@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { save } from "@tauri-apps/plugin-dialog";
 
 export interface LogEntry {
+    id: string;
     time: string;
     msg: string;
 }
@@ -12,7 +13,8 @@ export function useLogs() {
 
     const addLog = useCallback((msg: string) => {
         const timestamp = new Date().toLocaleTimeString();
-        setLogs(prev => [{ time: timestamp, msg }, ...prev].slice(0, 50));
+        const id = crypto.randomUUID();
+        setLogs(prev => [{ id, time: timestamp, msg }, ...prev].slice(0, 50));
     }, []);
 
     const exportLogs = async (showToast: (text: string, type: string) => void) => {

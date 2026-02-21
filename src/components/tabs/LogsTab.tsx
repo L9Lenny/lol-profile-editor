@@ -20,8 +20,8 @@ const LogsTab: React.FC<LogsTabProps> = ({ logs, exportLogs, clearLogs, showToas
                     </div>
                 </div>
                 <div className="log-container" style={{ height: '400px', overflowY: 'auto' }}>
-                    {logs.map((log, i) => (
-                        <div key={i} className="log-entry">
+                    {logs.map((log) => (
+                        <div key={log.id} className="log-entry">
                             <span style={{ color: 'var(--hextech-gold-dark)', marginRight: '10px' }}>[{log.time}]</span>
                             {log.msg}
                         </div>
