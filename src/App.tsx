@@ -905,8 +905,13 @@ function App() {
                   });
                   showToast("Rank Applied!", "success");
                   addLog(`Rank override applied: ${soloTier} ${soloDiv}`);
-                } catch (err) { showToast("Error", "error"); }
-                finally { setLoading(false); }
+                } catch (err) {
+                  const errorMessage = err instanceof Error ? err.message : String(err);
+                  showToast(`Rank apply failed: ${errorMessage}`, "error");
+                  addLog(`Rank override failed: ${errorMessage}`);
+                } finally {
+                  setLoading(false);
+                }
               }}>APPLY</button>
             </div>
           </div>
