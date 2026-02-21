@@ -25,7 +25,7 @@ export function useLogs() {
         const lines = logs.map(log => `[${log.time}] ${log.msg}`);
         const content = lines.join("\n");
         try {
-            const defaultName = `league-profile-tool-logs-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.txt`;
+            const defaultName = `league-profile-tool-logs-${new Date().toISOString().slice(0, 19).replaceAll(/[:T]/g, "-")}.txt`;
             const path = await save({
                 defaultPath: defaultName,
                 filters: [{ name: "Text", extensions: ["txt"] }]
