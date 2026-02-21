@@ -30,9 +30,20 @@ function makeRequest(url, options = {}) {
   return new Promise((resolve, reject) => {
     const defaultHeaders = {
       'User-Agent': 'GitHub-Auto-Close-Issues/1.0',
-      'Accept': 'application/vnd.github+json',
-      'Authorization': `Bearer ${GITHUB_TOKEN}`
+      'Accept': 'application/vnd.github+json'
     };
+
+    let hostname = '';
+    try {
+      const parsedUrl = new URL(url);
+      hostname = parsedUrl.hostname;
+    } catch {
+      hostname = '';
+    }
+
+    if (GITHUB_TOKEN && (hostname === 'github.com' || hostname.endsWith('.github.com'))) {
+      defaultHeaders['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
+    }
 
     const requestOptions = {
       ...options,
@@ -66,14 +77,14 @@ function makeRequest(url, options = {}) {
  */
 function extractIssueNumbers(text) {
   const issues = new Set();
-  
+
   for (const pattern of ISSUE_PATTERNS) {
     let match;
     while ((match = pattern.exec(text)) !== null) {
       issues.add(parseInt(match[1]));
     }
   }
-  
+
   return Array.from(issues).sort((a, b) => a - b);
 }
 
@@ -82,13 +93,13 @@ function extractIssueNumbers(text) {
  */
 async function getPRDetails(prNumber) {
   const [owner, repo] = GITHUB_REPO.split('/');
-  
+
   const pr = await makeRequest(`https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`);
-  
+
   const commits = await makeRequest(
     `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/commits`
   );
-  
+
   return { pr, commits };
 }
 
@@ -97,7 +108,7 @@ async function getPRDetails(prNumber) {
  */
 async function getIssueDetails(issueNumber) {
   const [owner, repo] = GITHUB_REPO.split('/');
-  
+
   return await makeRequest(
     `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}`
   );
@@ -108,7 +119,7 @@ async function getIssueDetails(issueNumber) {
  */
 async function addCommentToIssue(issueNumber, comment) {
   const [owner, repo] = GITHUB_REPO.split('/');
-  
+
   return await makeRequest(
     `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`,
     {
@@ -124,7 +135,7 @@ async function addCommentToIssue(issueNumber, comment) {
  */
 async function closeIssue(issueNumber) {
   const [owner, repo] = GITHUB_REPO.split('/');
-  
+
   return await makeRequest(
     `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}`,
     {
@@ -158,7 +169,7 @@ async function main() {
     // Get PR details
     console.log(`📥 Fetching PR #${PR_NUMBER} details...`);
     const { pr, commits } = await getPRDetails(parseInt(PR_NUMBER));
-    
+
     console.log(`   - PR Title: ${pr.title}`);
     console.log(`   - PR URL: ${pr.html_url}`);
     console.log(`   - Commits: ${commits.length}\n`);
@@ -170,7 +181,7 @@ async function main() {
     }
 
     const issueNumbers = extractIssueNumbers(allText);
-    
+
     if (issueNumbers.length === 0) {
       console.log('ℹ️  No issues found in commit messages or PR body');
       console.log('\nSupported patterns:');

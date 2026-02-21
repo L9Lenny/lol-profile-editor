@@ -36,9 +36,17 @@ function makeRequest(url, options = {}) {
       'Accept': 'application/vnd.github+json'
     };
 
-    if (GITHUB_TOKEN && url.includes('github.com')) {
+    let hostname = '';
+    try {
+      const parsedUrl = new URL(url);
+      hostname = parsedUrl.hostname;
+    } catch {
+      hostname = '';
+    }
+
+    if (GITHUB_TOKEN && (hostname === 'github.com' || hostname.endsWith('.github.com'))) {
       defaultHeaders['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
-    } else if (SONAR_TOKEN && url.includes('sonarcloud.io')) {
+    } else if (SONAR_TOKEN && (hostname === 'sonarcloud.io' || hostname.endsWith('.sonarcloud.io'))) {
       defaultHeaders['Authorization'] = `Bearer ${SONAR_TOKEN}`;
     }
 
