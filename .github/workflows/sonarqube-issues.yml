@@ -38,3 +38,14 @@ jobs:
           SONAR_PROJECT_KEY: L9Lenny_lol-profile-editor
           SONAR_ORGANIZATION: l9lenny
         run: node .github/scripts/create-sonarqube-issues.js
+
+      - name: Auto-close resolved issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: L9Lenny_lol-profile-editor
+          SONAR_ORGANIZATION: l9lenny
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node .github/scripts/auto-detect-fixed-issues.js

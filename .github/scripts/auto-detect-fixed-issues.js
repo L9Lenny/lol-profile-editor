@@ -21,6 +21,11 @@ const GITHUB_REPO = process.env.GITHUB_REPOSITORY || 'L9Lenny/lol-profile-editor
 const SONAR_PROJECT_KEY = process.env.SONAR_PROJECT_KEY || 'L9Lenny_lol-profile-editor';
 const SONAR_ORGANIZATION = process.env.SONAR_ORGANIZATION || 'l9lenny';
 
+// PR information (optional, from GitHub Actions)
+const PR_NUMBER = process.env.PR_NUMBER || null;
+const PR_URL = process.env.PR_URL || null;
+const PR_TITLE = process.env.PR_TITLE || null;
+
 /**
  * Make HTTP request
  */
@@ -189,18 +194,30 @@ async function main() {
 
       try {
         // Add comment
-        const comment = `## ✅ Automatically Resolved
+        let commentBody = `## ✅ Automatically Resolved
 
 This issue has been automatically detected as resolved!
 
-**SonarQube Key**: \`${sonarKey}\`
+**SonarQube Key**: \`${sonarKey}\``;
+
+        // Add PR information if available
+        if (PR_NUMBER && PR_URL) {
+          commentBody += `
+
+**Fixed By**: [PR #${PR_NUMBER}](${PR_URL})`;
+          if (PR_TITLE) {
+            commentBody += ` - ${PR_TITLE}`;
+          }
+        }
+
+        commentBody += `
 
 The SonarQube analysis no longer shows this issue in the codebase, indicating it has been fixed.
 
 ---
 *This detection was automated by comparing SonarQube analysis results.*`;
 
-        await addCommentToIssue(githubIssue.number, comment);
+        await addCommentToIssue(githubIssue.number, commentBody);
         console.log(`   ✅ Comment added`);
 
         // Close the issue
