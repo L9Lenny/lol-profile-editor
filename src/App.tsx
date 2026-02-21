@@ -690,26 +690,26 @@ function App() {
               </div>
             </div>
             <div className="quick-start-grid">
-              <div className="feature-card" onClick={() => setActiveTab('bio')} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setActiveTab('bio')} role="button" tabIndex={0}>
+              <button type="button" className="feature-card" onClick={() => setActiveTab('bio')}>
                 <div className="feature-icon"><Layout size={24} /></div>
                 <div className="feature-body"><h3>Profile Bio</h3><p>Update status message and biography.</p></div>
                 <ChevronRight size={18} className="feature-arrow" />
-              </div>
-              <div className="feature-card" onClick={() => setActiveTab('music')} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setActiveTab('music')} role="button" tabIndex={0}>
+              </button>
+              <button type="button" className="feature-card" onClick={() => setActiveTab('music')}>
                 <div className="feature-icon"><Disc3 size={24} /></div>
                 <div className="feature-body"><h3>Music Sync</h3><p>Auto-update bio with your current track.</p></div>
                 <ChevronRight size={18} className="feature-arrow" />
-              </div>
-              <div className="feature-card" onClick={() => setActiveTab('rank')} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setActiveTab('rank')} role="button" tabIndex={0}>
+              </button>
+              <button type="button" className="feature-card" onClick={() => setActiveTab('rank')}>
                 <div className="feature-icon"><Trophy size={24} /></div>
                 <div className="feature-body"><h3>Rank Overrides</h3><p>Modify visible Solo/Duo rankings.</p></div>
                 <ChevronRight size={18} className="feature-arrow" />
-              </div>
-              <div className="feature-card" onClick={() => setActiveTab('icons')} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setActiveTab('icons')} role="button" tabIndex={0}>
+              </button>
+              <button type="button" className="feature-card" onClick={() => setActiveTab('icons')}>
                 <div className="feature-icon"><UserCircle size={24} /></div>
                 <div className="feature-body"><h3>Icon Swapper</h3><p>Equip hidden summoner icons instantly.</p></div>
                 <ChevronRight size={18} className="feature-arrow" />
-              </div>
+              </button>
             </div>
             <div className="home-footer">
               <span className="version-label">Application Build</span>
@@ -938,15 +938,13 @@ function App() {
                 }}
               >
                 {visibleIcons.map((icon) => (
-                  <div
+                  <button
                     key={icon.id}
+                    type="button"
                     className={`icon-item ${selectedIcon === icon.id ? 'selected' : ''}`}
                     onClick={() => {
                       setSelectedIcon(icon.id);
                     }}
-                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setSelectedIcon(icon.id)}
-                    role="button"
-                    tabIndex={0}
                     style={{
                       cursor: 'pointer', borderRadius: '10px', background: 'rgba(255,255,255,0.03)',
                       padding: '10px', textAlign: 'center', border: selectedIcon === icon.id ? '2px solid var(--hextech-gold)' : '2px solid transparent',
@@ -956,7 +954,7 @@ function App() {
                     <img src={`https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/img/profileicon/${icon.id}.png`} alt={icon.name} style={{ width: '100%', borderRadius: '6px', marginBottom: '8px' }} loading="lazy" />
                     <div style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{icon.name}</div>
                     <div style={{ fontSize: '0.5rem', opacity: 0.5 }}>ID: {icon.id}</div>
-                  </div>
+                  </button>
                 ))}
               </div>
 
@@ -1027,19 +1025,12 @@ function App() {
           <div className="tab-content fadeIn">
             <div className="card">
               <h3 className="card-title">Technical Settings</h3>
-              <div className="settings-row" onClick={async () => {
+              <button type="button" className="settings-row" onClick={async () => {
                 const newState = !isAutostartEnabled;
                 if (newState) await enable(); else await disable();
                 setIsAutostartEnabled(newState);
                 addLog(`Auto-launch ${newState ? 'enabled' : 'disabled'}.`);
-              }} onKeyDown={async (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  const newState = !isAutostartEnabled;
-                  if (newState) await enable(); else await disable();
-                  setIsAutostartEnabled(newState);
-                  addLog(`Auto-launch ${newState ? 'enabled' : 'disabled'}.`);
-                }
-              }} role="button" tabIndex={0}>
+              }}>
                 <div className="settings-info">
                   <span className="settings-label">Auto-launch</span>
                   <p className="settings-desc">Launch the app automatically when your PC starts.</p>
@@ -1048,9 +1039,9 @@ function App() {
                   <input type="checkbox" checked={isAutostartEnabled} readOnly />
                   <span className="slider"></span>
                 </label>
-              </div>
+              </button>
 
-              <div className="settings-row" onClick={toggleMinimizeToTray} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && toggleMinimizeToTray()} role="button" tabIndex={0} style={{ marginTop: '10px' }}>
+              <button type="button" className="settings-row" onClick={toggleMinimizeToTray} style={{ marginTop: '10px' }}>
                 <div className="settings-info">
                   <span className="settings-label">Minimize to Tray</span>
                   <p className="settings-desc">Close button will minimize the app to the system tray.</p>
@@ -1059,7 +1050,7 @@ function App() {
                   <input type="checkbox" checked={minimizeToTray} readOnly />
                   <span className="slider"></span>
                 </label>
-              </div>
+              </button>
 
             </div>
 
