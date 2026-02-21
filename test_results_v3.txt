@@ -1,0 +1,200 @@
+﻿
+> league-profile-tool@1.3.7 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/leenny/Documents/codicini/lol-profile-editor[39m
+
+node.exe : [90mstderr[2m | 
+src/hooks/useLcu.test.ts[2m 
+> [22m[2museLcu[2m > 
+[22m[2mshould initialize 
+with null lcu
+In 
+C:\nvm4w\nodejs\npm.ps1:16 
+car:5
++     & "$basedir/node$exe"  
+"$basedir/node_modules/npm/bi
+n/npm-cli.js" ...
++     ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: ([90mst  
+  derr[2m...e with null l   
+ cu:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+[22m[39mAn update to 
+TestComponent inside a test 
+was not wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+ [32mÔ£ô[39m src/components/tabs/LogsTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useLogs.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+[90mstderr[2m | src/compone
+nts/tabs/BioTab.test.tsx[2m 
+> [22m[2mBioTab[2m > 
+[22m[2mshould handle bio 
+update
+[22m[39mAn update to 
+BioTab inside a test was not 
+wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+ [32mÔ£ô[39m src/hooks/useLcu.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 211[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/BioTab.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 191[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useToast.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/MusicTab.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 93[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/RankTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 116[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useIcons.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/HomeTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/IconTab.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 102[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/SettingsTab.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+[90mstderr[2m | 
+src/App.test.tsx[2m > 
+[22m[2mApp[2m > 
+[22m[2mshould handle 
+settings interactions
+[22m[39mAn update to App 
+inside a test was not 
+wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+An update to App inside a 
+test was not wrapped in 
+act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+ [32mÔ£ô[39m src/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 244[2mms[22m[39m
+ [31mÔØ»[39m src/hooks/useMusicSync.test.ts [2m([22m[2m6 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 5030[2mms[22m[39m
+     [32mÔ£ô[39m clampPollInterval should bound values between 5 and 120[32m 2[2mms[22m[39m
+     [32mÔ£ô[39m truncateBio should trim and limit length[32m 1[2mms[22m[39m
+     [32mÔ£ô[39m buildBioFromTemplate should replace tokens correctly[32m 0[2mms[22m[39m
+     [32mÔ£ô[39m should initialize with default settings[32m 19[2mms[22m[39m
+[31m     [31m├ù[31m should sync music bio periodically when enabled[39m[33m 5003[2mms[22m[39m
+     [32mÔ£ô[39m should restore idle bio when applyIdleBio is called[32m 2[2mms[22m[39m
+
+[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3
+9m[1m[41m Failed Tests 1 [
+49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»[39m
+
+[41m[1m FAIL [22m[49m src
+/hooks/useMusicSync.test.ts[
+2m > [22museMusicSync 
+hook[2m > [22mshould sync 
+music bio periodically when 
+enabled
+[31m[1mError[22m: Test 
+timed out in 5000ms.
+If this is a long-running 
+test, pass a timeout value 
+as the last argument or 
+configure it globally with 
+"testTimeout".[39m
+[36m [2mÔØ»[22m src/hooks/
+useMusicSync.test.ts:[2m57:5
+[22m[39m
+    [90m 55| [39m    
+})[33m;[39m
+    [90m 56| [39m
+    [90m 57| [39m    
+[34mit[39m([32m'should 
+sync music bio periodically 
+when 
+enabled'[39m[33m,[39m 
+[35masync[39m () 
+[33m=>[39m {
+    [90m   | [39m    
+[31m^[39m
+    [90m 58| [39m        vi
+[33m.[39m[34museFakeTimers
+[39m()[33m;[39m
+    [90m 59| [39m        
+[35mconst[39m { invoke } 
+[33m=[39m [35mawait[39m 
+[35mimport[39m([32m'@tauri-
+apps/api/core'[39m)[33m;[3
+9m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/1]Ô
+Ä»[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m12 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m48 passed[39m[22m[90m (49)[39m
+[2m   Start at [22m 22:38:55
+[2m   Duration [22m 6.84s[2m (transform 1.56s, setup 1.73s, import 4.04s, tests 6.46s, environment 15.06s)[22m
+

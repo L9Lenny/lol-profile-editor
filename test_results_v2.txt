@@ -1,0 +1,1905 @@
+﻿
+> league-profile-tool@1.3.7 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/leenny/Documents/codicini/lol-profile-editor[39m
+
+node.exe : [90mstderr[2m | 
+src/hooks/useLcu.test.ts[2m 
+> [22m[2museLcu[2m > 
+[22m[2mshould initialize 
+with null lcu
+In 
+C:\nvm4w\nodejs\npm.ps1:16 
+car:5
++     & "$basedir/node$exe"  
+"$basedir/node_modules/npm/bi
+n/npm-cli.js" ...
++     ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: ([90mst  
+  derr[2m...e with null l   
+ cu:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+[22m[39mAn update to 
+TestComponent inside a test 
+was not wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+ [31mÔØ»[39m src/hooks/useLcu.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 42[2mms[22m[39m
+     [32mÔ£ô[39m should initialize with null lcu[32m 20[2mms[22m[39m
+[31m     [31m├ù[31m should detect LCU connection[39m[32m 10[2mms[22m[39m
+[31m     [31m├ù[31m should detect LCU disconnection[39m[32m 7[2mms[22m[39m
+[31m     [31m├ù[31m should perform lcuRequest correctly[39m[32m 3[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useMusicSync.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useLogs.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useToast.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/LogsTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 69[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useIcons.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 137[2mms[22m[39m
+[90mstderr[2m | src/compone
+nts/tabs/BioTab.test.tsx[2m 
+> [22m[2mBioTab[2m > 
+[22m[2mshould handle bio 
+update
+[22m[39mAn update to 
+BioTab inside a test was not 
+wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+ [32mÔ£ô[39m src/components/tabs/BioTab.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/MusicTab.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 97[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/RankTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 140[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/HomeTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 73[2mms[22m[39m
+ [31mÔØ»[39m src/components/tabs/IconTab.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 115[2mms[22m[39m
+[31m     [31m├ù[31m should render icon search and icons[39m[32m 83[2mms[22m[39m
+[31m     [31m├ù[31m should handle icon selection[39m[32m 17[2mms[22m[39m
+[31m     [31m├ù[31m should show empty state when no icons match[39m[32m 6[2mms[22m[39m
+[31m     [31m├ù[31m should show warning when LCU is not connected[39m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/SettingsTab.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 123[2mms[22m[39m
+[90mstderr[2m | 
+src/App.test.tsx[2m > 
+[22m[2mApp[2m > 
+[22m[2mshould render 
+loading state initially
+[22m[39mAn update to App 
+inside a test was not 
+wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+[90mstderr[2m | 
+src/App.test.tsx[2m > 
+[22m[2mApp[2m > 
+[22m[2mshould render 
+loading state initially
+[22m[39mAn update to App 
+inside a test was not 
+wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+[90mstderr[2m | 
+src/App.test.tsx[2m > 
+[22m[2mApp[2m > 
+[22m[2mshould render 
+loading state initially
+[22m[39mAn update to App 
+inside a test was not 
+wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+[90mstderr[2m | 
+src/App.test.tsx[2m > 
+[22m[2mApp[2m > 
+[22m[2mshould handle 
+minimize to tray toggle
+[22m[39mAn update to App 
+inside a test was not 
+wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+An update to App inside a 
+test was not wrapped in 
+act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+ [31mÔØ»[39m src/App.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 213[2mms[22m[39m
+[31m     [31m├ù[31m should render loading state initially[39m[32m 104[2mms[22m[39m
+[31m     [31m├ù[31m should render main app after initialization[39m[32m 28[2mms[22m[39m
+     [32mÔ£ô[39m should switch tabs when navigation items are clicked[32m 36[2mms[22m[39m
+     [32mÔ£ô[39m should handle minimize to tray toggle[32m 43[2mms[22m[39m
+
+[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3
+9m[1m[41m Failed Tests 9 [
+49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»[39m
+
+[41m[1m FAIL [22m[49m 
+src/App.test.tsx[2m > 
+[22mApp[2m > [22mshould 
+render loading state 
+initially
+[31m[1mTestingLibraryElemen
+tError[22m[39m: Unable to 
+find an element with the 
+text: /INITIALIZING LCU 
+BRIDGE/i. This could be 
+because the text is broken 
+up by multiple elements. In 
+this case, you can provide a 
+function for your text 
+matcher to make your matcher 
+more flexible.
+
+Ignored nodes: comments, 
+script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"m
+ain-app"[39m
+      
+[33mstyle[39m=[32m""[39m
+    [36m>[39m
+      [36m<nav[39m
+        [33mclass[39m=[32m
+"nav-bar"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"nav-links"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item active"[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-house"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M15 
+21v-8a1 1 0 0 0-1-1h-4a1 1 0 
+0 0-1 1v8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M3 10a2 2 
+0 0 1 .709-1.528l7-6a2 2 0 0 
+1 2.582 0l7 6A2 2 0 0 1 21 
+10v9a2 2 0 0 1-2 2H5a2 2 0 0 
+1-2-2z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mHome[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-shield-check"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M20 13c0 
+5-3.5 7.5-7.66 8.95a1 1 0 0 
+1-.67-.01C7.5 20.5 4 18 4 
+13V6a1 1 0 0 1 1-1c2 0 
+4.5-1.2 6.24-2.72a1.17 1.17 
+0 0 1 1.52 0C14.51 3.81 17 5 
+19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"m9 12 2 2 
+4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mBio[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-disc3 
+lucide-disc-3"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              
+[36m<circle[39m
+                
+[33mcx[39m=[32m"12"[39m
+                
+[33mcy[39m=[32m"12"[39m
+                
+[33mr[39m=[32m"10"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M6 
+12c0-1.7.7-3.2 1.8-4.2"[39m
+              [36m/>[39m
+              
+[36m<circle[39m
+                
+[33mcx[39m=[32m"12"[39m
+                
+[33mcy[39m=[32m"12"[39m
+                
+[33mr[39m=[32m"2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M18 12c0 
+1.7-.7 3.2-1.8 4.2"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mMusic[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-trophy"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M10 
+14.66v1.626a2 2 0 0 1-.976 
+1.696A5 5 0 0 0 7 
+21.978"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M14 
+14.66v1.626a2 2 0 0 0 .976 
+1.696A5 5 0 0 1 17 
+21.978"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M18 
+9h1.5a1 1 0 0 0 0-5H18"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M4 
+22h16"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M6 9a6 6 0 
+0 0 12 0V3a1 1 0 0 0-1-1H7a1 
+1 0 0 0-1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M6 9H4.5a1 
+1 0 0 1 0-5H6"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mRank[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-circle-user"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              
+[33mstroke-linecap[...
+[90m [2mÔØ»[22m 
+Object.getElementError node_m
+odules/@testing-library/dom/d
+ist/config.js:[2m37:19[22m
+[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m76:38[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m52:17[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m95:19[2
+2m[39m
+[36m [2mÔØ»[22m src/App.te
+st.tsx:[2m36:23[22m[39m
+    [90m 34| [39m        
+[90m// Need to not resolve 
+appReady immediately[39m
+    [90m 35| [39m        [
+34mrender[39m([33m<[39m[3
+3mApp[39m [33m/[39m[33m>
+[39m)[33m;[39m
+    [90m 36| [39m        ex
+pect(screen.getByText(/INITIA
+LIZING LCU 
+BRIDGE/i)).toBeDefinÔÇª
+    [90m   | [39m          
+            [31m^[39m
+    [90m 37| [39m    
+})[33m;[39m
+    [90m 38| [39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m 
+src/App.test.tsx[2m > 
+[22mApp[2m > [22mshould 
+render main app after 
+initialization
+[31m[1mTestingLibraryElemen
+tError[22m[39m: Unable to 
+find an element with the 
+text: LEAGUE PROFILE TOOL 
+v1.3.7. This could be 
+because the text is broken 
+up by multiple elements. In 
+this case, you can provide a 
+function for your text 
+matcher to make your matcher 
+more flexible.
+
+Ignored nodes: comments, 
+script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"m
+ain-app"[39m
+      
+[33mstyle[39m=[32m""[39m
+    [36m>[39m
+      [36m<nav[39m
+        [33mclass[39m=[32m
+"nav-bar"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"nav-links"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item active"[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-house"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M15 
+21v-8a1 1 0 0 0-1-1h-4a1 1 0 
+0 0-1 1v8"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M3 10a2 2 
+0 0 1 .709-1.528l7-6a2 2 0 0 
+1 2.582 0l7 6A2 2 0 0 1 21 
+10v9a2 2 0 0 1-2 2H5a2 2 0 0 
+1-2-2z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mHome[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-shield-check"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M20 13c0 
+5-3.5 7.5-7.66 8.95a1 1 0 0 
+1-.67-.01C7.5 20.5 4 18 4 
+13V6a1 1 0 0 1 1-1c2 0 
+4.5-1.2 6.24-2.72a1.17 1.17 
+0 0 1 1.52 0C14.51 3.81 17 5 
+19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"m9 12 2 2 
+4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mBio[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-disc3 
+lucide-disc-3"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              
+[36m<circle[39m
+                
+[33mcx[39m=[32m"12"[39m
+                
+[33mcy[39m=[32m"12"[39m
+                
+[33mr[39m=[32m"10"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M6 
+12c0-1.7.7-3.2 1.8-4.2"[39m
+              [36m/>[39m
+              
+[36m<circle[39m
+                
+[33mcx[39m=[32m"12"[39m
+                
+[33mcy[39m=[32m"12"[39m
+                
+[33mr[39m=[32m"2"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M18 12c0 
+1.7-.7 3.2-1.8 4.2"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mMusic[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-trophy"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"16"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M10 
+14.66v1.626a2 2 0 0 1-.976 
+1.696A5 5 0 0 0 7 
+21.978"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M14 
+14.66v1.626a2 2 0 0 0 .976 
+1.696A5 5 0 0 1 17 
+21.978"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M18 
+9h1.5a1 1 0 0 0 0-5H18"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M4 
+22h16"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M6 9a6 6 0 
+0 0 12 0V3a1 1 0 0 0-1-1H7a1 
+1 0 0 0-1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"M6 9H4.5a1 
+1 0 0 1 0-5H6"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mRank[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"nav-item "[39m
+            [33mrole[39m=[
+32m"tab"[39m
+            [33mtabindex[39
+m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-circle-user"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"16"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              
+[33mstroke-linecap[...
+[90m [2mÔØ»[22m 
+Object.getElementError node_m
+odules/@testing-library/dom/d
+ist/config.js:[2m37:19[22m
+[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m76:38[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m52:17[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m95:19[2
+2m[39m
+[36m [2mÔØ»[22m src/App.te
+st.tsx:[2m46:23[22m[39m
+    [90m 44| [39m        
+})[33m;[39m
+    [90m 45| [39m
+    [90m 46| [39m        ex
+pect(screen.getByText('LEAGUE
+ PROFILE TOOL 
+v1.3.7')).toBeDefÔÇª
+    [90m   | [39m          
+            [31m^[39m
+    [90m 47| [39m    
+})[33m;[39m
+    [90m 48| [39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m 
+src/hooks/useLcu.test.ts[2m 
+> [22museLcu[2m > 
+[22mshould detect LCU 
+connection
+[31m[1mAssertionError[22m:
+ expected undefined to 
+deeply equal { port: '1234', 
+token: 'secret' }[39m
+
+[32m- Expected:[39m 
+{
+  "port": "1234",
+  "token": "secret",
+}
+
+[31m+ Received:[39m 
+undefined
+
+[36m [2mÔØ»[22m src/hooks/
+useLcu.test.ts:[2m34:36[22m
+[39m
+    [90m 32| [39m        
+})[33m;[39m
+    [90m 33| [39m
+    [90m 34| [39m        [
+34mexpect[39m(result[33m.[
+39mcurrent[33m.[39mlcu)[33
+m.[39m[34mtoEqual[39m(mock
+Connection)[33m;[39m
+    [90m   | [39m          
+                         
+[31m^[39m
+    [90m 35| [39m        ex
+pect(mockAddLog).toHaveBeenCa
+lledWith('League client 
+connectÔÇª
+    [90m 36| [39m    
+})[33m;[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m 
+src/hooks/useLcu.test.ts[2m 
+> [22museLcu[2m > 
+[22mshould detect LCU 
+disconnection
+[31m[1mAssertionError[22m:
+ expected "vi.fn()" to be 
+called with arguments: [ 
+'League client 
+disconnected.' ][90m
+
+Received: 
+
+[1m  1st vi.fn() call:
+
+[22m[2m  [[22m
+[32m-   "League client 
+disconnected.",[90m
+[31m+   "League client 
+connected.",[90m
+[2m  ][22m
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+[36m [2mÔØ»[22m src/hooks/
+useLcu.test.ts:[2m58:28[22m
+[39m
+    [90m 56| [39m
+    [90m 57| [39m        [
+34mexpect[39m(result[33m.[
+39mcurrent[33m.[39mlcu)[33
+m.[39m[34mtoBeNull[39m()[
+33m;[39m
+    [90m 58| [39m        ex
+pect(mockAddLog).toHaveBeenCa
+lledWith('League client 
+disconnÔÇª
+    [90m   | [39m          
+                 [31m^[39m
+    [90m 59| [39m    
+})[33m;[39m
+    [90m 60| [39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m 
+src/hooks/useLcu.test.ts[2m 
+> [22museLcu[2m > 
+[22mshould perform 
+lcuRequest correctly
+[31m[1mError[22m: LCU not 
+connected[39m
+[36m [2mÔØ»[22m 
+Object.lcuRequest src/hooks/u
+seLcu.ts:[2m37:25[22m[39m
+    [90m 35| [39m
+    [90m 36| [39m    const 
+lcuRequest = async (method: 
+string, endpoint: string, 
+body?:ÔÇª
+    [90m 37| [39m        
+[35mif[39m 
+([33m![39mlcu) 
+[35mthrow[39m 
+[35mnew[39m 
+[33mError[39m([32m"LCU 
+not 
+connected"[39m)[33m;[39m
+    [90m   | [39m          
+              [31m^[39m
+    [90m 38| [39m        
+[35mconst[39m 
+payload[33m:[39m [33mRecor
+d[39m[33m<[39mstring[33m,
+[39m unknown[33m>[39m 
+[33m=[39m {
+    [90m 39| [39m          
+  method[33m,[39m
+[90m [2mÔØ»[22m src/hooks/
+useLcu.test.ts:[2m76:45[22m
+[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/react/dis
+t/act-compat.js:[2m47:24[22
+m[39m
+[90m [2mÔØ»[22m process.en
+v.NODE_ENV.exports.act node_m
+odules/react/cjs/react.develo
+pment.js:[2m814:22[22m[39m
+[90m [2mÔØ»[22m 
+Proxy.<anonymous> node_module
+s/@testing-library/react/dist
+/act-compat.js:[2m46:25[22m
+[39m
+[90m [2mÔØ»[22m src/hooks/
+useLcu.test.ts:[2m75:15[22m
+[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[5/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/IconTab.test
+.tsx[2m > [22mIconTab[2m 
+> [22mshould render icon 
+search and icons
+[31m[1mTestingLibraryElemen
+tError[22m[39m: Unable to 
+find an element with the 
+placeholder text of: /Search 
+icons/i
+
+Ignored nodes: comments, 
+script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"t
+ab-content fadeIn"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m
+"card"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mclass[39m=[3
+2m"card-title"[39m
+        [36m>[39m
+          [0mIcon 
+Swapper[0m
+        [36m</h3>[39m
+        [36m<div[39m
+          [33mstyle[39m=[3
+2m"margin-bottom: 20px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=
+[32m"position: relative; 
+width: 100%;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-search"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"14"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              [33mstyle[39m
+=[32m"position: absolute; 
+left: 12px; top: 50%; 
+transform: translateY(-50%); 
+color: 
+var(--text-secondary);"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"14"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"m21 
+21-4.34-4.34"[39m
+              [36m/>[39m
+              
+[36m<circle[39m
+                
+[33mcx[39m=[32m"11"[39m
+                
+[33mcy[39m=[32m"11"[39m
+                
+[33mr[39m=[32m"8"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<input[39m
+              [33mplaceholde
+r[39m=[32m"Search by name 
+or ID..."[39m
+              
+[33mstyle[39m=[32m"width: 
+100%; padding: 8px 10px 8px 
+35px; font-size: 
+0.85rem;"[39m
+              [33mtype[39m=
+[32m"text"[39m
+              
+[33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"icon-grid"[39m
+          [33mstyle[39m=[3
+2m"display: grid; 
+grid-template-columns: 
+repeat(auto-fill, 
+minmax(100px, 1fr)); gap: 
+12px; max-height: 400px; 
+overflow-y: auto; 
+padding-right: 10px;"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=
+[32m"icon-item "[39m
+            [33mstyle[39m=
+[32m"cursor: pointer; 
+border-radius: 10px; 
+background: rgba(255, 255, 
+255, 0.03); padding: 10px; 
+text-align: center; border: 
+2px solid transparent; 
+transition: all 0.2s 
+ease;"[39m
+            [33mtype[39m=[
+32m"button"[39m
+          [36m>[39m
+            [36m<img[39m
+              
+[33malt[39m=[32m"Icon 
+One"[39m
+              [33mloading[3
+9m=[32m"lazy"[39m
+              [33msrc[39m=
+[32m"https://ddragon.leagueof
+legends.com/cdn/14.4.1/img/pr
+ofileicon/1.png"[39m
+              
+[33mstyle[39m=[32m"width: 
+100%; border-radius: 6px; 
+margin-bottom: 8px;"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.6rem; 
+color: 
+var(--text-secondary); 
+font-weight: 600; overflow: 
+hidden; text-overflow: 
+ellipsis; white-space: 
+nowrap;"[39m
+            [36m>[39m
+              [0mIcon 
+One[0m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.5rem; 
+opacity: 0.5;"[39m
+            [36m>[39m
+              [0mID: [0m
+              [0m1[0m
+            [36m</div>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=
+[32m"icon-item "[39m
+            [33mstyle[39m=
+[32m"cursor: pointer; 
+border-radius: 10px; 
+background: rgba(255, 255, 
+255, 0.03); padding: 10px; 
+text-align: center; border: 
+2px solid transparent; 
+transition: all 0.2s 
+ease;"[39m
+            [33mtype[39m=[
+32m"button"[39m
+          [36m>[39m
+            [36m<img[39m
+              
+[33malt[39m=[32m"Icon 
+Two"[39m
+              [33mloading[3
+9m=[32m"lazy"[39m
+              [33msrc[39m=
+[32m"https://ddragon.leagueof
+legends.com/cdn/14.4.1/img/pr
+ofileicon/2.png"[39m
+              
+[33mstyle[39m=[32m"width: 
+100%; border-radius: 6px; 
+margin-bottom: 8px;"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.6rem; 
+color: 
+var(--text-secondary); 
+font-weight: 600; overflow: 
+hidden; text-overflow: 
+ellipsis; white-space: 
+nowrap;"[39m
+            [36m>[39m
+              [0mIcon 
+Two[0m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.5rem; 
+opacity: 0.5;"[39m
+            [36m>[39m
+              [0mID: [0m
+              [0m2[0m
+            [36m</div>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[3
+2m"primary-btn"[39m
+          [33mdisabled[39m=
+[32m""[39m
+          
+[33mstyle[39m=[32m"width: 
+100%; margin-top: 20px;"[39m
+        [36m>[39m
+          [0mAPPLY ICON[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mÔØ»[22m 
+Object.getElementError node_m
+odules/@testing-library/dom/d
+ist/config.js:[2m37:19[22m
+[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m76:38[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m52:17[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m95:19[2
+2m[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/IconTab.test.tsx:[
+2m33:23[22m[39m
+    [90m 31| [39m    
+[34mit[39m([32m'should 
+render icon search and 
+icons'[39m[33m,[39m () 
+[33m=>[39m {
+    [90m 32| [39m        [
+34mrender[39m([33m<[39m[3
+3mIconTab[39m [33m{[39m[3
+3m...[39mmockProps[33m}[39
+m [33m/[39m[33m>[39m)[33
+m;[39m
+    [90m 33| [39m        ex
+pect(screen.getByPlaceholderT
+ext(/Search 
+icons/i)).toBeDefinÔÇª
+    [90m   | [39m          
+            [31m^[39m
+    [90m 34| [39m        [
+34mexpect[39m(screen[33m.[
+39m[34mgetByText[39m([32m'
+Icon One'[39m))[33m.[39m[
+34mtoBeDefined[39m()[33m;[
+39m
+    [90m 35| [39m        [
+34mexpect[39m(screen[33m.[
+39m[34mgetByText[39m([32m'
+Icon Two'[39m))[33m.[39m[
+34mtoBeDefined[39m()[33m;[
+39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[6/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/IconTab.test
+.tsx[2m > [22mIconTab[2m 
+> [22mshould handle icon 
+selection
+[31m[1mError[22m: Icon 
+card not found[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/IconTab.test.tsx:[
+2m41:30[22m[39m
+    [90m 39| [39m        [
+34mrender[39m([33m<[39m[3
+3mIconTab[39m [33m{[39m[3
+3m...[39mmockProps[33m}[39
+m [33m/[39m[33m>[39m)[33
+m;[39m
+    [90m 40| [39m        
+const iconCard = 
+screen.getByText('Icon 
+One').closest('.icon-cÔÇª
+    [90m 41| [39m        
+[35mif[39m 
+([33m![39miconCard) 
+[35mthrow[39m 
+[35mnew[39m 
+[33mError[39m([32m'Icon 
+card not 
+found'[39m)[33m;[39m
+    [90m   | [39m          
+                   
+[31m^[39m
+    [90m 42| [39m
+    [90m 43| [39m        fi
+reEvent[33m.[39m[34mclick
+[39m(iconCard)[33m;[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[7/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/IconTab.test
+.tsx[2m > [22mIconTab[2m 
+> [22mshould show empty 
+state when no icons match
+[31m[1mTestingLibraryElemen
+tError[22m: Unable to find 
+an element with the text: 
+/No icons found matching 
+"nothing"/. This could be 
+because the text is broken 
+up by multiple elements. In 
+this case, you can provide a 
+function for your text 
+matcher to make your matcher 
+more flexible.
+
+Ignored nodes: comments, 
+script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"t
+ab-content fadeIn"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m
+"card"[31m
+      [36m>[31m
+        [36m<h3[31m
+          [33mclass[31m=[3
+2m"card-title"[31m
+        [36m>[31m
+          [0mIcon 
+Swapper[0m
+        [36m</h3>[31m
+        [36m<div[31m
+          [33mstyle[31m=[3
+2m"margin-bottom: 20px;"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mstyle[31m=
+[32m"position: relative; 
+width: 100%;"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidde
+n[31m=[32m"true"[31m
+              
+[33mclass[31m=[32m"lucide 
+lucide-search"[31m
+              [33mfill[31m=
+[32m"none"[31m
+              [33mheight[31
+m=[32m"14"[31m
+              [33mstroke[31
+m=[32m"currentColor"[31m
+              [33mstroke-lin
+ecap[31m=[32m"round"[31m
+              [33mstroke-lin
+ejoin[31m=[32m"round"[31m
+              [33mstroke-wid
+th[31m=[32m"2"[31m
+              [33mstyle[31m
+=[32m"position: absolute; 
+left: 12px; top: 50%; 
+transform: translateY(-50%); 
+color: 
+var(--text-secondary);"[31m
+              
+[33mviewBox[31m=[32m"0 0 
+24 24"[31m
+              [33mwidth[31m
+=[32m"14"[31m
+              [33mxmlns[31m
+=[32m"http://www.w3.org/2000
+/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                
+[33md[31m=[32m"m21 
+21-4.34-4.34"[31m
+              [36m/>[31m
+              
+[36m<circle[31m
+                
+[33mcx[31m=[32m"11"[31m
+                
+[33mcy[31m=[32m"11"[31m
+                
+[33mr[31m=[32m"8"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [36m<input[31m
+              [33mplaceholde
+r[31m=[32m"Search by name 
+or ID..."[31m
+              
+[33mstyle[31m=[32m"width: 
+100%; padding: 8px 10px 8px 
+35px; font-size: 
+0.85rem;"[31m
+              [33mtype[31m=
+[32m"text"[31m
+              [33mvalue[31m
+=[32m"nothing"[31m
+            [36m/>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[3
+2m"icon-grid"[31m
+          [33mstyle[31m=[3
+2m"display: grid; 
+grid-template-columns: 
+repeat(auto-fill, 
+minmax(100px, 1fr)); gap: 
+12px; max-height: 400px; 
+overflow-y: auto; 
+padding-right: 10px;"[31m
+        [36m/>[31m
+        [36m<button[31m
+          [33mclass[31m=[3
+2m"primary-btn"[31m
+          [33mdisabled[31m=
+[32m""[31m
+          
+[33mstyle[31m=[32m"width: 
+100%; margin-top: 20px;"[31m
+        [36m>[31m
+          [0mAPPLY ICON[0m
+        [36m</button>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2mÔØ»[22m 
+Object.getElementError node_m
+odules/@testing-library/dom/d
+ist/config.js:[2m37:19[22m
+[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m76:38[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m52:17[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m95:19[2
+2m[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/IconTab.test.tsx:[
+2m51:23[22m[39m
+    [90m 49| [39m        
+const emptyProps = { 
+...mockProps, visibleIcons: 
+[], iconSearcÔÇª
+    [90m 50| [39m        [
+34mrender[39m([33m<[39m[3
+3mIconTab[39m [33m{[39m[3
+3m...[39memptyProps[33m}[3
+9m [33m/[39m[33m>[39m)[3
+3m;[39m
+    [90m 51| [39m        
+expect(screen.getByText(/No 
+icons found matching 
+"nothing"/)).ÔÇª
+    [90m   | [39m          
+            [31m^[39m
+    [90m 52| [39m    
+})[33m;[39m
+    [90m 53| [39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[8/9]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/IconTab.test
+.tsx[2m > [22mIconTab[2m 
+> [22mshould show warning 
+when LCU is not connected
+[31m[1mTestingLibraryElemen
+tError[22m[39m: Unable to 
+find an element with the 
+text: /Start League of 
+Legends to enable this 
+feature/. This could be 
+because the text is broken 
+up by multiple elements. In 
+this case, you can provide a 
+function for your text 
+matcher to make your matcher 
+more flexible.
+
+Ignored nodes: comments, 
+script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"t
+ab-content fadeIn"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m
+"card"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mclass[39m=[3
+2m"card-title"[39m
+        [36m>[39m
+          [0mIcon 
+Swapper[0m
+        [36m</h3>[39m
+        [36m<div[39m
+          [33mstyle[39m=[3
+2m"margin-bottom: 20px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mstyle[39m=
+[32m"position: relative; 
+width: 100%;"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidde
+n[39m=[32m"true"[39m
+              
+[33mclass[39m=[32m"lucide 
+lucide-search"[39m
+              [33mfill[39m=
+[32m"none"[39m
+              [33mheight[39
+m=[32m"14"[39m
+              [33mstroke[39
+m=[32m"currentColor"[39m
+              [33mstroke-lin
+ecap[39m=[32m"round"[39m
+              [33mstroke-lin
+ejoin[39m=[32m"round"[39m
+              [33mstroke-wid
+th[39m=[32m"2"[39m
+              [33mstyle[39m
+=[32m"position: absolute; 
+left: 12px; top: 50%; 
+transform: translateY(-50%); 
+color: 
+var(--text-secondary);"[39m
+              
+[33mviewBox[39m=[32m"0 0 
+24 24"[39m
+              [33mwidth[39m
+=[32m"14"[39m
+              [33mxmlns[39m
+=[32m"http://www.w3.org/2000
+/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                
+[33md[39m=[32m"m21 
+21-4.34-4.34"[39m
+              [36m/>[39m
+              
+[36m<circle[39m
+                
+[33mcx[39m=[32m"11"[39m
+                
+[33mcy[39m=[32m"11"[39m
+                
+[33mr[39m=[32m"8"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<input[39m
+              [33mplaceholde
+r[39m=[32m"Search by name 
+or ID..."[39m
+              
+[33mstyle[39m=[32m"width: 
+100%; padding: 8px 10px 8px 
+35px; font-size: 
+0.85rem;"[39m
+              [33mtype[39m=
+[32m"text"[39m
+              
+[33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"icon-grid"[39m
+          [33mstyle[39m=[3
+2m"display: grid; 
+grid-template-columns: 
+repeat(auto-fill, 
+minmax(100px, 1fr)); gap: 
+12px; max-height: 400px; 
+overflow-y: auto; 
+padding-right: 10px;"[39m
+        [36m>[39m
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m10 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[31m9 failed[39m[22m[2m | [22m[1m[32m40 passed[39m[22m[90m (49)[39m
+[2m   Start at [22m 22:35:31
+[2m   Duration [22m 2.10s[2m (transform 1.40s, setup 1.64s, import 3.96s, tests 1.26s, environment 14.27s)[22m
+
+          [36m<button[39m
+            [33mclass[39m=
+[32m"icon-item "[39m
+            [33mstyle[39m=
+[32m"cursor: pointer; 
+border-radius: 10px; 
+background: rgba(255, 255, 
+255, 0.03); padding: 10px; 
+text-align: center; border: 
+2px solid transparent; 
+transition: all 0.2s 
+ease;"[39m
+            [33mtype[39m=[
+32m"button"[39m
+          [36m>[39m
+            [36m<img[39m
+              
+[33malt[39m=[32m"Icon 
+One"[39m
+              [33mloading[3
+9m=[32m"lazy"[39m
+              [33msrc[39m=
+[32m"https://ddragon.leagueof
+legends.com/cdn/14.4.1/img/pr
+ofileicon/1.png"[39m
+              
+[33mstyle[39m=[32m"width: 
+100%; border-radius: 6px; 
+margin-bottom: 8px;"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.6rem; 
+color: 
+var(--text-secondary); 
+font-weight: 600; overflow: 
+hidden; text-overflow: 
+ellipsis; white-space: 
+nowrap;"[39m
+            [36m>[39m
+              [0mIcon 
+One[0m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.5rem; 
+opacity: 0.5;"[39m
+            [36m>[39m
+              [0mID: [0m
+              [0m1[0m
+            [36m</div>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=
+[32m"icon-item "[39m
+            [33mstyle[39m=
+[32m"cursor: pointer; 
+border-radius: 10px; 
+background: rgba(255, 255, 
+255, 0.03); padding: 10px; 
+text-align: center; border: 
+2px solid transparent; 
+transition: all 0.2s 
+ease;"[39m
+            [33mtype[39m=[
+32m"button"[39m
+          [36m>[39m
+            [36m<img[39m
+              
+[33malt[39m=[32m"Icon 
+Two"[39m
+              [33mloading[3
+9m=[32m"lazy"[39m
+              [33msrc[39m=
+[32m"https://ddragon.leagueof
+legends.com/cdn/14.4.1/img/pr
+ofileicon/2.png"[39m
+              
+[33mstyle[39m=[32m"width: 
+100%; border-radius: 6px; 
+margin-bottom: 8px;"[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.6rem; 
+color: 
+var(--text-secondary); 
+font-weight: 600; overflow: 
+hidden; text-overflow: 
+ellipsis; white-space: 
+nowrap;"[39m
+            [36m>[39m
+              [0mIcon 
+Two[0m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mstyle[39m
+=[32m"font-size: 0.5rem; 
+opacity: 0.5;"[39m
+            [36m>[39m
+              [0mID: [0m
+              [0m2[0m
+            [36m</div>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[3
+2m"primary-btn"[39m
+          [33mdisabled[39m=
+[32m""[39m
+          
+[33mstyle[39m=[32m"width: 
+100%; margin-top: 20px;"[39m
+        [36m>[39m
+          [0mAPPLY ICON[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mÔØ»[22m 
+Object.getElementError node_m
+odules/@testing-library/dom/d
+ist/config.js:[2m37:19[22m
+[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m76:38[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m52:17[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m95:19[2
+2m[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/IconTab.test.tsx:[
+2m56:23[22m[39m
+    [90m 54| [39m    
+[34mit[39m([32m'should 
+show warning when LCU is not 
+connected'[39m[33m,[39m 
+() [33m=>[39m {
+    [90m 55| [39m        [
+34mrender[39m([33m<[39m[3
+3mIconTab[39m [33m{[39m[3
+3m...[39mmockProps[33m}[39
+m [33mlcu[39m[33m=[39m[3
+3m{[39m[35mnull[39m[33m}
+[39m [33m/[39m[33m>[39m)
+[33m;[39m
+    [90m 56| [39m        ex
+pect(screen.getByText(/Start 
+League of Legends to enable 
+thiÔÇª
+    [90m   | [39m          
+            [31m^[39m
+    [90m 57| [39m    
+})[33m;[39m
+    [90m 58| 
+[39m})[33m;[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[9/9]Ô
+Ä»[22m[39m
+

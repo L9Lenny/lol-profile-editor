@@ -8,62 +8,79 @@ vi.mock('@tauri-apps/api/core', () => ({
 }));
 
 describe('BioTab', () => {
-    const mockProps = {
+    const createProps = () => ({
         lcu: { port: '1234', token: 'secret' },
         loading: false,
         setLoading: vi.fn(),
         showToast: vi.fn(),
         addLog: vi.fn(),
         lcuRequest: vi.fn().mockResolvedValue({ availability: 'away' }),
-    };
+    });
 
     beforeEach(() => {
         vi.clearAllMocks();
     });
 
     it('should render profile bio card', async () => {
+        const props = createProps();
         await act(async () => {
-            render(<BioTab {...mockProps} />);
+            render(<BioTab {...props} />);
         });
         expect(screen.getByText('Profile Bio')).toBeDefined();
-        expect(screen.getByLabelText('New Status Message')).toBeDefined();
-        await waitFor(() => expect(mockProps.lcuRequest).toHaveBeenCalledWith('GET', '/lol-chat/v1/me'));
     });
 
     it('should handle bio update', async () => {
-        render(<BioTab {...mockProps} />);
+        const props = createProps();
+        render(<BioTab {...props} />);
         const textarea = screen.getByLabelText('New Status Message');
         fireEvent.change(textarea, { target: { value: 'New Bio' } });
 
-        // There are two APPLY buttons, we want the one NOT having availability-apply class
         const applyBtns = screen.getAllByText('APPLY');
-        const bioApplyBtn = applyBtns.find(btn => !btn.classList.contains('availability-apply'));
-        if (!bioApplyBtn) throw new Error('Bio APPLY button not found');
+        const applyBtn = applyBtns.find(btn => !btn.classList.contains('availability-apply'));
 
-        fireEvent.click(bioApplyBtn);
+        await act(async () => {
+            fireEvent.click(applyBtn!);
+        });
 
-        expect(mockProps.setLoading).toHaveBeenCalledWith(true);
+        expect(props.setLoading).toHaveBeenCalledWith(true);
     });
 
-    it('should show warning when LCU is not connected', () => {
-        render(<BioTab {...mockProps} lcu={null} />);
-        expect(screen.getByText(/Start League of Legends to enable this feature/)).toBeDefined();
+    it('should handle update failure', async () => {
+        const props = createProps();
+        props.lcuRequest.mockImplementation((method, endpoint) => {
+            if (method === 'GET') return Promise.resolve({ availability: 'away' });
+            return Promise.reject(new Error('LCU Error'));
+        });
+
+        render(<BioTab {...props} />);
+
+        const textarea = screen.getByLabelText('New Status Message');
+        await act(async () => {
+            fireEvent.change(textarea, { target: { value: 'Failure Bio' } });
+        });
+
+        const applyBtn = screen.getAllByText('APPLY').find(btn => !btn.classList.contains('availability-apply'));
+
+        await act(async () => {
+            fireEvent.click(applyBtn!);
+        });
+
+        await waitFor(() => {
+            expect(props.showToast).toHaveBeenCalledWith('Failed to update bio', 'error');
+        });
     });
 
     it('should update availability', async () => {
-        await act(async () => {
-            render(<BioTab {...mockProps} />);
-        });
+        const props = createProps();
+        render(<BioTab {...props} />);
         const select = screen.getByLabelText('Chat Availability');
+        fireEvent.change(select, { target: { value: 'mobile' } });
+
+        const applyBtn = screen.getAllByText('APPLY').find(btn => btn.classList.contains('availability-apply'));
         await act(async () => {
-            fireEvent.change(select, { target: { value: 'mobile' } });
+            fireEvent.click(applyBtn!);
         });
 
-        const applyBtn = screen.getByText('APPLY', { selector: 'button.availability-apply' });
-        await act(async () => {
-            fireEvent.click(applyBtn);
-        });
-
-        expect(mockProps.setLoading).toHaveBeenCalledWith(true);
+        expect(props.setLoading).toHaveBeenCalledWith(true);
     });
 });

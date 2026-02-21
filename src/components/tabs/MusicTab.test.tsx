@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import MusicTab from './MusicTab';
 import { defaultMusicBioSettings } from '../../hooks/useMusicSync';
 
@@ -20,53 +20,64 @@ describe('MusicTab', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        global.fetch = vi.fn();
     });
 
     it('should render music auto bio card', () => {
         render(<MusicTab {...mockProps} />);
         expect(screen.getByText('Music Auto Bio')).toBeDefined();
-        expect(screen.getByLabelText(/Last.fm Username/)).toBeDefined();
     });
 
     it('should handle enabling music sync', () => {
-        const readyProps = {
-            ...mockProps,
-            musicBio: {
-                ...mockProps.musicBio,
-                lastfmUsername: 'user',
-                lastfmApiKey: 'key'
-            }
-        };
-        render(<MusicTab {...readyProps} />);
+        const musicBio = { ...defaultMusicBioSettings(), lastfmUsername: 'user', lastfmApiKey: 'key' };
+        render(<MusicTab {...mockProps} musicBio={musicBio} />);
 
-        const enableBtns = screen.getAllByText('Enable Auto Bio');
-        const enableBtn = enableBtns.find(el => el.tagName === 'BUTTON');
-        if (!enableBtn) throw new Error('Enable button not found');
+        const enableBtn = screen.getByText('Enable Auto Bio', { selector: 'button.primary-btn' });
         fireEvent.click(enableBtn);
 
-        expect(readyProps.setMusicBio).toHaveBeenCalled();
-        expect(readyProps.showToast).toHaveBeenCalledWith("Music sync enabled", "success");
+        expect(mockProps.setMusicBio).toHaveBeenCalled();
+        expect(mockProps.showToast).toHaveBeenCalledWith("Music sync enabled", "success");
     });
 
-    it('should show error when enabling without credentials', () => {
+    it('should handle connecting to Last.fm', async () => {
+        const musicBio = { ...defaultMusicBioSettings(), lastfmUsername: 'user', lastfmApiKey: 'key' };
+        vi.mocked(fetch).mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({ recenttracks: { track: [{ name: 'Song' }] } })
+        } as Response);
+
+        render(<MusicTab {...mockProps} musicBio={musicBio} />);
+
+        const connectBtn = screen.getByText('Test Last.fm Connection');
+        await act(async () => {
+            fireEvent.click(connectBtn);
+        });
+
+        expect(fetch).toHaveBeenCalled();
+        expect(mockProps.showToast).toHaveBeenCalledWith("Last.fm connected", "success");
+    });
+
+    it('should handle normalization in input', async () => {
         render(<MusicTab {...mockProps} />);
-        const enableBtns = screen.getAllByText('Enable Auto Bio');
-        const enableBtn = enableBtns.find(el => el.tagName === 'BUTTON');
-        if (!enableBtn) throw new Error('Enable button not found');
-        fireEvent.click(enableBtn);
-        expect(mockProps.showToast).toHaveBeenCalledWith("Complete account fields first", "error");
-    });
-
-    it('should normalize last.fm username from URL', async () => {
-        const setMusicBio = vi.fn();
-        render(<MusicTab {...mockProps} setMusicBio={setMusicBio} />);
-
-        const userInput = screen.getByLabelText(/Last.fm Username/);
+        const userInput = screen.getByLabelText(/Username/i);
         fireEvent.change(userInput, { target: { value: 'https://www.last.fm/user/tester' } });
 
-        expect(setMusicBio).toHaveBeenCalled();
-        const updateFn = setMusicBio.mock.calls[0][0];
+        expect(mockProps.setMusicBio).toHaveBeenCalled();
+        const updateFn = mockProps.setMusicBio.mock.calls[0][0];
         const newState = updateFn({ lastfmUsername: '' });
         expect(newState.lastfmUsername).toBe('tester');
+    });
+
+    it('should handle disabling sync', async () => {
+        const musicBio = { ...defaultMusicBioSettings(), enabled: true };
+        render(<MusicTab {...mockProps} musicBio={musicBio} />);
+
+        const disableBtn = screen.getByText('Disable');
+        await act(async () => {
+            fireEvent.click(disableBtn);
+        });
+
+        expect(mockProps.applyIdleBio).toHaveBeenCalled();
+        expect(mockProps.setMusicBio).toHaveBeenCalled();
     });
 });

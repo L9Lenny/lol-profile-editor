@@ -1,0 +1,873 @@
+﻿
+> league-profile-tool@1.3.7 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/leenny/Documents/codicini/lol-profile-editor[39m
+
+node.exe : [90mstderr[2m | 
+src/hooks/useLcu.test.ts[2m 
+> [22m[2museLcu[2m > 
+[22m[2mshould initialize 
+with null lcu
+In 
+C:\nvm4w\nodejs\npm.ps1:16 
+car:5
++     & "$basedir/node$exe"  
+"$basedir/node_modules/npm/bi
+n/npm-cli.js" ...
++     ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: ([90mst  
+  derr[2m...e with null l   
+ cu:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+[22m[39mAn update to 
+TestComponent inside a test 
+was not wrapped in act(...).
+
+When testing, code that 
+causes React state updates 
+should be wrapped into 
+act(...):
+
+act(() => {
+  /* fire events that update 
+state */
+});
+/* assert on the output */
+
+This ensures that you're 
+testing the behavior the 
+user would see in the 
+browser. Learn more at https:
+//react.dev/link/wrap-tests-w
+ith-act
+
+ [32mÔ£ô[39m src/hooks/useToast.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useMusicSync.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useLogs.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/LogsTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/RankTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 98[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useLcu.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 184[2mms[22m[39m
+ [32mÔ£ô[39m src/hooks/useIcons.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 102[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/HomeTab.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 68[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/SettingsTab.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 106[2mms[22m[39m
+ [32mÔ£ô[39m src/components/tabs/IconTab.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 99[2mms[22m[39m
+ [31mÔØ»[39m src/components/tabs/BioTab.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 263[2mms[22m[39m
+     [32mÔ£ô[39m should render profile bio card[32m 62[2mms[22m[39m
+     [32mÔ£ô[39m should handle bio update[32m 138[2mms[22m[39m
+[31m     [31m├ù[31m should handle update failure[39m[32m 33[2mms[22m[39m
+[31m     [31m├ù[31m should update availability[39m[32m 28[2mms[22m[39m
+ [32mÔ£ô[39m src/App.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 151[2mms[22m[39m
+ [31mÔØ»[39m src/components/tabs/MusicTab.test.tsx [2m([22m[2m7 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[33m 340[2mms[22m[39m
+     [32mÔ£ô[39m should render music auto bio card[32m 54[2mms[22m[39m
+     [32mÔ£ô[39m should handle enabling music sync[32m 164[2mms[22m[39m
+[31m     [31m├ù[31m should handle connecting to Last.fm[39m[32m 42[2mms[22m[39m
+[31m     [31m├ù[31m should handle connection failure[39m[32m 40[2mms[22m[39m
+     [32mÔ£ô[39m should show error when enabling without credentials[32m 27[2mms[22m[39m
+     [32mÔ£ô[39m should normalize last.fm username from URL[32m 5[2mms[22m[39m
+[31m     [31m├ù[31m should update poll interval[39m[32m 7[2mms[22m[39m
+
+[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3
+9m[1m[41m Failed Tests 5 [
+49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/BioTab.test.
+tsx[2m > [22mBioTab[2m > 
+[22mshould handle update 
+failure
+[31m[1mAssertionError[22m:
+ expected "vi.fn()" to be 
+called with arguments: [ 
+'Failed to update bio', 
+'error' ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/BioTab.test.tsx:[2
+m57:37[22m[39m
+    [90m 55| [39m        
+})[33m;[39m
+    [90m 56| [39m
+    [90m 57| [39m        ex
+pect(mockProps.showToast).toH
+aveBeenCalledWith('Failed to 
+upÔÇª
+    [90m   | [39m          
+                          
+[31m^[39m
+    [90m 58| [39m    
+})[33m;[39m
+    [90m 59| [39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/5]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/BioTab.test.
+tsx[2m > [22mBioTab[2m > 
+[22mshould update 
+availability
+[31m[1mTestingLibraryElemen
+tError[22m: Found multiple 
+elements with the role 
+"button" and name "APPLY"
+
+Here are the matching 
+elements:
+
+Ignored nodes: comments, 
+script, style
+[36m<button[31m
+  [33mclass[31m=[32m"prima
+ry-btn"[31m
+  [33mdisabled[31m=[32m""
+[31m
+  
+[33mstyle[31m=[32m"width: 
+100%; margin-top: 20px;"[31m
+[36m>[31m
+  [0mAPPLY[0m
+[36m</button>[31m
+
+Ignored nodes: comments, 
+script, style
+[36m<button[31m
+  [33mclass[31m=[32m"prima
+ry-btn 
+availability-apply"[31m
+  
+[33mstyle[31m=[32m"flex: 
+1 1 0%;"[31m
+[36m>[31m
+  [0mAPPLY[0m
+[36m</button>[31m
+
+(If this is intentional, 
+then use the `*AllBy*` 
+variant of the query (like 
+`queryAllByText`, 
+`getAllByText`, or 
+`findAllByText`)).
+
+Ignored nodes: comments, 
+script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"t
+ab-content fadeIn"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m
+"card"[31m
+      [36m>[31m
+        [36m<h3[31m
+          [33mclass[31m=[3
+2m"card-title"[31m
+        [36m>[31m
+          [0mProfile Bio[0m
+        [36m</h3>[31m
+        [36m<div[31m
+          [33mclass[31m=[3
+2m"input-group"[31m
+        [36m>[31m
+          [36m<label[31m
+            [33mfor[31m=[3
+2m"bio-input"[31m
+          [36m>[31m
+            [0mNew Status 
+Message[0m
+          [36m</label>[31m
+          [36m<textarea[31m
+            [33mid[31m=[32
+m"bio-input"[31m
+            [33mplaceholder
+[31m=[32m"Tell your friends 
+what you're up to..."[31m
+            
+[33mrows[31m=[32m"4"[31m
+          [36m/>[31m
+        [36m</div>[31m
+        [36m<button[31m
+          [33mclass[31m=[3
+2m"primary-btn"[31m
+          [33mdisabled[31m=
+[32m""[31m
+          
+[33mstyle[31m=[32m"width: 
+100%; margin-top: 20px;"[31m
+        [36m>[31m
+          [0mAPPLY[0m
+        [36m</button>[31m
+        [36m<div[31m
+          [33mstyle[31m=[3
+2m"margin-top: 25px;"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mstyle[31m=
+[32m"display: flex; 
+justify-content: 
+space-between; align-items: 
+center; margin-bottom: 
+12px;"[31m
+          [36m>[31m
+            [36m<label[31m
+              [33mfor[31m=
+[32m"availability-select"[31
+m
+              [33mstyle[31m
+=[32m"font-size: 0.6rem; 
+color: 
+var(--text-secondary); 
+text-transform: uppercase; 
+letter-spacing: 1px;"[31m
+            [36m>[31m
+              [0mChat 
+Availability[0m
+            
+[36m</label>[31m
+            [36m<span[31m
+              [33mclass[31m
+=[32m"availability-pill 
+mobile"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[3
+1m=[32m"availability-dot"[3
+1m
+              [36m/>[31m
+              [0mMOBILE[0m
+            [36m</span>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mstyle[31m=
+[32m"display: flex; gap: 
+10px;"[31m
+          [36m>[31m
+            [36m<select[31m
+              [33mclass[31m
+=[32m"availability-select"[
+31m
+              [33mid[31m=[
+32m"availability-select"[31m
+              
+[33mstyle[31m=[32m"flex: 
+2 1 0%;"[31m
+            [36m>[31m
+              
+[36m<option[31m
+                [33mvalue[3
+1m=[32m"chat"[31m
+              [36m>[31m
+                
+[0mONLINE[0m
+              
+[36m</option>[31m
+              
+[36m<option[31m
+                [33mvalue[3
+1m=[32m"away"[31m
+              [36m>[31m
+                [0mAWAY[0m
+              
+[36m</option>[31m
+              
+[36m<option[31m
+                [33mvalue[3
+1m=[32m"mobile"[31m
+              [36m>[31m
+                
+[0mMOBILE[0m
+              
+[36m</option>[31m
+              
+[36m<option[31m
+                [33mvalue[3
+1m=[32m"offline"[31m
+              [36m>[31m
+                
+[0mOFFLINE[0m
+              
+[36m</option>[31m
+            
+[36m</select>[31m
+            [36m<button[31m
+              [33mclass[31m
+=[32m"primary-btn 
+availability-apply"[31m
+              
+[33mstyle[31m=[32m"flex: 
+1 1 0%;"[31m
+            [36m>[31m
+              [0mAPPLY[0m
+            
+[36m</button>[31m
+          [36m</div>[31m
+          [36m<p[31m
+            [33mstyle[31m=
+[32m"margin: 8px 0px 0px; 
+font-size: 0.55rem; color: 
+var(--text-secondary);"[31m
+          [36m>[31m
+            [0mSelect a 
+status and apply it to the 
+League chat.[0m
+          [36m</p>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2mÔØ»[22m 
+Object.getElementError node_m
+odules/@testing-library/dom/d
+ist/config.js:[2m37:19[22m
+[39m
+[90m [2mÔØ»[22m 
+getElementError node_modules/
+@testing-library/dom/dist/que
+ry-helpers.js:[2m20:35[22m
+[39m
+[90m [2mÔØ»[22m getMultipl
+eElementsFoundError node_modu
+les/@testing-library/dom/dist
+/query-helpers.js:[2m23:10[
+22m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m55:13[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m95:19[2
+2m[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/BioTab.test.tsx:[2
+m69:33[22m[39m
+    [90m 67| [39m        
+})[33m;[39m
+    [90m 68| [39m
+    [90m 69| [39m        
+const applyBtn = 
+screen.getByRole('button', { 
+name: 'APPLY', cÔÇª
+    [90m   | [39m          
+                      
+[31m^[39m
+    [90m 70| [39m        
+[35mawait[39m [34mact[39m
+([35masync[39m () 
+[33m=>[39m {
+    [90m 71| [39m          
+  fireEvent[33m.[39m[34mcl
+ick[39m(applyBtn)[33m;[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/5]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/MusicTab.tes
+t.tsx[2m > 
+[22mMusicTab[2m > 
+[22mshould handle 
+connecting to Last.fm
+[31m[1mAssertionError[22m:
+ expected "vi.fn()" to be 
+called at least once[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/MusicTab.test.tsx:
+[2m67:23[22m[39m
+    [90m 65| [39m        
+})[33m;[39m
+    [90m 66| [39m
+    [90m 67| [39m        [
+34mexpect[39m(fetch)[33m.[
+39m[34mtoHaveBeenCalled[39m
+()[33m;[39m
+    [90m   | [39m          
+            [31m^[39m
+    [90m 68| [39m        ex
+pect(readyProps.showToast).to
+HaveBeenCalledWith("Connected
+ tÔÇª
+    [90m 69| [39m    
+})[33m;[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/5]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/MusicTab.tes
+t.tsx[2m > 
+[22mMusicTab[2m > 
+[22mshould handle 
+connection failure
+[31m[1mAssertionError[22m:
+ expected "vi.fn()" to be 
+called with arguments: [ 
+Array(2) ][90m
+
+Received: 
+
+[1m  1st vi.fn() call:
+
+[22m[2m  [[22m
+[32m-   "Failed to connect 
+to Last.fm",[90m
+[32m-   "error",[90m
+[31m+   "Music sync 
+enabled",[90m
+[31m+   "success",[90m
+[2m  ][22m
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/MusicTab.test.tsx:
+[2m88:38[22m[39m
+    [90m 86| [39m        
+})[33m;[39m
+    [90m 87| [39m
+    [90m 88| [39m        ex
+pect(readyProps.showToast).to
+HaveBeenCalledWith("Failed 
+to cÔÇª
+    [90m   | [39m          
+                           
+[31m^[39m
+    [90m 89| [39m    
+})[33m;[39m
+    [90m 90| [39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/5]Ô
+Ä»[22m[39m
+
+[41m[1m FAIL [22m[49m src
+/components/tabs/MusicTab.tes
+t.tsx[2m > 
+[22mMusicTab[2m > 
+[22mshould update poll 
+interval
+[31m[1mTestingLibraryElemen
+tError[22m[39m: Unable to 
+find a label with the text 
+of: /Poll Interval/i
+
+Ignored nodes: comments, 
+script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"t
+ab-content fadeIn"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m
+"card"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mclass[39m=[3
+2m"card-title"[39m
+        [36m>[39m
+          [0mMusic Auto 
+Bio[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mclass[39m=[3
+2m"music-subtitle"[39m
+        [36m>[39m
+          [0mConfigure 
+Last.fm once. Then your 
+League bio updates 
+automatically while you 
+listen.[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"music-badges"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=
+[32m"music-badge ok"[39m
+          [36m>[39m
+            [0mLCU [0m
+            [0mConnected[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=
+[32m"music-badge warn"[39m
+          [36m>[39m
+            [0mLast.fm [0m
+            [0mMissing 
+Data[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=
+[32m"music-badge warn"[39m
+          [36m>[39m
+            [0mAuto Bio [0m
+            [0mDisabled[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"music-step-grid"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"music-step-card"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m
+=[32m"music-step-kicker"[39
+m
+            [36m>[39m
+              [0mStep 1[0m
+            [36m</div>[39m
+            [36m<h4>[39m
+              [0mGet 
+Last.fm API Key[0m
+            [36m</h4>[39m
+            [36m<p>[39m
+              [0mOpen 
+Last.fm and create your API 
+key in one click.[0m
+            [36m</p>[39m
+            [36m<button[39m
+              [33mclass[39m
+=[32m"ghost-btn"[39m
+              [33mtype[39m=
+[32m"button"[39m
+            [36m>[39m
+              [0mOpen 
+Last.fm API Page[0m
+            
+[36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"music-step-card"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m
+=[32m"music-step-kicker"[39
+m
+            [36m>[39m
+              [0mStep 2[0m
+            [36m</div>[39m
+            [36m<h4>[39m
+              [0mConnect 
+Account[0m
+            [36m</h4>[39m
+            [36m<p>[39m
+              [0mPaste 
+username and API key, then 
+test if everything is 
+valid.[0m
+            [36m</p>[39m
+            [36m<button[39m
+              [33mclass[39m
+=[32m"ghost-btn"[39m
+              [33mdisabled[
+39m=[32m""[39m
+              [33mtype[39m=
+[32m"button"[39m
+            [36m>[39m
+              [0mTest 
+Last.fm Connection[0m
+            
+[36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"music-step-card"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m
+=[32m"music-step-kicker"[39
+m
+            [36m>[39m
+              [0mStep 3[0m
+            [36m</div>[39m
+            [36m<h4>[39m
+              [0mEnable 
+Auto Bio[0m
+            [36m</h4>[39m
+            [36m<p>[39m
+              [0mTurn on 
+automatic sync and keep your 
+bio always updated.[0m
+            [36m</p>[39m
+            [36m<button[39m
+              [33mclass[39m
+=[32m"primary-btn"[39m
+              [33mtype[39m=
+[32m"button"[39m
+            [36m>[39m
+              [0mEnable 
+Auto Bio[0m
+            
+[36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"music-form-grid"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"input-group"[39m
+            [33mstyle[39m=
+[32m"margin: 0px;"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=
+[32m"lastfm-user"[39m
+            [36m>[39m
+              [0mLast.fm 
+Username or Profile URL[0m
+            
+[36m</label>[39m
+            [36m<input[39m
+              [33mid[39m=[
+32m"lastfm-user"[39m
+              [33mplaceholde
+r[39m=[32m"last.fm/user/you
+rname or yourname"[39m
+              
+[33mvalue[39m=[32m""[39m
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m11 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m51 passed[39m[22m[90m (56)[39m
+[2m   Start at [22m 22:41:50
+[2m   Duration [22m 1.90s[2m (transform 1.08s, setup 1.35s, import 3.63s, tests 1.59s, environment 12.58s)[22m
+
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"input-group"[39m
+            [33mstyle[39m=
+[32m"margin: 0px;"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=
+[32m"lastfm-key"[39m
+            [36m>[39m
+              [0mLast.fm 
+API Key[0m
+            
+[36m</label>[39m
+            [36m<input[39m
+              [33mid[39m=[
+32m"lastfm-key"[39m
+              [33mplaceholde
+r[39m=[32m"paste your 
+Last.fm API key"[39m
+              
+[33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"music-form-grid"[39m
+          [33mstyle[39m=[3
+2m"margin-top: 12px;"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"input-group"[39m
+            [33mstyle[39m=
+[32m"margin: 0px;"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=
+[32m"bio-template"[39m
+            [36m>[39m
+              [0mBio 
+Template[0m
+            
+[36m</label>[39m
+            [36m<input[39m
+              [33mid[39m=[
+32m"bio-template"[39m
+              [33mplaceholde
+r[39m=[32m"Listening to 
+{title} - {artist}"[39m
+              [33mvalue[39m
+=[32m"Listening to {title} 
+- {artist}"[39m
+            [36m/>[39m
+            [36m<p[39m
+              [33mclass[39m
+=[32m"music-help"[39m
+            [36m>[39m
+              [0mUse: [0m
+              [0m{title}[0m
+              [0m [0m
+              
+[0m{artist}[0m
+              [0m [0m
+              [0m{album}[0m
+              [0m [0m
+              
+[0m{source}[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"input-group"[39m
+            [33mstyle[39m=
+[32m"margin: 0px;"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=
+[32m"idle-text"[39m
+            [36m>[39m
+              [0mIdle 
+Text[0m
+            
+[36m</label>[39m
+            [36m<input[39m
+              [33mid[39m=[
+32m"idle-text"[39m
+              [33mplaceholde
+r[39m=[32m"Not listening 
+now"[39m
+              
+[33mvalue[39m=[32m"Not 
+listening now"[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[3
+2m"music-actions-row"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=
+[32m"input-group"[39m
+            [33mstyle[39m=
+[32m"margin: 0px; min-width: 
+170px;"[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=
+[32m"sync-interval"[39m
+            [36m>[39m
+              [0mSync 
+Interval (sec)[0m
+            
+[36m</label>[39m
+            [36m<input[39m
+              [33mid[39m=[
+32m"sync-interval"[39m
+              
+[33mmax[39m=[32m"120"[39m
+              
+[33mmin[39m=[32m"5"[39m
+              
+[33mstep[39m=[32m"1"[39m
+              [33mtype[39m=
+[32m"number"[39m
+              [33mvalue[39m
+=[32m"15"[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33mclass[39m=
+[32m"primary-btn"[39m
+            [33mtype[39m=[
+32m"button"[39m
+          [36m>[39m
+            [0mConnect & 
+Enable[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=
+[32m"ghost-btn"[39m
+            [33mdisabled[39
+m=[32m""[39m
+            [33mtype[39m=[
+32m"button"[39m
+          [36m>[39m
+            [0mDisable[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mÔØ»[22m 
+Object.getElementError node_m
+odules/@testing-library/dom/d
+ist/config.js:[2m37:19[22m
+[39m
+[90m [2mÔØ»[22m 
+getAllByLabelText node_module
+s/@testing-library/dom/dist/q
+ueries/label-text.js:[2m111:
+38[22m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m52:17[2
+2m[39m
+[90m [2mÔØ»[22m node_modul
+es/@testing-library/dom/dist/
+query-helpers.js:[2m95:19[2
+2m[39m
+[36m [2mÔØ»[22m src/compon
+ents/tabs/MusicTab.test.tsx:
+[2m115:30[22m[39m
+    [90m113| [39m        [
+34mrender[39m([33m<[39m[3
+3mMusicTab[39m [33m{[39m[
+33m...[39mmockProps[33m}[3
+9m [33msetMusicBio[39m[33m
+=[39m[33m{[39msetMusicBio
+[33m}[39m [33m/[39m[33m>
+[39m)[33m;[39m
+    [90m114| [39m
+    [90m115| [39m        
+[35mconst[39m input 
+[33m=[39m screen[33m.[39m
+[34mgetByLabelText[39m([36
+m/Poll 
+Interval/i[39m)[33m;[39m
+    [90m   | [39m          
+                   
+[31m^[39m
+    [90m116| [39m        fi
+reEvent[33m.[39m[34mchange
+[39m(input[33m,[39m { 
+target[33m:[39m { 
+value[33m:[39m 
+[32m'30'[39m } 
+})[33m;[39m
+    [90m117| [39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ
+»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»Ô
+Ä»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[5/5]Ô
+Ä»[22m[39m
+
