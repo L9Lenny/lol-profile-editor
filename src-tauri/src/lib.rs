@@ -22,7 +22,7 @@ struct Settings {
 impl Default for Settings {
     fn default() -> Self {
         Settings {
-            minimize_to_tray: true,
+            minimize_to_tray: false,
         }
     }
 }
@@ -171,6 +171,11 @@ fn save_logs_to_path(path: String, content: String) -> Result<String, String> {
     Ok(target.to_string_lossy().to_string())
 }
 
+#[tauri::command]
+fn force_quit(app: tauri::AppHandle) {
+    app.exit(0);
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -236,19 +241,8 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_lcu_connection, update_bio, set_minimize_to_tray, get_minimize_to_tray, lcu_request, save_logs_to_path])
+        .invoke_handler(tauri::generate_handler![get_lcu_connection, update_bio, set_minimize_to_tray, get_minimize_to_tray, lcu_request, save_logs_to_path, force_quit])
         .build(tauri::generate_context!())
         .expect("error while building tauri application")
-        .run(|app_handle, event| match event {
-            tauri::RunEvent::ExitRequested { api, .. } => {
-                let state = app_handle.state::<AppSettings>();
-                if *state.minimize_to_tray.lock().unwrap() {
-                    api.prevent_exit();
-                    if let Some(window) = app_handle.get_webview_window("main") {
-                        let _ = window.hide();
-                    }
-                }
-            }
-            _ => {}
-        });
+        .run(|_, _| {});
 }

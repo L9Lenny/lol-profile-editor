@@ -82,7 +82,7 @@ body {
   color: var(--text-secondary);
   text-transform: uppercase;
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   letter-spacing: 1.5px;
   cursor: pointer;
   padding: 10px 16px;
@@ -208,7 +208,7 @@ body {
 
 .card-title {
   margin: 0 0 24px 0;
-  font-size: 1rem;
+  font-size: 1.08rem;
   color: var(--hextech-gold);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -222,7 +222,7 @@ body {
 
 .input-group label {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
   text-transform: uppercase;
   margin-bottom: 10px;
@@ -349,7 +349,7 @@ option {
 }
 
 .settings-desc {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   margin-top: 4px;
 }
@@ -359,7 +359,7 @@ option {
   border: 1px solid var(--glass-border);
   color: var(--text-secondary);
   padding: 6px 12px;
-  font-size: 0.65rem;
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -503,7 +503,7 @@ input:checked+.slider:before {
   display: flex;
   align-items: center;
   padding: 0 24px;
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
   border-top: 1px solid var(--glass-border);
 }
@@ -721,7 +721,7 @@ input:checked+.slider:before {
 
 .feature-body p {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
   line-height: 1.4;
 }

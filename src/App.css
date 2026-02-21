@@ -41,3 +41,125 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--hextech-gold);
 }
+
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: rgba(200, 155, 60, 0.65);
+  box-shadow: 0 0 0 3px rgba(200, 155, 60, 0.12);
+}
+
+.music-subtitle {
+  margin: 0 0 14px 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.music-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.music-badge {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.music-badge.ok {
+  color: #00ff88;
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
+.music-badge.warn {
+  color: #ffb347;
+  border-color: rgba(255, 179, 71, 0.35);
+}
+
+.music-step-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.music-step-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.music-step-kicker {
+  color: var(--hextech-gold);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.music-step-card h4 {
+  margin: 0 0 6px 0;
+  font-size: 0.9rem;
+}
+
+.music-step-card p {
+  margin: 0 0 10px 0;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.music-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.music-help {
+  margin: 6px 0 0 0;
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+}
+
+.music-actions-row {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+@media (max-width: 880px) {
+  .music-step-grid,
+  .music-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .music-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
