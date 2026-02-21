@@ -259,7 +259,6 @@ function App() {
         setIsAutostartEnabled(autostart);
         setMinimizeToTray(tray);
 
-        // Fetch latest version from GitHub
         fetch(`https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json?t=${Date.now()}`, {
           signal: controller.signal
         })

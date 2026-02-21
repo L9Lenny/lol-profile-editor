@@ -1,0 +1,66 @@
+name: 'Create Issues from SonarQube'
+description: 'Automatically create GitHub issues from SonarQube findings'
+
+inputs:
+  sonarqube-projectkey:
+    description: 'SonarQube project key'
+    required: true
+  sonarqube-organization:
+    description: 'SonarQube organization'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Create GitHub Issues from SonarQube
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+        SONAR_PROJECT_KEY: ${{ inputs.sonarqube-projectkey }}
+        SONAR_ORGANIZATION: ${{ inputs.sonarqube-organization }}
+      run: |
+        # Scarica i risultati da SonarCloud
+        ISSUES_RESPONSE=$(curl -s \
+          "https://sonarcloud.io/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&organization=${SONAR_ORGANIZATION}&issueSeverities=BLOCKER,CRITICAL,MAJOR&types=BUG,VULNERABILITY&statuses=OPEN" \
+          -H "Authorization: Bearer ${{ env.SONAR_TOKEN }}")
+        
+        echo "SonarQube Response: $ISSUES_RESPONSE"
+        
+        # Processa ogni issue
+        echo "$ISSUES_RESPONSE" | jq -r '.issues[] | @base64' | while read issue; do
+          ISSUE_DATA=$(echo $issue | base64 -d)
+          
+          ISSUE_KEY=$(echo "$ISSUE_DATA" | jq -r '.key')
+          ISSUE_TITLE=$(echo "$ISSUE_DATA" | jq -r '.message')
+          ISSUE_SEVERITY=$(echo "$ISSUE_DATA" | jq -r '.severity')
+          ISSUE_TYPE=$(echo "$ISSUE_DATA" | jq -r '.type')
+          ISSUE_COMPONENT=$(echo "$ISSUE_DATA" | jq -r '.component')
+          ISSUE_LINE=$(echo "$ISSUE_DATA" | jq -r '.line // "N/A"')
+          ISSUE_URL="https://sonarcloud.io/project/issues?id=${SONAR_PROJECT_KEY}&issues=${ISSUE_KEY}"
+          
+          # Crea il body dell'issue
+          ISSUE_BODY="## SonarQube Findings\n\n**Severity:** ${ISSUE_SEVERITY}\n**Type:** ${ISSUE_TYPE}\n**Component:** ${ISSUE_COMPONENT}\n**Line:** ${ISSUE_LINE}\n\n**Issue:** ${ISSUE_TITLE}\n\n[View in SonarCloud](${ISSUE_URL})\n\n---\n*This issue was automatically created from SonarQube analysis.*"
+          
+          # Verifica se un'issue con questo label già esiste
+          EXISTING_ISSUE=$(curl -s \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues?state=open&labels=sonarqube" \
+            | jq -r ".[] | select(.title | contains(\"${ISSUE_KEY}\")) | .number")
+          
+          if [ -z "$EXISTING_ISSUE" ]; then
+            # Crea nuova issue
+            curl -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/issues" \
+              -d "{
+                \"title\": \"[${ISSUE_SEVERITY}] ${ISSUE_TITLE} (${ISSUE_KEY})\",
+                \"body\": \"${ISSUE_BODY}\",
+                \"labels\": [\"sonarqube\", \"${ISSUE_SEVERITY,,}\"]
+              }"
+            
+            echo "✅ Issue created: ${ISSUE_KEY}"
+          else
+            echo "⏭️ Issue already exists: ${ISSUE_KEY}"
+          fi
+        done
