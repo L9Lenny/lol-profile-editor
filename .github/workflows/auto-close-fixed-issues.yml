@@ -1,0 +1,178 @@
+name: Auto-Close Fixed Issues (SonarQube)
+
+on:
+  workflow_run:
+    workflows: ["SonarQube Analysis and Auto-Create Issues"]
+    types: [completed]
+    branches: [main, develop]
+
+jobs:
+  compare-and-close:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      pull-requests: read
+      issues: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Get open issues with sonarqube label
+        id: get-issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'sonarqube',
+              per_page: 100
+            });
+            
+            console.log(`Found ${issues.data.length} open SonarQube issues`);
+            
+            // Extract issue numbers and SonarQube keys from comments
+            const issueData = [];
+            for (const issue of issues.data) {
+              console.log(`Issue #${issue.number}: ${issue.title}`);
+              issueData.push({
+                number: issue.number,
+                title: issue.title,
+                body: issue.body
+              });
+            }
+            
+            return JSON.stringify(issueData);
+      
+      - name: Fetch SonarQube issues via API
+        id: sonar-issues
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: L9Lenny_lol-profile-editor
+          SONAR_ORGANIZATION: l9lenny
+        run: |
+          # Fetch current issues from SonarQube
+          RESPONSE=$(curl -s \
+            "https://sonarcloud.io/api/issues/search?componentKeys=${{ env.SONAR_PROJECT_KEY }}&organization=${{ env.SONAR_ORGANIZATION }}&statuses=OPEN&ps=500" \
+            -H "Authorization: Bearer ${{ env.SONAR_TOKEN }}")
+          
+          echo "$RESPONSE" | jq '.issues[] | {key: .key, message: .message, severity: .severity}' > /tmp/current-issues.json
+          
+          # Count issues
+          COUNT=$(echo "$RESPONSE" | jq '.issues | length')
+          echo "current_issue_count=$COUNT" >> $GITHUB_OUTPUT
+          
+          echo "Current SonarQube issues: $COUNT"
+          cat /tmp/current-issues.json
+      
+      - name: Compare and close resolved issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Get list of issues from GitHub
+            let githubIssues = [];
+            try {
+              const issuesStr = '${{ steps.get-issues.outputs.result }}';
+              githubIssues = JSON.parse(issuesStr) || [];
+            } catch (e) {
+              console.log('No GitHub issues to process');
+              githubIssues = [];
+            }
+            
+            console.log(`Processing ${githubIssues.length} GitHub issues`);
+            
+            // Get SonarQube key from each issue
+            const sonarKeysInGitHub = githubIssues.map(issue => {
+              const match = issue.title.match(/\(([A-Za-z0-9\-_]+)\)$/);
+              return match ? match[1] : null;
+            }).filter(Boolean);
+            
+            console.log(`SonarQube keys in GitHub: ${sonarKeysInGitHub.join(', ')}`);
+            
+            // Read current SonarQube issues
+            let currentSonarIssues = [];
+            try {
+              const data = fs.readFileSync('/tmp/current-issues.json', 'utf8');
+              const lines = data.split('\n').filter(l => l.trim());
+              currentSonarIssues = lines.map(line => JSON.parse(line));
+            } catch (e) {
+              console.log('Could not read SonarQube issues file');
+            }
+            
+            const sonarKeysInSonar = currentSonarIssues.map(issue => issue.key);
+            console.log(`SonarQube keys in SonarQube: ${sonarKeysInSonar.join(', ')}`);
+            
+            // Find resolved issues (in GitHub but not in SonarQube anymore)
+            const resolvedKeys = sonarKeysInGitHub.filter(key => !sonarKeysInSonar.includes(key));
+            console.log(`Resolved issues: ${resolvedKeys.join(', ')}`);
+            
+            // Close resolved issues
+            for (const issue of githubIssues) {
+              const match = issue.title.match(/\(([A-Za-z0-9\-_]+)\)$/);
+              const sonarKey = match ? match[1] : null;
+              
+              if (!sonarKey || !resolvedKeys.includes(sonarKey)) {
+                console.log(`Skipping issue #${issue.number} - not resolved`);
+                continue;
+              }
+              
+              console.log(`Found resolved issue #${issue.number} with key ${sonarKey}`);
+              
+              try {
+                // Find the GitHub issue number
+                const issues = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'sonarqube'
+                });
+                
+                const githubIssue = issues.data.find(i => i.title.includes(sonarKey));
+                if (!githubIssue) {
+                  console.log(`Could not find GitHub issue for key ${sonarKey}`);
+                  continue;
+                }
+                
+                // Add comment
+                const commentBody = `## ✅ Resolved by PR
+
+This issue has been automatically detected as resolved by the latest code changes!
+
+**SonarQube Key**: ${sonarKey}
+
+The SonarQube analysis shows this issue is no longer present in the codebase.
+
+---
+*This comment was automatically generated when the fix was detected.*`;
+                
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: githubIssue.number,
+                  body: commentBody
+                });
+                
+                // Close the issue
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: githubIssue.number,
+                  state: 'closed'
+                });
+                
+                console.log(`✅ Closed issue #${githubIssue.number}`);
+              } catch (error) {
+                console.error(`Error processing key ${sonarKey}:`, error.message);
+              }
+            }
