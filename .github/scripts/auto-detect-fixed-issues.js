@@ -202,12 +202,15 @@ This issue has been automatically detected as resolved!
 **SonarQube Key**: \`${sonarKey}\``;
 
         // Add PR information if available
-        if (PR_NUMBER && PR_URL) {
+        if (PR_NUMBER) {
           commentBody += `
 
-**Fixed By**: [PR #${PR_NUMBER}](${PR_URL})`;
+**Fixed By**: PR #${PR_NUMBER}`;
           if (PR_TITLE) {
-            commentBody += ` - ${PR_TITLE}`;
+            commentBody += ` (${PR_TITLE})`;
+          }
+          if (PR_URL) {
+            commentBody += ` - [View PR](${PR_URL})`;
           }
         }
 
