@@ -66,14 +66,19 @@ function App() {
         setIsAutostartEnabled(autostart);
         setMinimizeToTray(tray);
 
-        fetch(`https://raw.githubusercontent.com/L9Lenny/lol-profile-editor/main/updater.json?t=${Date.now()}`, {
+        fetch('https://api.github.com/repos/L9Lenny/lol-profile-editor/releases/latest', {
           signal: controller.signal
         })
-          .then(res => res.ok ? res.json() : Promise.reject(new Error("Failed to load updater.json")))
-          .then(updateData => {
-            if (active) setLatestVersion(updateData.version);
+          .then(res => res.ok ? res.json() : Promise.reject(new Error("Failed to load latest release from GitHub API")))
+          .then(releaseData => {
+            if (active && releaseData.tag_name) {
+              const version = releaseData.tag_name.replace(/^v/, '');
+              setLatestVersion(version);
+            }
           })
-          .catch(() => { });
+          .catch((err) => {
+            if (active) addLog(`Update Check Error: ${err.message}`);
+          });
 
         setAppReady(true);
         addLog(`Application ready. v${v}`);

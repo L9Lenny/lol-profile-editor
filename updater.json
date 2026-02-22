@@ -1,19 +1,19 @@
 {
-    "version": "1.4.1",
-    "notes": "## [1.4.1] - 2026-02-22  ### Fixed - **🔧 CI/CD**: Resolved YAML syntax error on line 150 of `auto-close-fixed-issues.yml` caused by a backtick-delimited JavaScript template literal inside a YAML block scalar — replaced with safe string concatenation.  ",
-    "pub_date": "2026-02-22T21:30:19Z",
+    "version": "1.4.2",
+    "notes": "## [1.4.2] - 2026-02-22 \n\n ### Fixed \n - **🚀 Updater**: Migrated from CDN-cached raw.githubusercontent to GitHub Releases API to guarantee instant update detection. \n - **🔧 CI/CD**: Repaired a syntax vulnerability in `auto-close-fixed-issues.yml` by using environment variables to securely pass JSON objects to GitHub Scripts.",
+    "pub_date": "2026-02-22T22:55:00Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.4.1/League.Profile.Tool_1.4.1_x64-setup.exe"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.4.2/League.Profile.Tool_1.4.2_x64-setup.exe"
         },
         "darwin-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.4.1/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.4.2/League.Profile.Tool_aarch64.app.tar.gz"
         },
         "darwin-aarch64": {
             "signature": "Not Found",
-            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.4.1/League.Profile.Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/L9Lenny/lol-profile-editor/releases/download/v1.4.2/League.Profile.Tool_aarch64.app.tar.gz"
         }
     }
 }
