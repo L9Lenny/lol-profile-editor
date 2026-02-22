@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-02-22
+
+### Added
+- **🎵 LastFM Bio Sync**: Dynamic bio integration with the Last.fm API — the app now automatically updates your League profile bio with the song you are currently listening to.
+
+### Changed
+- **⚡ App Architecture**: Refactored the root `App` component to reduce Cognitive Complexity from 22 to under 15, improving maintainability and readability.
+
+### Fixed
+- **🔒 Security (CodeQL)**: Resolved incomplete URL substring sanitization warnings flagged by CodeQL analysis.
+- **♿ Accessibility**: Associated all form labels with their controls across all tabs; added accessible text to icon-only switch labels; added full keyboard accessibility to remaining interactive elements.
+- **🔧 Code Quality**: Replaced all `role='button'` divs with semantic native `<button>` elements; removed unnecessary `as any` type assertions; replaced `String#replace` with `String#replaceAll` where appropriate; switched timer globals from `window` to `globalThis`.
+- **📋 Logs**: Resolved React key warning caused by array index usage in the logs list.
+- **⚠️ Exception Handling**: Improved error handling in the rank override flow.
+
+### Testing
+- **🧪 Unit Tests**: Added comprehensive test suite for all tabs and hooks, reaching 80%+ code coverage to satisfy SonarCloud quality gate.
+
+### Removed
+- **🗑️ Cleanup**: Deleted `test-auto-close.bat` and `sync_labels.ps1` development-only scripts no longer needed.
+
+---
+
 ## [1.3.7] - 2026-02-19
 
 ### Added
