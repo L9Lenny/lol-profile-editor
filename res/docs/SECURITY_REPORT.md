@@ -3,8 +3,8 @@
 - Repository: `L9Lenny/lol-profile-editor`
 - Release Tag: `v1.4.2`
 - Release Name: League Profile Tool v1.4.2
-- Published At: 2026-02-22T21:57:32Z
-- Generated At (UTC): 2026-02-22T21:57:38Z
+- Published At: 2026-02-22T22:15:24Z
+- Generated At (UTC): 2026-02-22T22:15:31Z
 - Source: [VirusTotal](https://www.virustotal.com/)
 
 ## Asset Scan Results
