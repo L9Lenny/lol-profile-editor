@@ -1,6 +1,6 @@
 [package]
 name = "league-profile-tool"
-version = "1.4.1"
+version = "1.4.2"
 description = "A Tauri App"
 authors = ["Lenny"]
 edition = "2021"
