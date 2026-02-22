@@ -1,7 +1,7 @@
 {
     "version": "1.4.2",
-    "notes": "## [1.4.2] - 2026-02-22 \n\n ### Fixed \n - **🚀 Updater**: Migrated from CDN-cached raw.githubusercontent to GitHub Releases API to guarantee instant update detection. \n - **🔧 CI/CD**: Repaired a syntax vulnerability in `auto-close-fixed-issues.yml` by using environment variables to securely pass JSON objects to GitHub Scripts.",
-    "pub_date": "2026-02-22T22:55:00Z",
+    "notes": "## [1.4.2] - 2026-02-22  ### Fixed - **🚀 Updater**: Migrated from CDN-cached `raw.githubusercontent` to GitHub Releases API to guarantee instant update detection upon launch. - **🔧 CI/CD**: Fixed a Syntax Error vulnerability in `auto-close-fixed-issues.yml` by using environment variables to securely pass JSON output to GitHub Scripts instead of unsafe inline interpolation.  ",
+    "pub_date": "2026-02-22T22:03:21Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
