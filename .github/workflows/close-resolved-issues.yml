@@ -2,11 +2,12 @@ name: Auto-Close Resolved Issues
 
 on:
   pull_request:
-    types: [opened, synchronize, edited]
+    types: [closed]
     branches: [main, develop]
 
 jobs:
   close-issues:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     
     permissions:

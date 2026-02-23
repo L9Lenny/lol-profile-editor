@@ -17,10 +17,8 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPOSITORY || 'L9Lenny/lol-profile-editor';
 const PR_NUMBER = process.env.PR_NUMBER || process.argv[2];
 
-// Issue number patterns
 const ISSUE_PATTERNS = [
-  /(?:Fixes|Closes|Resolves|Fix|Close|Resolve):\s*#(\d+)/gi,
-  /#(\d+)/g
+  /(?:Fixes|Closes|Resolves|Fix|Close|Resolve):\s*#(\d+)/gi
 ];
 
 /**
@@ -223,7 +221,7 @@ This issue has been resolved by PR #${PR_NUMBER}: **${pr.title}**
 [View PR →](${pr.html_url})
 
 ---
-*This comment was automatically generated when the PR was opened.*`;
+*This comment was automatically generated when the PR was merged.*`;
 
         await addCommentToIssue(issueNumber, comment);
         console.log(`  ✅ Comment added`);
