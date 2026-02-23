@@ -67,7 +67,9 @@ describe('App', () => {
         });
 
         const bioTabBtn = screen.getByText('Profile');
-        fireEvent.click(bioTabBtn);
+        await act(async () => {
+            fireEvent.click(bioTabBtn);
+        });
 
         expect(screen.getByText(/Profile Bio/i)).toBeDefined();
     });

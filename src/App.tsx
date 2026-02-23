@@ -4,6 +4,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import {
+  Award,
   Coffee,
   Disc3,
   Github,
@@ -31,6 +32,7 @@ import MusicTab from "./components/tabs/MusicTab";
 import RankTab from "./components/tabs/RankTab";
 import IconTab from "./components/tabs/IconTab";
 import LogsTab from "./components/tabs/LogsTab";
+import TokensTab from "./components/tabs/TokensTab";
 import SettingsTab from "./components/tabs/SettingsTab";
 
 function App() {
@@ -151,6 +153,7 @@ function App() {
           <NavItem icon={<Home size={16} />} label="Home" active={activeTab === 'home'} onClick={() => setActiveTab('home')} />
           <NavItem icon={<ShieldCheck size={16} />} label="Profile" active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} />
           <NavItem icon={<Disc3 size={16} />} label="Music" active={activeTab === 'music'} onClick={() => setActiveTab('music')} />
+          <NavItem icon={<Award size={16} />} label="Tokens" active={activeTab === 'tokens'} onClick={() => setActiveTab('tokens')} />
           <NavItem icon={<Trophy size={16} />} label="Rank" active={activeTab === 'rank'} onClick={() => setActiveTab('rank')} />
           <NavItem icon={<UserCircle size={16} />} label="Icons" active={activeTab === 'icons'} onClick={() => setActiveTab('icons')} />
           <NavItem icon={<Terminal size={16} />} label="Logs" active={activeTab === 'logs'} onClick={() => setActiveTab('logs')} />
@@ -166,6 +169,7 @@ function App() {
         {activeTab === 'home' && <HomeTab lcu={lcu} clientVersion={clientVersion} setActiveTab={setActiveTab} />}
         {activeTab === 'profile' && <ProfileTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} />}
         {activeTab === 'music' && <MusicTab lcu={lcu} musicBio={musicBio} setMusicBio={setMusicBio} showToast={showToast} addLog={addLog} applyIdleBio={applyIdleBio} />}
+        {activeTab === 'tokens' && <TokensTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} />}
         {activeTab === 'rank' && <RankTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} />}
         {activeTab === 'icons' && <IconTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} {...icons} />}
         {activeTab === 'logs' && <LogsTab logs={logs} exportLogs={exportLogs} clearLogs={clearLogs} showToast={showToast} />}

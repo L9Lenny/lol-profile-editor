@@ -172,6 +172,7 @@ input[type="number"]:focus {
 }
 
 @media (max-width: 880px) {
+
   .music-step-grid,
   .music-form-grid {
     grid-template-columns: 1fr;
@@ -180,5 +181,244 @@ input[type="number"]:focus {
   .music-actions-row {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+
+/* ── Token Slots ── */
+.token-slots-container {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.token-slot {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px dashed rgba(200, 155, 60, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.token-slot:hover {
+  border-color: var(--hextech-gold);
+  transform: scale(1.08);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 16px rgba(200, 155, 60, 0.35);
+}
+
+.token-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.token-empty-icon {
+  font-size: 1.4rem;
+  opacity: 0.4;
+}
+
+/* ── Token Picker Modal ── */
+.token-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.token-picker-modal {
+  background: var(--league-blue-deep);
+  border: 1px solid var(--hextech-gold-dark);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.token-picker-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.token-picker-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--hextech-gold);
+}
+
+.token-picker-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.token-picker-search {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.token-picker-search input {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.token-picker-search input:focus {
+  outline: none;
+}
+
+.token-picker-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
+}
+
+.token-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  aspect-ratio: 1;
+}
+
+.token-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--hextech-gold);
+  transform: translateY(-2px);
+}
+
+.token-item-icon {
+  width: 54px;
+  height: 54px;
+}
+
+.token-item-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.token-item-name,
+.token-item-level {
+  display: none;
+}
+
+.token-item-none {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  aspect-ratio: 1;
+}
+
+.token-item-none:hover {
+  background: rgba(255, 80, 80, 0.1);
+  border-color: #ff6b6b;
+}
+
+.token-item-none .token-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.token-slot-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.token-slot.active {
+  border-color: var(--hextech-gold);
+  background: rgba(200, 155, 60, 0.1);
+  box-shadow: 0 0 15px rgba(200, 155, 60, 0.2);
+}
+
+.token-slot-label {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.refresh-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.refresh-icon-btn:hover {
+  color: var(--hextech-gold);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.refresh-icon-btn.loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }

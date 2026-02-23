@@ -25,7 +25,7 @@ describe('HomeTab', () => {
         render(<HomeTab {...mockProps} />);
 
         fireEvent.click(screen.getByText('Profile Bio').closest('button')!);
-        expect(mockProps.setActiveTab).toHaveBeenCalledWith('bio');
+        expect(mockProps.setActiveTab).toHaveBeenCalledWith('profile');
 
         fireEvent.click(screen.getByText('Music Sync').closest('button')!);
         expect(mockProps.setActiveTab).toHaveBeenCalledWith('music');
