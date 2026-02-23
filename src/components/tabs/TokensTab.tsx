@@ -98,13 +98,13 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
 
             tokenList.sort((a, b) => a.name.localeCompare(b.name));
             setTokens(tokenList);
-            setHasFetched(true);
             addLog(`Loaded ${tokenList.length} selectable tokens.`);
         } catch (err) {
             addLog(`Error fetching tokens: ${err}`);
             showToast("Failed to load tokens", "error");
         } finally {
             setFetching(false);
+            setHasFetched(true);
         }
     }, [lcu, lcuRequest, addLog, showToast]);
 
