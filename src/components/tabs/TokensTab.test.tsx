@@ -44,7 +44,7 @@ describe('TokensTab', () => {
         const slot1 = screen.getByText('Slot 1').parentElement!.querySelector('.token-slot') as HTMLElement;
         fireEvent.click(slot1);
 
-        expect(screen.getByText('Select Token for Slot 1')).toBeDefined();
+        expect(screen.getByText('Select Token (Slot 1)')).toBeDefined();
     });
 
     it('should filter tokens by search', async () => {
@@ -68,9 +68,9 @@ describe('TokensTab', () => {
         fireEvent.change(searchInput, { target: { value: 'App' } });
 
         // Use findByText or similar, or just check the picker grid
-        const items = screen.getAllByText('Apple');
+        const items = screen.getAllByAltText('Apple');
         expect(items.length).toBeGreaterThan(0);
-        expect(screen.queryByText('Banana')).toBeNull();
+        expect(screen.queryByAltText('Banana')).toBeNull();
     });
 
     it('should handle token selection and duplicate assignment', async () => {
@@ -88,12 +88,12 @@ describe('TokensTab', () => {
 
         // Click slot 1 and select token 1
         fireEvent.click(screen.getByText('Slot 1').parentElement!.querySelector('.token-slot') as HTMLElement);
-        fireEvent.click(screen.getByText('TestItem'));
+        fireEvent.click(screen.getByAltText('TestItem'));
 
         // Click slot 2 and select token 1 again
         fireEvent.click(screen.getByText('Slot 2').parentElement!.querySelector('.token-slot') as HTMLElement);
-        // "TestItem" will now be in slot 1 label and in picker
-        const items = screen.getAllByText('TestItem');
+        // "TestItem" will now be in alt text of slot 1 and in picker
+        const items = screen.getAllByAltText('TestItem');
         fireEvent.click(items[items.length - 1]); // Click the one in picker (last one)
 
         const applyBtn = screen.getByText('APPLY TO PROFILE');
