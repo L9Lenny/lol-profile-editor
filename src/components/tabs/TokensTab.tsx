@@ -32,16 +32,16 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
         if (!lcu) return;
         try {
             const summaryRes: any = await lcuRequest("GET", "/lol-challenges/v1/summary-player-data/local-player");
-            if (summaryRes?.topChallenges) {
+            if (summaryRes?.topChallenges && Array.isArray(summaryRes.topChallenges)) {
                 const tops = summaryRes.topChallenges;
-                setSlot1(tops[0]?.id || -1);
-                setSlot2(tops[1]?.id || -1);
-                setSlot3(tops[2]?.id || -1);
+                setSlot1(tops[0]?.id ?? -1);
+                setSlot2(tops[1]?.id ?? -1);
+                setSlot3(tops[2]?.id ?? -1);
             } else if (summaryRes?.selectedChallengesString) {
-                const split = summaryRes.selectedChallengesString.split(',').map((s: string) => parseInt(s));
-                setSlot1(split[0] || -1);
-                setSlot2(split[1] || -1);
-                setSlot3(split[2] || -1);
+                const split = summaryRes.selectedChallengesString.split(',').filter(Boolean).map((s: string) => parseInt(s));
+                setSlot1(split[0] ?? -1);
+                setSlot2(split[1] ?? -1);
+                setSlot3(split[2] ?? -1);
             }
         } catch (err) {
             console.error("Failed to fetch current tokens", err);
@@ -63,19 +63,29 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
 
             const tokenList: TokenDef[] = [];
 
-            const entries = Array.isArray(challengesRes)
-                ? challengesRes.map(ch => [ch.id || ch.challengeId, ch])
-                : Object.entries(challengesRes);
+            let entries: any[] = [];
+            if (Array.isArray(challengesRes)) {
+                entries = challengesRes.map(ch => [ch?.id || ch?.challengeId, ch]);
+            } else if (typeof challengesRes === 'object' && challengesRes !== null) {
+                entries = Object.entries(challengesRes);
+            } else {
+                addLog("Invalid response format for tokens.");
+                setFetching(false);
+                return;
+            }
 
             addLog(`Analyzing ${entries.length} items from LCU...`);
 
             entries.forEach((entry: any) => {
                 const [key, ch] = entry;
-                if (!ch) return;
-                const id = ch.id || ch.challengeId || parseInt(key);
-                const level = ch.currentLevel;
+                if (!ch || typeof ch !== 'object') return;
 
-                if (id && id > 0 && level && level !== 'NONE' && ch.name) {
+                const rawId = ch.id || ch.challengeId || (typeof key === 'string' ? parseInt(key) : key);
+                const id = typeof rawId === 'number' && !isNaN(rawId) ? rawId : -1;
+                const level = ch.currentLevel;
+                const name = ch.name;
+
+                if (id > 0 && level && level !== 'NONE' && name) {
                     tokenList.push({
                         id: id,
                         name: ch.name,
@@ -127,13 +137,14 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
         return `https://raw.communitydragon.org/latest/game/assets/challenges/config/${id}/tokens/${level.toLowerCase()}.png`;
     };
 
-    const filteredTokens = tokens.filter(t =>
-        t.name.toLowerCase().includes(search.toLowerCase()) ||
-        t.id.toString().includes(search)
-    );
+    const filteredTokens = tokens.filter(t => {
+        const nameMatch = (t?.name || "").toLowerCase().includes(search.toLowerCase());
+        const idMatch = (t?.id?.toString() || "").includes(search);
+        return nameMatch || idMatch;
+    });
 
     const renderTokenSlot = (slotIndex: number, tokenId: number) => {
-        const token = tokens.find(t => t.id === tokenId);
+        const token = tokens.find(t => t?.id === tokenId);
         return (
             <div className="token-slot-wrapper">
                 <div
