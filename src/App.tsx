@@ -160,8 +160,8 @@ function App() {
           <NavItem icon={<Settings size={16} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} hasUpdate={!!latestVersion && clientVersion !== latestVersion} />
         </div>
         <div className="nav-social">
-          <a href="https://github.com/L9Lenny/lol-profile-editor" target="_blank" rel="noreferrer" className="social-link-top"><GithubIcon size={18} /></a>
-          <a href="https://ko-fi.com/profumato" target="_blank" rel="noreferrer" className="social-link-top"><Coffee size={18} /></a>
+          <a href="https://github.com/L9Lenny/lol-profile-editor" target="_blank" rel="noreferrer" className="social-link-top" aria-label="GitHub Repository"><GithubIcon size={18} /></a>
+          <a href="https://ko-fi.com/profumato" target="_blank" rel="noreferrer" className="social-link-top" aria-label="Support on Ko-fi"><Coffee size={18} /></a>
         </div>
       </nav>
 

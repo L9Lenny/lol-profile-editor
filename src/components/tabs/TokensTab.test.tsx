@@ -46,7 +46,9 @@ describe('TokensTab', () => {
             render(<TokensTab {...props} />);
         });
 
-        const slot1 = screen.getByText('Slot 1').parentElement!.querySelector('.token-slot') as HTMLElement;
+        const slot1Wrapper = screen.getByText('Slot 1').parentElement;
+        if (!slot1Wrapper) throw new Error("Slot 1 wrapper not found");
+        const slot1 = slot1Wrapper.querySelector('.token-slot') as HTMLElement;
         fireEvent.click(slot1);
 
         expect(screen.getByText('Select Token (Slot 1)')).toBeDefined();
@@ -66,7 +68,9 @@ describe('TokensTab', () => {
             render(<TokensTab {...props} lcuRequest={lcuRequest} />);
         });
 
-        fireEvent.click(screen.getByText('Slot 1').parentElement!.querySelector('.token-slot') as HTMLElement);
+        const slot1Wrapper = screen.getByText('Slot 1').parentElement;
+        if (!slot1Wrapper) throw new Error("Slot 1 wrapper not found");
+        fireEvent.click(slot1Wrapper.querySelector('.token-slot') as HTMLElement);
 
         const searchInput = screen.getByPlaceholderText('Search owned tokens...');
         fireEvent.change(searchInput, { target: { value: 'App' } });
@@ -82,7 +86,9 @@ describe('TokensTab', () => {
         });
 
         // Open picker for slot 1
-        fireEvent.click(screen.getByText('Slot 1').parentElement!.querySelector('.token-slot') as HTMLElement);
+        const slot1Wrapper = screen.getByText('Slot 1').parentElement;
+        if (!slot1Wrapper) throw new Error("Slot 1 wrapper not found");
+        fireEvent.click(slot1Wrapper.querySelector('.token-slot') as HTMLElement);
 
         // Click remove (token-item-none)
         fireEvent.click(screen.getByTitle('Remove token'));
@@ -146,7 +152,9 @@ describe('TokensTab', () => {
             render(<TokensTab {...props} />);
         });
 
-        fireEvent.click(screen.getByText('Slot 1').parentElement!.querySelector('.token-slot') as HTMLElement);
+        const slot1Wrapper = screen.getByText('Slot 1').parentElement;
+        if (!slot1Wrapper) throw new Error("Slot 1 wrapper not found");
+        fireEvent.click(slot1Wrapper.querySelector('.token-slot') as HTMLElement);
         expect(screen.getByText('No tokens found.')).toBeDefined();
     });
 });

@@ -8,7 +8,12 @@ interface TokensTabProps {
     setLoading: (loading: boolean) => void;
     showToast: (text: string, type: string) => void;
     addLog: (msg: string) => void;
-    lcuRequest: (method: string, endpoint: string, body?: Record<string, unknown>) => Promise<any>;
+    lcuRequest: (method: string, endpoint: string, body?: Record<string, unknown>) => Promise<unknown>;
+}
+
+interface LcuSummaryResponse {
+    topChallenges?: Array<{ id: number }>;
+    selectedChallengesString?: string;
 }
 
 interface TokenDef {
@@ -16,6 +21,14 @@ interface TokenDef {
     name: string;
     level: string;
     description: string;
+}
+
+interface LcuChallengeData {
+    id?: number;
+    challengeId?: number;
+    currentLevel?: string;
+    name?: string;
+    description?: string;
 }
 
 const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToast, addLog, lcuRequest }) => {
@@ -31,7 +44,7 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
     const fetchTopChallenges = React.useCallback(async () => {
         if (!lcu) return;
         try {
-            const summaryRes: any = await lcuRequest("GET", "/lol-challenges/v1/summary-player-data/local-player");
+            const summaryRes = await lcuRequest("GET", "/lol-challenges/v1/summary-player-data/local-player") as LcuSummaryResponse;
             if (summaryRes?.topChallenges && Array.isArray(summaryRes.topChallenges)) {
                 const tops = summaryRes.topChallenges;
                 setSlot1(tops[0]?.id ?? -1);
@@ -44,7 +57,7 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
                 setSlot3(split[2] ?? -1);
             }
         } catch (err) {
-            console.error("Failed to fetch current tokens", err);
+            addLog(`Failed to fetch current tokens: ${err}`);
         }
     }, [lcu, lcuRequest]);
 
@@ -53,7 +66,7 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
         setFetching(true);
         try {
             addLog("Fetching tokens from LCU...");
-            const challengesRes: any = await lcuRequest("GET", "/lol-challenges/v1/challenges/local-player");
+            const challengesRes = await lcuRequest("GET", "/lol-challenges/v1/challenges/local-player");
 
             if (!challengesRes) {
                 addLog("Empty response from challenges API.");
@@ -63,10 +76,10 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
 
             const tokenList: TokenDef[] = [];
 
-            let entries: any[] = [];
+            let entries: [string, unknown][] = [];
             if (Array.isArray(challengesRes)) {
-                entries = challengesRes.map(ch => [ch?.id || ch?.challengeId, ch]);
-            } else if (typeof challengesRes === 'object' && challengesRes !== null) {
+                entries = challengesRes.map((ch: LcuChallengeData) => [String(ch?.id || ch?.challengeId || ""), ch]);
+            } else if (challengesRes && typeof challengesRes === 'object') {
                 entries = Object.entries(challengesRes);
             } else {
                 addLog("Invalid response format for tokens.");
@@ -76,13 +89,13 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
 
             addLog(`Analyzing ${entries.length} items from LCU...`);
 
-            entries.forEach((entry: any) => {
-                const [key, ch] = entry;
+            entries.forEach(([key, value]) => {
+                const ch = value as LcuChallengeData;
                 if (!ch || typeof ch !== 'object') return;
 
-                const rawId = ch.id || ch.challengeId || (typeof key === 'string' ? Number.parseInt(key) : key);
+                const rawId = ch.id || ch.challengeId || (key ? Number.parseInt(key) : -1);
                 const idNum = typeof rawId === 'number' ? rawId : Number.parseInt(String(rawId), 10);
-                const id = !isNaN(idNum) ? idNum : -1;
+                const id = !Number.isNaN(idNum) ? idNum : -1;
                 const level = ch.currentLevel;
                 const name = ch.name;
 
@@ -151,6 +164,14 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
                 <div
                     className={`token-slot ${activePicker === slotIndex ? 'active' : ''}`}
                     onClick={() => !loading && setActivePicker(slotIndex)}
+                    onKeyDown={(e) => {
+                        if (!loading && (e.key === 'Enter' || e.key === ' ')) {
+                            e.preventDefault();
+                            setActivePicker(slotIndex);
+                        }
+                    }}
+                    role="button"
+                    tabIndex={0}
                     title={token ? `${token.name} (${token.level})` : "Click to select a token"}
                 >
                     {token ? (
@@ -233,7 +254,14 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
                         </div>
 
                         <div className="token-picker-grid">
-                            <div className="token-item-none" onClick={() => selectToken(-1)} title="Remove token">
+                            <div
+                                className="token-item-none"
+                                onClick={() => selectToken(-1)}
+                                onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && selectToken(-1)}
+                                role="button"
+                                tabIndex={0}
+                                title="Remove token"
+                            >
                                 <div className="token-item-icon">✕</div>
                             </div>
                             {filteredTokens.length === 0 && hasFetched && (
@@ -243,7 +271,15 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
                                 </div>
                             )}
                             {filteredTokens.map(t => (
-                                <div key={t.id} className="token-item" onClick={() => selectToken(t.id)} title={`${t.name} (${t.level})\n${t.description}`}>
+                                <div
+                                    key={t.id}
+                                    className="token-item"
+                                    onClick={() => selectToken(t.id)}
+                                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && selectToken(t.id)}
+                                    role="button"
+                                    tabIndex={0}
+                                    title={`${t.name} (${t.level})\n${t.description}`}
+                                >
                                     <div className="token-item-icon">
                                         <img src={getTokenImgUrl(t.id, t.level)} alt={t.name} loading="lazy" />
                                     </div>
