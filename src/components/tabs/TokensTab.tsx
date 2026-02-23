@@ -28,7 +28,7 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
     const [hasFetched, setHasFetched] = useState(false);
     const [fetching, setFetching] = useState(false);
 
-    const fetchTopChallenges = async () => {
+    const fetchTopChallenges = React.useCallback(async () => {
         if (!lcu) return;
         try {
             const summaryRes: any = await lcuRequest("GET", "/lol-challenges/v1/summary-player-data/local-player");
@@ -46,9 +46,9 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
         } catch (err) {
             console.error("Failed to fetch current tokens", err);
         }
-    };
+    }, [lcu, lcuRequest]);
 
-    const fetchTokens = async () => {
+    const fetchTokens = React.useCallback(async () => {
         if (!lcu) return;
         setFetching(true);
         try {
@@ -81,15 +81,16 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
                 if (!ch || typeof ch !== 'object') return;
 
                 const rawId = ch.id || ch.challengeId || (typeof key === 'string' ? parseInt(key) : key);
-                const id = typeof rawId === 'number' && !isNaN(rawId) ? rawId : -1;
+                const idNum = typeof rawId === 'number' ? rawId : parseInt(String(rawId), 10);
+                const id = !isNaN(idNum) ? idNum : -1;
                 const level = ch.currentLevel;
                 const name = ch.name;
 
                 if (id > 0 && level && level !== 'NONE' && name) {
                     tokenList.push({
-                        id: id,
-                        name: ch.name,
-                        level: level,
+                        id,
+                        name,
+                        level,
                         description: ch.description || ""
                     });
                 }
@@ -105,7 +106,7 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
         } finally {
             setFetching(false);
         }
-    };
+    }, [lcu, lcuRequest, addLog, showToast]);
 
     useEffect(() => {
         if (lcu) {
@@ -115,7 +116,7 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
             setTokens([]);
             setHasFetched(false);
         }
-    }, [lcu]);
+    }, [lcu, fetchTokens, fetchTopChallenges]);
 
     const applyTokens = async () => {
         if (!lcu) return;

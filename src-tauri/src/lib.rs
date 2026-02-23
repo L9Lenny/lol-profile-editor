@@ -45,7 +45,9 @@ impl AppSettings {
         if let Some(parent) = self.config_path.parent() {
             let _ = fs::create_dir_all(parent);
         }
-        let _ = fs::write(&self.config_path, serde_json::to_string_pretty(settings).unwrap());
+        if let Ok(json) = serde_json::to_string_pretty(settings) {
+            let _ = fs::write(&self.config_path, json);
+        }
     }
 }
 
@@ -191,7 +193,7 @@ pub fn run() {
         .plugin(tauri_plugin_log::Builder::new().build())
         .setup(|app| {
             // Get config directory
-            let config_dir = app.path().app_config_dir().unwrap();
+            let config_dir = app.path().app_config_dir().unwrap_or_else(|_| PathBuf::from("."));
             let config_path = config_dir.join("settings.json");
             
             // Create AppSettings and load from file
@@ -212,7 +214,7 @@ pub fn run() {
             let menu = Menu::with_items(app, &[&show_i, &quit_i])?;
 
             let _tray = TrayIconBuilder::new()
-                .icon(app.default_window_icon().unwrap().clone())
+                .icon(app.default_window_icon().cloned().unwrap_or_else(|| tauri::image::Image::new(&[], 0, 0)))
                 .menu(&menu)
                 .show_menu_on_left_click(false)
                 .on_menu_event(|app: &tauri::AppHandle, event| match event.id.as_ref() {
@@ -221,8 +223,8 @@ pub fn run() {
                     }
                     "show" => {
                         if let Some(window) = app.get_webview_window("main") {
-                            let _ = window.show().unwrap();
-                            let _ = window.set_focus().unwrap();
+                            let _ = window.show();
+                            let _ = window.set_focus();
                         }
                     }
                     _ => {}
@@ -235,8 +237,8 @@ pub fn run() {
                     {
                         let app = tray.app_handle();
                         if let Some(window) = app.get_webview_window("main") {
-                            let _ = window.show().unwrap();
-                            let _ = window.set_focus().unwrap();
+                            let _ = window.show();
+                            let _ = window.set_focus();
                         }
                     }
                 })
