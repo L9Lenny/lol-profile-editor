@@ -233,8 +233,21 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
             )}
 
             {activePicker && (
-                <div className="token-picker-overlay fadeIn" onClick={() => setActivePicker(null)}>
-                    <div className="token-picker-modal" onClick={e => e.stopPropagation()}>
+                <div
+                    className="token-picker-overlay fadeIn"
+                    onClick={() => setActivePicker(null)}
+                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') && setActivePicker(null)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Close picker"
+                >
+                    <div
+                        className="token-picker-modal"
+                        onClick={e => e.stopPropagation()}
+                        onKeyDown={e => e.stopPropagation()}
+                        role="dialog"
+                        aria-modal="true"
+                    >
                         <div className="token-picker-header">
                             <h3>Select Token (Slot {activePicker})</h3>
                             <button onClick={() => setActivePicker(null)} className="token-picker-close">
