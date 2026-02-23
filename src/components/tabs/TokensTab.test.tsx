@@ -172,9 +172,9 @@ describe('TokensTab', () => {
         fireEvent.click(slot1);
         expect(screen.getByText('Select Token (Slot 1)')).toBeDefined();
 
-        // Click the overlay to close picker (the close X button has no accessible name text)
-        const overlay = document.querySelector('.token-picker-overlay') as HTMLElement;
-        fireEvent.click(overlay);
+        // Click the overlay (i.e. the <dialog> itself) to close picker
+        const dialog = document.querySelector('dialog.token-picker-dialog') as HTMLElement;
+        fireEvent.click(dialog);
         expect(screen.queryByText('Select Token (Slot 1)')).toBeNull();
 
         // Click again to reopen

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { LcuInfo } from '../../hooks/useLcu';
 import { X, Search, Award, Info, RotateCw } from 'lucide-react';
 
@@ -40,6 +40,31 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
     const [activePicker, setActivePicker] = useState<number | null>(null);
     const [hasFetched, setHasFetched] = useState(false);
     const [fetching, setFetching] = useState(false);
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
+    // Open/close native dialog based on activePicker state
+    useEffect(() => {
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+        if (activePicker !== null) {
+            if (!dialog.open) dialog.showModal();
+        } else {
+            if (dialog.open) dialog.close();
+        }
+    }, [activePicker]);
+
+    // Handle native Escape key via the 'cancel' event
+    useEffect(() => {
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+        const handleCancel = (e: Event) => {
+            e.preventDefault();
+            setActivePicker(null);
+            setSearch("");
+        };
+        dialog.addEventListener('cancel', handleCancel);
+        return () => dialog.removeEventListener('cancel', handleCancel);
+    }, []);
 
     const fetchTopChallenges = React.useCallback(async () => {
         if (!lcu) return;
@@ -184,6 +209,12 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
         if (activePicker === 2) setSlot2(id);
         if (activePicker === 3) setSlot3(id);
         setActivePicker(null);
+        setSearch("");
+    };
+
+    const closePicker = () => {
+        setActivePicker(null);
+        setSearch("");
     };
 
     return (
@@ -226,67 +257,63 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
                 </div>
             )}
 
-            {activePicker && (
-                <div
-                    className="token-picker-overlay fadeIn"
-                    onClick={() => setActivePicker(null)}
-                >
-                    <div
-                        className="token-picker-modal"
-                        onClick={e => e.stopPropagation()}
-                        role="dialog"
-                        aria-modal="true"
-                    >
-                        <div className="token-picker-header">
-                            <h3>Select Token (Slot {activePicker})</h3>
-                            <button onClick={() => setActivePicker(null)} className="token-picker-close">
-                                <X size={20} />
-                            </button>
-                        </div>
+            {/* Native <dialog> — handles Escape, role=dialog, aria-modal natively */}
+            <dialog
+                ref={dialogRef}
+                className="token-picker-dialog"
+                onClick={(e) => { if (e.target === dialogRef.current) closePicker(); }}
+                aria-label={`Select Token for Slot ${activePicker}`}
+            >
+                <div className="token-picker-modal">
+                    <div className="token-picker-header">
+                        <h3>Select Token (Slot {activePicker})</h3>
+                        <button onClick={closePicker} className="token-picker-close" aria-label="Close picker">
+                            <X size={20} />
+                        </button>
+                    </div>
 
-                        <div className="token-picker-search">
-                            <Search size={16} />
-                            <input
-                                type="text"
-                                placeholder="Search owned tokens..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                autoFocus
-                            />
-                        </div>
+                    <div className="token-picker-search">
+                        <Search size={16} />
+                        <input
+                            type="text"
+                            placeholder="Search owned tokens..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            autoFocus
+                        />
+                    </div>
 
-                        <div className="token-picker-grid">
+                    <div className="token-picker-grid">
+                        <button
+                            type="button"
+                            className="token-item-none"
+                            onClick={() => selectToken(-1)}
+                            title="Remove token"
+                        >
+                            <div className="token-item-icon">✕</div>
+                        </button>
+                        {filteredTokens.length === 0 && hasFetched && (
+                            <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>
+                                <Info size={32} style={{ opacity: 0.3, marginBottom: '10px' }} />
+                                <p>No tokens found.</p>
+                            </div>
+                        )}
+                        {filteredTokens.map(t => (
                             <button
+                                key={t.id}
                                 type="button"
-                                className="token-item-none"
-                                onClick={() => selectToken(-1)}
-                                title="Remove token"
+                                className="token-item"
+                                onClick={() => selectToken(t.id)}
+                                title={`${t.name} (${t.level})\n${t.description}`}
                             >
-                                <div className="token-item-icon">✕</div>
-                            </button>
-                            {filteredTokens.length === 0 && hasFetched && (
-                                <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>
-                                    <Info size={32} style={{ opacity: 0.3, marginBottom: '10px' }} />
-                                    <p>No tokens found.</p>
+                                <div className="token-item-icon">
+                                    <img src={getTokenImgUrl(t.id, t.level)} alt={t.name} loading="lazy" />
                                 </div>
-                            )}
-                            {filteredTokens.map(t => (
-                                <button
-                                    key={t.id}
-                                    type="button"
-                                    className="token-item"
-                                    onClick={() => selectToken(t.id)}
-                                    title={`${t.name} (${t.level})\n${t.description}`}
-                                >
-                                    <div className="token-item-icon">
-                                        <img src={getTokenImgUrl(t.id, t.level)} alt={t.name} loading="lazy" />
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
+                            </button>
+                        ))}
                     </div>
                 </div>
-            )}
+            </dialog>
         </div>
     );
 };

@@ -228,19 +228,20 @@ input[type="number"]:focus {
 }
 
 /* ── Token Picker Modal ── */
-.token-picker-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.token-picker-dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  background: transparent;
+  max-width: 500px;
+  width: calc(100% - 40px);
+  max-height: 80vh;
+  overflow: visible;
+}
+
+.token-picker-dialog::backdrop {
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(5px);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
 }
 
 .token-picker-modal {
@@ -248,13 +249,13 @@ input[type="number"]:focus {
   border: 1px solid var(--hextech-gold-dark);
   border-radius: 12px;
   width: 100%;
-  max-width: 500px;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.2s ease-out forwards;
 }
+
 
 .token-picker-header {
   padding: 15px 20px;
