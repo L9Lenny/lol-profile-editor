@@ -70,7 +70,7 @@ describe('useLcu', () => {
         });
 
         expect(result.current.lcu).toBeNull();
-        expect(mockAddLog).toHaveBeenCalledWith('League client disconnected.');
+        expect(mockAddLog).toHaveBeenCalledWith(expect.stringContaining('League client disconnected:'));
     });
 
     it('should perform lcuRequest correctly', async () => {

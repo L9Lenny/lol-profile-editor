@@ -50,7 +50,7 @@ export function useIcons(addLog: (msg: string) => void) {
                 if (!resI.ok) throw new Error("Failed to load profile icons");
                 const data = await resI.json();
                 const icons = Object.values(data.data).map((icon: any) => ({
-                    id: parseInt(icon.id),
+                    id: Number.parseInt(icon.id),
                     name: icon.name || `Icon ${icon.id}`
                 }));
                 setAllIcons(icons);

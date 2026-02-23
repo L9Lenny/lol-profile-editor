@@ -20,6 +20,7 @@ const SONAR_TOKEN = process.env.SONAR_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPOSITORY || 'L9Lenny/lol-profile-editor';
 const SONAR_PROJECT_KEY = process.env.SONAR_PROJECT_KEY || 'L9Lenny_lol-profile-editor';
 const SONAR_ORGANIZATION = process.env.SONAR_ORGANIZATION || 'l9lenny';
+const SONAR_BRANCH = process.env.SONAR_BRANCH || 'main';
 
 // PR information (optional, from GitHub Actions)
 const PR_NUMBER = process.env.PR_NUMBER || null;
@@ -81,7 +82,7 @@ function makeRequest(url, options = {}) {
  * Get open SonarQube issues
  */
 async function getSonarQubeIssues() {
-  const url = `https://sonarcloud.io/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&organization=${SONAR_ORGANIZATION}&statuses=OPEN&ps=500`;
+  const url = `https://sonarcloud.io/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&organization=${SONAR_ORGANIZATION}&branch=${SONAR_BRANCH}&statuses=OPEN&ps=500`;
 
   console.log(`📊 Fetching SonarQube issues...`);
   const response = await makeRequest(url);

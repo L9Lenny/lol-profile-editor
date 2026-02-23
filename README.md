@@ -42,21 +42,22 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 | CI Workflows | [GitHub Actions](https://github.com/L9Lenny/lol-profile-editor/actions) |
 | Security Report | [`res/docs/SECURITY_REPORT.md`](res/docs/SECURITY_REPORT.md) |
 
-## ✨ What You Can Do
+## ✨ Main Features
 
-- Customize visible **Solo/Duo rank** with live preview.
-- Browse and apply **6,000+ profile icons** from Data Dragon.
-- Edit **bio/chat status** directly from the app.
-- Set LCU presence (**Online, Away, Mobile, Offline**) from the Bio tab.
-- Export internal logs for troubleshooting.
-- Use auto-update with signed update artifacts.
+- **🆕 Profile Tokens**: Customize your 3 challenge medals with a visual image picker.
+- **🎵 Music Integration**: Synchronize your profile bio with the song you're listening to on **Last.fm**.
+- **🏆 Rank Mirror**: Customize your visible **Solo/Duo rank** with live draft previews.
+- **🖼️ Icon Swapper**: Browse and apply **6,000+ profile icons** from the Data Dragon library.
+- **📝 Presence Control**: Edit **bio/chat status** and set LCU presence (**Online, Away, Mobile, Offline**).
+- **🛠️ Troubleshooting**: Export internal system logs for advanced support.
+- **🔄 Auto-Updater**: Built-in update detection with secure ED25519 signatures.
 
 ## ⚡ Quick Start (Users)
 
 1. Download the latest build from [Releases](https://github.com/L9Lenny/lol-profile-editor/releases).
-2. Start League Client.
-3. Open League Profile Tool.
-4. Apply changes from the app UI.
+2. Start League of Legends client.
+3. Open **League Profile Tool**.
+4. Apply your desired customizations directly through the Hextech-inspired UI.
 
 ## 🛠️ Development
 

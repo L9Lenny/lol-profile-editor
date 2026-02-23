@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { invoke } from "@tauri-apps/api/core";
 
 export interface LcuInfo {
@@ -16,13 +16,13 @@ export function useLcu(addLog: (msg: string) => void) {
             if (!prevLcuRef.current && info) {
                 addLog("League client connected.");
             }
-            if (!prevLcuRef.current || prevLcuRef.current.port !== info.port || prevLcuRef.current.token !== info.token) {
+            if (!prevLcuRef.current || prevLcuRef.current?.port !== info?.port || prevLcuRef.current?.token !== info?.token) {
                 prevLcuRef.current = info;
                 setLcu(info);
             }
         } catch (err) {
             if (prevLcuRef.current) {
-                addLog("League client disconnected.");
+                addLog(`League client disconnected: ${err}`);
                 prevLcuRef.current = null;
                 setLcu(null);
             }
@@ -35,7 +35,7 @@ export function useLcu(addLog: (msg: string) => void) {
         return () => clearInterval(interval);
     }, []);
 
-    const lcuRequest = async (method: string, endpoint: string, body?: Record<string, unknown>) => {
+    const lcuRequest = useCallback(async (method: string, endpoint: string, body?: Record<string, unknown>) => {
         if (!lcu) throw new Error("LCU not connected");
         const payload: Record<string, unknown> = {
             method,
@@ -45,7 +45,7 @@ export function useLcu(addLog: (msg: string) => void) {
         };
         if (body) payload.body = body;
         return invoke("lcu_request", payload);
-    };
+    }, [lcu]);
 
     return { lcu, lcuRequest };
 }

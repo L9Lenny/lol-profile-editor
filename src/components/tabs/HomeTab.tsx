@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, Layout, Disc3, Trophy, UserCircle } from 'lucide-react';
+import { ChevronRight, Layout, Disc3, Trophy, UserCircle, Award } from 'lucide-react';
 import { LcuInfo } from '../../hooks/useLcu';
 
 interface HomeTabProps {
@@ -20,9 +20,14 @@ const HomeTab: React.FC<HomeTabProps> = ({ lcu, clientVersion, setActiveTab }) =
                 </div>
             </div>
             <div className="quick-start-grid">
-                <button type="button" className="feature-card" onClick={() => setActiveTab('bio')}>
+                <button type="button" className="feature-card" onClick={() => setActiveTab('profile')}>
                     <div className="feature-icon"><Layout size={24} /></div>
                     <div className="feature-body"><h3>Profile Bio</h3><p>Update status message and biography.</p></div>
+                    <ChevronRight size={18} className="feature-arrow" />
+                </button>
+                <button type="button" className="feature-card" onClick={() => setActiveTab('tokens')}>
+                    <div className="feature-icon"><Award size={24} /></div>
+                    <div className="feature-body"><h3>Profile Tokens</h3><p>Customize your profile badges.</p></div>
                     <ChevronRight size={18} className="feature-arrow" />
                 </button>
                 <button type="button" className="feature-card" onClick={() => setActiveTab('music')}>

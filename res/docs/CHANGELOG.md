@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-02-23
+
+### Added
+- **🏆 Profile Tokens**: Introduced a dedicated "Tokens" tab for customizing challenge medals on your profile.
+- **🖼️ Visual Picker**: New HD token selection grid powered by Community Dragon assets.
+- **🔄 Multi-Slot Assignment**: Added support for assigning the same token to multiple slots simultaneously.
+- **🔍 Smart Search**: Real-time filtering for owned tokens within the selection modal.
+- **📡 Sync Control**: Added a RotateCw icon for manual token synchronization and status badges for owned count.
+
+### Fixed
+- **🔒 LCU Bridge**: Hardened the backend whitelist to securely allow challenge-related endpoints.
+- **🧩 Data Parsing**: Improved LCU response handling to support both object-mapped and array-based token lists.
+
+### Changed
+- **💎 UI Refinement**: Streamlined the Tokens tab by removing redundant labels and optimizing grid density for a cleaner look.
+- **📦 Dependencies (Dependabot)**: Bumped `actions/checkout` from 4 to 6.
+
 ## [1.4.2] - 2026-02-22
 
 ### Fixed

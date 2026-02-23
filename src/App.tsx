@@ -4,9 +4,10 @@ import { getVersion } from "@tauri-apps/api/app";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import {
+  Award,
   Coffee,
   Disc3,
-  Github,
+  Github as GithubIcon,
   Home,
   Loader2,
   Settings,
@@ -26,11 +27,12 @@ import { useMusicSync } from "./hooks/useMusicSync";
 
 // Components
 import HomeTab from "./components/tabs/HomeTab";
-import BioTab from "./components/tabs/BioTab";
+import ProfileTab from "./components/tabs/ProfileTab";
 import MusicTab from "./components/tabs/MusicTab";
 import RankTab from "./components/tabs/RankTab";
 import IconTab from "./components/tabs/IconTab";
 import LogsTab from "./components/tabs/LogsTab";
+import TokensTab from "./components/tabs/TokensTab";
 import SettingsTab from "./components/tabs/SettingsTab";
 
 function App() {
@@ -149,23 +151,25 @@ function App() {
       <nav className="nav-bar">
         <div className="nav-links">
           <NavItem icon={<Home size={16} />} label="Home" active={activeTab === 'home'} onClick={() => setActiveTab('home')} />
-          <NavItem icon={<ShieldCheck size={16} />} label="Bio" active={activeTab === 'bio'} onClick={() => setActiveTab('bio')} />
+          <NavItem icon={<ShieldCheck size={16} />} label="Profile" active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} />
           <NavItem icon={<Disc3 size={16} />} label="Music" active={activeTab === 'music'} onClick={() => setActiveTab('music')} />
+          <NavItem icon={<Award size={16} />} label="Tokens" active={activeTab === 'tokens'} onClick={() => setActiveTab('tokens')} />
           <NavItem icon={<Trophy size={16} />} label="Rank" active={activeTab === 'rank'} onClick={() => setActiveTab('rank')} />
           <NavItem icon={<UserCircle size={16} />} label="Icons" active={activeTab === 'icons'} onClick={() => setActiveTab('icons')} />
           <NavItem icon={<Terminal size={16} />} label="Logs" active={activeTab === 'logs'} onClick={() => setActiveTab('logs')} />
-          <NavItem icon={<Settings size={16} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} hasUpdate={latestVersion && clientVersion !== latestVersion} />
+          <NavItem icon={<Settings size={16} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} hasUpdate={!!latestVersion && clientVersion !== latestVersion} />
         </div>
         <div className="nav-social">
-          <a href="https://github.com/L9Lenny/lol-profile-editor" target="_blank" rel="noreferrer" className="social-link-top"><Github size={18} /></a>
+          <a href="https://github.com/L9Lenny/lol-profile-editor" target="_blank" rel="noreferrer" className="social-link-top"><GithubIcon size={18} /></a>
           <a href="https://ko-fi.com/profumato" target="_blank" rel="noreferrer" className="social-link-top"><Coffee size={18} /></a>
         </div>
       </nav>
 
       <main className="content-area">
         {activeTab === 'home' && <HomeTab lcu={lcu} clientVersion={clientVersion} setActiveTab={setActiveTab} />}
-        {activeTab === 'bio' && <BioTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} />}
+        {activeTab === 'profile' && <ProfileTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} />}
         {activeTab === 'music' && <MusicTab lcu={lcu} musicBio={musicBio} setMusicBio={setMusicBio} showToast={showToast} addLog={addLog} applyIdleBio={applyIdleBio} />}
+        {activeTab === 'tokens' && <TokensTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} />}
         {activeTab === 'rank' && <RankTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} />}
         {activeTab === 'icons' && <IconTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} {...icons} />}
         {activeTab === 'logs' && <LogsTab logs={logs} exportLogs={exportLogs} clearLogs={clearLogs} showToast={showToast} />}
@@ -191,7 +195,7 @@ function App() {
   );
 }
 
-function NavItem({ icon, label, active, onClick, hasUpdate }: { icon: React.ReactNode, label: string, active: boolean, onClick: () => void, hasUpdate?: any }) {
+function NavItem({ icon, label, active, onClick, hasUpdate }: Readonly<{ icon: React.ReactNode, label: string, active: boolean, onClick: () => void, hasUpdate?: boolean }>) {
   return (
     <div className={`nav-item ${active ? 'active' : ''}`} onClick={onClick} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick()} role="tab" tabIndex={0}>
       {icon} <span>{label}</span>

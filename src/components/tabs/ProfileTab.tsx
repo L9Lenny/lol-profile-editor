@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { invoke } from "@tauri-apps/api/core";
 import { LcuInfo } from '../../hooks/useLcu';
 
-interface BioTabProps {
+interface ProfileTabProps {
     lcu: LcuInfo | null;
     loading: boolean;
     setLoading: (loading: boolean) => void;
@@ -11,7 +11,7 @@ interface BioTabProps {
     lcuRequest: (method: string, endpoint: string, body?: Record<string, unknown>) => Promise<any>;
 }
 
-const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, addLog, lcuRequest }) => {
+const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, loading, setLoading, showToast, addLog, lcuRequest }) => {
     const [bio, setBio] = useState("");
     const [availability, setAvailability] = useState("chat");
 
@@ -28,9 +28,9 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
     const refreshAvailability = async () => {
         if (!lcu) return;
         try {
-            const chatRes = await lcuRequest("GET", "/lol-chat/v1/me");
-            if ((chatRes as any)?.availability) {
-                setAvailability((chatRes as any).availability);
+            const chatRes: any = await lcuRequest("GET", "/lol-chat/v1/me");
+            if (chatRes?.availability) {
+                setAvailability(chatRes.availability);
             }
         } catch (err) {
             addLog(`Status sync failed: ${err}`);
@@ -38,7 +38,9 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
     };
 
     useEffect(() => {
-        if (lcu) refreshAvailability();
+        if (lcu) {
+            refreshAvailability();
+        }
     }, [lcu]);
 
     const handleUpdateBio = async () => {
@@ -76,7 +78,7 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
     return (
         <div className="tab-content fadeIn">
             <div className="card">
-                <h3 className="card-title">Profile Bio</h3>
+                <h3 className="card-title">Profile Bio & Status</h3>
                 <div className="input-group">
                     <label htmlFor="bio-input">New Status Message</label>
                     <textarea
@@ -88,8 +90,7 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
                         rows={4}
                     />
                 </div>
-                <button className="primary-btn" onClick={handleUpdateBio} disabled={!lcu || loading || !bio.trim()} style={{ width: '100%', marginTop: '20px' }}>APPLY</button>
-                {!lcu && <p style={{ color: '#ff3232', fontSize: '0.8rem', marginTop: '15px', textAlign: 'center' }}>⚠ Start League of Legends to enable this feature.</p>}
+                <button className="primary-btn" onClick={handleUpdateBio} disabled={!lcu || loading || !bio.trim()} style={{ width: '100%', marginTop: '20px' }}>APPLY BIO</button>
 
                 {lcu && (
                     <div style={{ marginTop: '25px' }}>
@@ -97,7 +98,7 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
                             <label htmlFor="availability-select" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Chat Availability</label>
                             <span className={`availability-pill ${availability}`}>
                                 <span className="availability-dot"></span>
-                                {availability.toUpperCase()}
+                                {statusLabel(availability)}
                             </span>
                         </div>
                         <div style={{ display: 'flex', gap: '10px' }}>
@@ -115,14 +116,13 @@ const BioTab: React.FC<BioTabProps> = ({ lcu, loading, setLoading, showToast, ad
                                 APPLY
                             </button>
                         </div>
-                        <p style={{ margin: '8px 0 0 0', fontSize: '0.55rem', color: 'var(--text-secondary)' }}>
-                            Select a status and apply it to the League chat.
-                        </p>
                     </div>
                 )}
             </div>
+
+            {!lcu && <p style={{ color: '#ff3232', fontSize: '0.8rem', marginTop: '15px', textAlign: 'center' }}>⚠ Start League of Legends to enable this feature.</p>}
         </div>
     );
 };
 
-export default BioTab;
+export default ProfileTab;

@@ -45,7 +45,9 @@ impl AppSettings {
         if let Some(parent) = self.config_path.parent() {
             let _ = fs::create_dir_all(parent);
         }
-        let _ = fs::write(&self.config_path, serde_json::to_string_pretty(settings).unwrap());
+        if let Ok(json) = serde_json::to_string_pretty(settings) {
+            let _ = fs::write(&self.config_path, json);
+        }
     }
 }
 
@@ -77,7 +79,25 @@ fn is_allowed_lcu_request(method: &str, endpoint: &str) -> bool {
         ("PUT", "/lol-chat/v1/me")
             | ("GET", "/lol-chat/v1/me")
             | ("PUT", "/lol-summoner/v1/current-summoner/icon")
+            | ("GET", "/lol-challenges/v1/summary-player-data/local-player")
+            | ("GET", "/lol-challenges/v1/challenges/local-player")
+            | ("POST", "/lol-challenges/v1/update-player-preferences")
     )
+}
+
+use std::sync::OnceLock;
+
+static CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
+
+fn get_client() -> &'static reqwest::Client {
+    CLIENT.get_or_init(|| {
+        reqwest::Client::builder()
+            .danger_accept_invalid_certs(true)
+            .no_proxy()
+            .timeout(Duration::from_secs(10))
+            .build()
+            .expect("Failed to create LCU client")
+    })
 }
 
 #[tauri::command]
@@ -101,33 +121,33 @@ async fn lcu_request(
         return Err("Endpoint not allowed".to_string());
     }
 
-    let client = reqwest::Client::builder()
-        .danger_accept_invalid_certs(true)
-        .timeout(Duration::from_secs(10))
-        .build()
-        .map_err(|e| e.to_string())?;
-
+    let client = get_client();
     let url = format!("https://127.0.0.1:{}{}", port_num, endpoint);
     let auth = lcu::get_auth_header(&token);
 
     let mut request = match method.as_str() {
-        "GET" => client.get(url),
-        "POST" => client.post(url),
-        "PUT" => client.put(url),
-        "DELETE" => client.delete(url),
-        "PATCH" => client.patch(url),
+        "GET" => client.get(&url),
+        "POST" => client.post(&url),
+        "PUT" => client.put(&url),
+        "DELETE" => client.delete(&url),
+        "PATCH" => client.patch(&url),
         _ => return Err("Invalid method".to_string()),
     };
 
-    request = request.header(AUTHORIZATION, auth).header(CONTENT_TYPE, "application/json");
+    request = request
+        .header(AUTHORIZATION, auth)
+        .header(CONTENT_TYPE, "application/json")
+        .header(reqwest::header::ACCEPT, "application/json");
 
     if let Some(b) = body {
         request = request.json(&b);
     }
 
-    let res = request.send().await.map_err(|e| e.to_string())?;
+    let res = request.send().await.map_err(|e| {
+        eprintln!("[LCU] Request Error: {:?} (Source: {:?})", e, std::error::Error::source(&e));
+        e.to_string()
+    })?;
     
-    // For 204 No Content or empty responses
     if res.status().as_u16() == 204 {
         return Ok(json!({"status": "success"}));
     }
@@ -188,7 +208,7 @@ pub fn run() {
         .plugin(tauri_plugin_log::Builder::new().build())
         .setup(|app| {
             // Get config directory
-            let config_dir = app.path().app_config_dir().unwrap();
+            let config_dir = app.path().app_config_dir().unwrap_or_else(|_| PathBuf::from("."));
             let config_path = config_dir.join("settings.json");
             
             // Create AppSettings and load from file
@@ -209,7 +229,7 @@ pub fn run() {
             let menu = Menu::with_items(app, &[&show_i, &quit_i])?;
 
             let _tray = TrayIconBuilder::new()
-                .icon(app.default_window_icon().unwrap().clone())
+                .icon(app.default_window_icon().cloned().unwrap_or_else(|| tauri::image::Image::new(&[], 0, 0)))
                 .menu(&menu)
                 .show_menu_on_left_click(false)
                 .on_menu_event(|app: &tauri::AppHandle, event| match event.id.as_ref() {
@@ -218,8 +238,8 @@ pub fn run() {
                     }
                     "show" => {
                         if let Some(window) = app.get_webview_window("main") {
-                            let _ = window.show().unwrap();
-                            let _ = window.set_focus().unwrap();
+                            let _ = window.show();
+                            let _ = window.set_focus();
                         }
                     }
                     _ => {}
@@ -232,8 +252,8 @@ pub fn run() {
                     {
                         let app = tray.app_handle();
                         if let Some(window) = app.get_webview_window("main") {
-                            let _ = window.show().unwrap();
-                            let _ = window.set_focus().unwrap();
+                            let _ = window.show();
+                            let _ = window.set_focus();
                         }
                     }
                 })
