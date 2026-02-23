@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **🔒 LCU Bridge**: Hardened the backend whitelist to securely allow challenge-related endpoints.
 - **🧩 Data Parsing**: Improved LCU response handling to support both object-mapped and array-based token lists.
+- **♿ Accessibility**: Migrated UI modals to native `<dialog>` elements; resolved SonarCloud violations regarding non-interactive event listeners.
+- **🧹 Code Quality**: Removed deprecated Github icons, stabilized uncaught exceptions, and eliminated nested conditional statements.
 
 ### Changed
 - **💎 UI Refinement**: Streamlined the Tokens tab by removing redundant labels and optimizing grid density for a cleaner look.
