@@ -50,7 +50,7 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
         if (activePicker === null && dialog.open) dialog.close();
     }, [activePicker]);
 
-    // Handle native Escape key via the 'cancel' event
+    // Handle native Escape key via the 'cancel' event and backdrop clicks
     useEffect(() => {
         const dialog = dialogRef.current;
         if (!dialog) return;
@@ -59,8 +59,18 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
             setActivePicker(null);
             setSearch("");
         };
+        const handleBackdropClick = (e: MouseEvent) => {
+            if (e.target === dialog) {
+                setActivePicker(null);
+                setSearch("");
+            }
+        };
         dialog.addEventListener('cancel', handleCancel);
-        return () => dialog.removeEventListener('cancel', handleCancel);
+        dialog.addEventListener('click', handleBackdropClick);
+        return () => {
+            dialog.removeEventListener('cancel', handleCancel);
+            dialog.removeEventListener('click', handleBackdropClick);
+        };
     }, []);
 
     const fetchTopChallenges = React.useCallback(async () => {
@@ -258,7 +268,6 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
             <dialog
                 ref={dialogRef}
                 className="token-picker-dialog"
-                onClick={(e) => { if (e.target === dialogRef.current) closePicker(); }}
                 aria-label={`Select Token for Slot ${activePicker}`}
             >
                 <div className="token-picker-modal">
