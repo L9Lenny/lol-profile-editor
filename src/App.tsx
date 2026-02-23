@@ -26,7 +26,7 @@ import { useMusicSync } from "./hooks/useMusicSync";
 
 // Components
 import HomeTab from "./components/tabs/HomeTab";
-import BioTab from "./components/tabs/BioTab";
+import ProfileTab from "./components/tabs/ProfileTab";
 import MusicTab from "./components/tabs/MusicTab";
 import RankTab from "./components/tabs/RankTab";
 import IconTab from "./components/tabs/IconTab";
@@ -149,7 +149,7 @@ function App() {
       <nav className="nav-bar">
         <div className="nav-links">
           <NavItem icon={<Home size={16} />} label="Home" active={activeTab === 'home'} onClick={() => setActiveTab('home')} />
-          <NavItem icon={<ShieldCheck size={16} />} label="Bio" active={activeTab === 'bio'} onClick={() => setActiveTab('bio')} />
+          <NavItem icon={<ShieldCheck size={16} />} label="Profile" active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} />
           <NavItem icon={<Disc3 size={16} />} label="Music" active={activeTab === 'music'} onClick={() => setActiveTab('music')} />
           <NavItem icon={<Trophy size={16} />} label="Rank" active={activeTab === 'rank'} onClick={() => setActiveTab('rank')} />
           <NavItem icon={<UserCircle size={16} />} label="Icons" active={activeTab === 'icons'} onClick={() => setActiveTab('icons')} />
@@ -164,7 +164,7 @@ function App() {
 
       <main className="content-area">
         {activeTab === 'home' && <HomeTab lcu={lcu} clientVersion={clientVersion} setActiveTab={setActiveTab} />}
-        {activeTab === 'bio' && <BioTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} />}
+        {activeTab === 'profile' && <ProfileTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} />}
         {activeTab === 'music' && <MusicTab lcu={lcu} musicBio={musicBio} setMusicBio={setMusicBio} showToast={showToast} addLog={addLog} applyIdleBio={applyIdleBio} />}
         {activeTab === 'rank' && <RankTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} />}
         {activeTab === 'icons' && <IconTab lcu={lcu} loading={loading} setLoading={setLoading} showToast={showToast} addLog={addLog} {...icons} />}

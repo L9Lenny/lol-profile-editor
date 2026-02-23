@@ -66,7 +66,7 @@ describe('App', () => {
             expect(screen.getByText('Home')).toBeDefined();
         });
 
-        const bioTabBtn = screen.getByText('Bio');
+        const bioTabBtn = screen.getByText('Profile');
         fireEvent.click(bioTabBtn);
 
         expect(screen.getByText(/Profile Bio/i)).toBeDefined();
