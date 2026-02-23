@@ -85,6 +85,21 @@ fn is_allowed_lcu_request(method: &str, endpoint: &str) -> bool {
     )
 }
 
+use std::sync::OnceLock;
+
+static CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
+
+fn get_client() -> &'static reqwest::Client {
+    CLIENT.get_or_init(|| {
+        reqwest::Client::builder()
+            .danger_accept_invalid_certs(true)
+            .no_proxy()
+            .timeout(Duration::from_secs(10))
+            .build()
+            .expect("Failed to create LCU client")
+    })
+}
+
 #[tauri::command]
 async fn lcu_request(
     method: String,
@@ -106,33 +121,33 @@ async fn lcu_request(
         return Err("Endpoint not allowed".to_string());
     }
 
-    let client = reqwest::Client::builder()
-        .danger_accept_invalid_certs(true)
-        .timeout(Duration::from_secs(10))
-        .build()
-        .map_err(|e| e.to_string())?;
-
+    let client = get_client();
     let url = format!("https://127.0.0.1:{}{}", port_num, endpoint);
     let auth = lcu::get_auth_header(&token);
 
     let mut request = match method.as_str() {
-        "GET" => client.get(url),
-        "POST" => client.post(url),
-        "PUT" => client.put(url),
-        "DELETE" => client.delete(url),
-        "PATCH" => client.patch(url),
+        "GET" => client.get(&url),
+        "POST" => client.post(&url),
+        "PUT" => client.put(&url),
+        "DELETE" => client.delete(&url),
+        "PATCH" => client.patch(&url),
         _ => return Err("Invalid method".to_string()),
     };
 
-    request = request.header(AUTHORIZATION, auth).header(CONTENT_TYPE, "application/json");
+    request = request
+        .header(AUTHORIZATION, auth)
+        .header(CONTENT_TYPE, "application/json")
+        .header(reqwest::header::ACCEPT, "application/json");
 
     if let Some(b) = body {
         request = request.json(&b);
     }
 
-    let res = request.send().await.map_err(|e| e.to_string())?;
+    let res = request.send().await.map_err(|e| {
+        eprintln!("[LCU] Request Error: {:?} (Source: {:?})", e, std::error::Error::source(&e));
+        e.to_string()
+    })?;
     
-    // For 204 No Content or empty responses
     if res.status().as_u16() == 204 {
         return Ok(json!({"status": "success"}));
     }

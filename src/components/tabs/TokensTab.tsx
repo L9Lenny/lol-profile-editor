@@ -109,14 +109,14 @@ const TokensTab: React.FC<TokensTabProps> = ({ lcu, loading, setLoading, showToa
     }, [lcu, lcuRequest, addLog, showToast]);
 
     useEffect(() => {
-        if (lcu) {
+        if (lcu && !hasFetched && !fetching) {
             fetchTokens();
             fetchTopChallenges();
-        } else {
+        } else if (!lcu) {
             setTokens([]);
             setHasFetched(false);
         }
-    }, [lcu, fetchTokens, fetchTopChallenges]);
+    }, [lcu, hasFetched, fetching, fetchTokens, fetchTopChallenges]);
 
     const applyTokens = async () => {
         if (!lcu) return;

@@ -17,7 +17,7 @@ export function useLogs() {
         setLogs(prev => [{ id, time: timestamp, msg }, ...prev].slice(0, 50));
     }, []);
 
-    const exportLogs = async (showToast: (text: string, type: string) => void) => {
+    const exportLogs = useCallback(async (showToast: (text: string, type: string) => void) => {
         if (!logs.length) {
             showToast("No logs to export", "error");
             return;
@@ -41,9 +41,9 @@ export function useLogs() {
             addLog(`Log export failed: ${err}`);
             showToast("Log export failed", "error");
         }
-    };
+    }, [logs, addLog]);
 
-    const clearLogs = () => setLogs([]);
+    const clearLogs = useCallback(() => setLogs([]), []);
 
     return { logs, addLog, exportLogs, clearLogs };
 }
