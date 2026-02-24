@@ -3,11 +3,11 @@ import { invoke } from "@tauri-apps/api/core";
 import { getVersion } from "@tauri-apps/api/app";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { SiGithub } from "react-icons/si";
 import {
   Award,
   Coffee,
   Disc3,
-  Github,
   Home,
   Loader2,
   Settings,
@@ -160,7 +160,7 @@ function App() {
           <NavItem icon={<Settings size={16} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} hasUpdate={!!latestVersion && clientVersion !== latestVersion} />
         </div>
         <div className="nav-social">
-          <a href="https://github.com/L9Lenny/lol-profile-editor" target="_blank" rel="noreferrer" className="social-link-top" aria-label="GitHub Repository"><Github size={18} /></a>
+          <a href="https://github.com/L9Lenny/lol-profile-editor" target="_blank" rel="noreferrer" className="social-link-top" aria-label="GitHub Repository"><SiGithub size={18} /></a>
           <a href="https://ko-fi.com/profumato" target="_blank" rel="noreferrer" className="social-link-top" aria-label="Support on Ko-fi"><Coffee size={18} /></a>
         </div>
       </nav>
