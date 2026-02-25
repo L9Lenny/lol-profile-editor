@@ -9,12 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Replaced deprecated Lucide `Github` icon with `react-icons` (`SiGithub`) to eliminate TypeScript deprecation warnings.
+- Updated `MusicTab.test.tsx` to align with the recent UI redesign, fixing failing assertions for button labels and interaction flows.
 
 ### Added
 - New image demo
 
 ### Changed
-- **UI Refinement**: Fixed a widespread styling issue where standard text inputs (like Last.fm settings) and textareas were rendering with a plain white background because they lacked the specific `type="text"` attribute selector in the main CSS file.
+- Gui style improvement
+- Updated GitHub Actions to latest versions: `actions/checkout@v6`, `sonarqube-scan-action@v7`, `actions/setup-node@v6`, and `actions/github-script@v8`.
+
+
+
 ## [1.5.0] - 2026-02-23
 
 ### Added
