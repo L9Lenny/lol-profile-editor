@@ -94,7 +94,7 @@ This project uses automated checks and public reporting:
 All checks run in GitHub Actions and are publicly visible from the repository Actions tab.
 
 <details>
-<summary><strong>🧪 How release verification works</strong></summary>
+<summary><strong>🧪 How release verification works (CLICK HERE)</strong></summary>
 
 1. CI builds release artifacts.
 2. Release assets are scanned via VirusTotal.
