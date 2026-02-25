@@ -85,18 +85,19 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, loading, setLoading, showT
                     <label htmlFor="bio-input">New Status Message</label>
                     <textarea
                         id="bio-input"
+                        style={{ background: 'rgba(0, 0, 0, 0.3)' }}
                         placeholder="Tell your friends what you're up to..."
                         value={bio}
                         onChange={(e) => setBio(e.target.value)}
                         disabled={!lcu || loading}
-                        rows={4}
+                        rows={3}
                     />
                 </div>
-                <button className="primary-btn" onClick={handleUpdateBio} disabled={!lcu || loading || !bio.trim()} style={{ width: '100%', marginTop: '20px' }}>APPLY BIO</button>
+                <button className="primary-btn" onClick={handleUpdateBio} disabled={!lcu || loading || !bio.trim()} style={{ width: '100%', marginTop: '12px' }}>APPLY BIO</button>
 
                 {lcu && (
-                    <div style={{ marginTop: '25px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <div style={{ marginTop: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                             <label htmlFor="availability-select" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Chat Availability</label>
                             <span className={`availability-pill ${availability}`}>
                                 <span className="availability-dot"></span>

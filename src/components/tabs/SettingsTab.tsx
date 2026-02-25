@@ -68,7 +68,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                 </div>
             )}
 
-            <div className="card" style={{ marginTop: '20px', background: 'rgba(200, 155, 60, 0.03)' }}>
+            <div className="card" style={{ marginTop: '12px', background: 'rgba(200, 155, 60, 0.03)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <Cpu size={24} style={{ color: 'var(--hextech-gold)' }} />
                     <div>

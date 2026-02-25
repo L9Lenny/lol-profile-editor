@@ -38,7 +38,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, loading, setLoading, showToast, 
         <div className="tab-content fadeIn">
             <div className="card">
                 <h3 className="card-title">Rank Override</h3>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '25px' }}>Modify your visible rank in the chat and hover cards.</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>Modify your visible rank in the chat and hover cards.</p>
                 <div className="input-group">
                     <label htmlFor="solo-tier">Solo/Duo Ranking</label>
                     <div style={{ display: 'flex', gap: '10px' }}>
@@ -51,12 +51,12 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, loading, setLoading, showToast, 
                     </div>
                 </div>
 
-                <div className="rank-preview-mini" style={{ marginTop: '20px', padding: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--glass-border)', borderRadius: '6px', textAlign: 'center' }}>
+                <div className="rank-preview-mini" style={{ marginTop: '12px', padding: '8px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--glass-border)', borderRadius: '6px', textAlign: 'center' }}>
                     <span style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Draft Preview</span>
                     <span style={{ fontSize: '1rem', fontWeight: 700, color: '#fff' }}>{soloTier} <span style={{ color: 'var(--hextech-gold)' }}>{soloDiv}</span></span>
                 </div>
 
-                <button className="primary-btn" style={{ width: '100%', marginTop: '20px' }} onClick={applyRank} disabled={!lcu || loading}>APPLY</button>
+                <button className="primary-btn" style={{ width: '100%', marginTop: '12px' }} onClick={applyRank} disabled={!lcu || loading}>APPLY</button>
             </div>
         </div>
     );

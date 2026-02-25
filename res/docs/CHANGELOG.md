@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New image demo
 
-
+### Changed
+- **UI Refinement**: Fixed a widespread styling issue where standard text inputs (like Last.fm settings) and textareas were rendering with a plain white background because they lacked the specific `type="text"` attribute selector in the main CSS file.
 ## [1.5.0] - 2026-02-23
 
 ### Added

@@ -47,14 +47,14 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
-  height: 70px;
+  height: 60px;
   background: rgba(0, 0, 0, 0.4);
   border-bottom: 1px solid var(--glass-border);
 }
 
 .nav-links {
   display: flex;
-  gap: 5px;
+  gap: 2px;
 }
 
 .nav-social {
@@ -85,7 +85,7 @@ body {
   font-size: 0.82rem;
   letter-spacing: 1.5px;
   cursor: pointer;
-  padding: 10px 16px;
+  padding: 8px 12px;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -170,7 +170,8 @@ body {
   background: rgba(200, 155, 60, 0.05);
 }
 
-.update-btn .spin {
+.update-btn .spin,
+.spin {
   animation: spin 1s linear infinite;
 }
 
@@ -187,27 +188,27 @@ body {
 /* Content Area */
 .content-area {
   flex: 1;
-  padding: 40px;
+  padding: 20px;
   overflow: hidden;
   /* Strict no-scroll for borderless feel */
 }
 
 .tab-content {
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
 .card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  padding: 30px;
+  padding: 20px;
   border-radius: 12px;
   position: relative;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card-title {
-  margin: 0 0 24px 0;
+  margin: 0 0 16px 0;
   font-size: 1.08rem;
   color: var(--hextech-gold);
   text-transform: uppercase;
@@ -217,7 +218,7 @@ body {
 
 /* Form Elements */
 .input-group {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .input-group label {
@@ -225,7 +226,7 @@ body {
   font-size: 0.78rem;
   color: var(--text-secondary);
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   letter-spacing: 1px;
 }
 
@@ -244,8 +245,8 @@ textarea {
 
 textarea:focus {
   outline: none;
-  border-color: var(--hextech-gold-dark);
-  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(200, 155, 60, 0.65);
+  box-shadow: 0 0 0 3px rgba(200, 155, 60, 0.12);
 }
 
 /* Custom Styled Selects */
@@ -301,7 +302,7 @@ option {
   background: var(--hextech-gold);
   border: none;
   color: var(--league-blue-deep);
-  padding: 14px 28px;
+  padding: 12px 24px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -326,7 +327,7 @@ option {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 12px 16px;
   margin: 0 -16px;
   border-radius: 8px;
   cursor: pointer;
@@ -507,12 +508,12 @@ input:checked+.slider:before {
 
 /* Status Bar */
 .status-bar {
-  height: 36px;
+  height: 28px;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   padding: 0 24px;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   border-top: 1px solid var(--glass-border);
 }
@@ -583,7 +584,7 @@ input:checked+.slider:before {
 /* Premium Home Dashboard - BORDERLESS EDITION */
 .home-hero {
   text-align: center;
-  padding: 80px 20px 40px;
+  padding: 40px 20px 20px;
   background: transparent;
   /* No background as requested */
   margin-bottom: 20px;
@@ -665,13 +666,13 @@ input:checked+.slider:before {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .feature-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  padding: 25px;
+  padding: 18px;
   border-radius: 18px;
   display: flex;
   align-items: center;
