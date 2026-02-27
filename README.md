@@ -4,15 +4,15 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 
 <p align="center">
 
-<a href="https://github.com/L9Lenny/lol-profile-editor/releases">
+<a href="https://github.com/L9Lenny/league_profile_tool/releases">
   <img src="https://img.shields.io/github/v/release/L9Lenny/league_profile_tool?style=flat-square&logo=github&color=2f81f7" />
 </a>
 
-<a href="https://github.com/L9Lenny/lol-profile-editor/actions">
+<a href="https://github.com/L9Lenny/league_profile_tool/actions">
   <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/league_profile_tool/release.yml?style=flat-square&logo=githubactions&logoColor=white&color=238636" />
 </a>
 
-<a href="https://github.com/L9Lenny/lol-profile-editor/actions/workflows/virustotal-report.yml">
+<a href="https://github.com/L9Lenny/league_profile_tool/actions/workflows/virustotal-report.yml">
   <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/league_profile_tool/virustotal-report.yml?style=flat-square&logo=virustotal&logoColor=white&label=VirusTotal&color=0b65d8" />
 </a>
 
@@ -20,7 +20,7 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
   <img src="https://img.shields.io/badge/Code%20Quality-SonarCloud-F3702A?style=flat-square&logo=sonarcloud&logoColor=white" />
 </a>
 
-<a href="https://github.com/L9Lenny/lol-profile-editor/releases">
+<a href="https://github.com/L9Lenny/league_profile_tool/releases">
   <img src="https://img.shields.io/github/downloads/L9Lenny/league_profile_tool/total?style=flat-square&logo=github&color=8250df" />
 </a>
 
