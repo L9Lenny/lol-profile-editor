@@ -1,5 +1,5 @@
 {
-    "version": "1.5.1",
+    "version": "1.5.2",
     "notes": "## [1.5.1] - 2026-02-25  ### Fixed - Replaced deprecated Lucide `Github` icon with `react-icons` (`SiGithub`) to eliminate TypeScript deprecation warnings. - Updated `MusicTab.test.tsx` to align with the recent UI redesign, fixing failing assertions for button labels and interaction flows.  ### Added - New image demo  ### Changed - Gui style improvement - Updated GitHub Actions to latest versions: `actions/checkout@v6`, `sonarqube-scan-action@v7`, `actions/setup-node@v6`, and `actions/github-script@v8`.    ",
     "pub_date": "2026-02-25T22:29:54Z",
     "platforms": {

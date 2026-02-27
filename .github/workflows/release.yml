@@ -168,3 +168,44 @@ jobs:
           git add updater.json
           git commit -m "chore: update updater.json with signatures for v${{ steps.version.outputs.version }}" || exit 0
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
+
+  notify-discord:
+    needs: publish-tauri
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: Extract version
+        id: version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: get changelog content
+        id: changelog
+        shell: bash
+        run: |
+          # Extract only the latest version from CHANGELOG.md
+          CONTENT=$(awk '/^## \[/{if (count++) exit} {if (count) print}' res/docs/CHANGELOG.md)
+          
+          if [ -z "$CONTENT" ]; then
+            CONTENT=$(cat res/docs/CHANGELOG.md | sed -n '/^## \[/,$p')
+          fi
+
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Send Discord Notification
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          embed-title: "🚀 New Version Released: ${{ steps.version.outputs.tag }}"
+          embed-description: "${{ steps.changelog.outputs.body }}"
+          embed-url: "https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.tag }}"
+          embed-color: "16766720" # Gold
+          embed-author-name: "League Profile Tool"
+          embed-author-url: "https://github.com/${{ github.repository }}"
+          embed-footer-text: "Download now to get the latest features! ✨"
