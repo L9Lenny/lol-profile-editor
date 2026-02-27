@@ -29,7 +29,7 @@ const StatusBadge: React.FC<{
 }> = ({ ok, label, dotColor, showGlow }) => {
     const defaultDotColor = ok ? '#00ff88' : '#ffb347';
     const finalDotColor = dotColor || defaultDotColor;
-    const glow = showGlow === undefined ? ok : showGlow;
+    const glow = showGlow ?? ok;
     return (
         <span className={`music-badge ${ok ? "ok" : "warn"}`} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <div className="status-dot" style={{
