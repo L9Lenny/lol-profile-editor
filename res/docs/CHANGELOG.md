@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.5.2] - 2026-02-27
 
 ### Added
+- **Discord**: Added automated release notification workflow to broadcast updates on Discord.
 - **Discord**: Add discord link server 
  
 ### Changed
