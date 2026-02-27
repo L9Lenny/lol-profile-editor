@@ -5,15 +5,15 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 <p align="center">
 
 <a href="https://github.com/L9Lenny/lol-profile-editor/releases">
-  <img src="https://img.shields.io/github/v/release/L9Lenny/lol-profile-editor?style=flat-square&logo=github&color=2f81f7" />
+  <img src="https://img.shields.io/github/v/release/L9Lenny/league_profile_tool?style=flat-square&logo=github&color=2f81f7" />
 </a>
 
 <a href="https://github.com/L9Lenny/lol-profile-editor/actions">
-  <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/lol-profile-editor/release.yml?style=flat-square&logo=githubactions&logoColor=white&color=238636" />
+  <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/league_profile_tool/release.yml?style=flat-square&logo=githubactions&logoColor=white&color=238636" />
 </a>
 
 <a href="https://github.com/L9Lenny/lol-profile-editor/actions/workflows/virustotal-report.yml">
-  <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/lol-profile-editor/virustotal-report.yml?style=flat-square&logo=virustotal&logoColor=white&label=VirusTotal&color=0b65d8" />
+  <img src="https://img.shields.io/github/actions/workflow/status/L9Lenny/league_profile_tool/virustotal-report.yml?style=flat-square&logo=virustotal&logoColor=white&label=VirusTotal&color=0b65d8" />
 </a>
 
 <a href="https://sonarcloud.io/summary/new_code?id=L9Lenny_lol-profile-editor">
@@ -21,11 +21,11 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 </a>
 
 <a href="https://github.com/L9Lenny/lol-profile-editor/releases">
-  <img src="https://img.shields.io/github/downloads/L9Lenny/lol-profile-editor/total?style=flat-square&logo=github&color=8250df" />
+  <img src="https://img.shields.io/github/downloads/L9Lenny/league_profile_tool/total?style=flat-square&logo=github&color=8250df" />
 </a>
 
 <a href="LICENSE">
-  <img src="https://img.shields.io/github/license/L9Lenny/lol-profile-editor?style=flat-square&color=9e6a03" />
+  <img src="https://img.shields.io/github/license/L9Lenny/league_profile_tool?style=flat-square&color=9e6a03" />
 </a>
 
 </p>
@@ -34,12 +34,12 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 
 ![League Profile Tool Demo](res/img/demo.png)
 
-> **Tip:** Fast links: [Download](https://github.com/L9Lenny/lol-profile-editor/releases) • [Security Report](res/docs/SECURITY_REPORT.md) • [Changelog](res/docs/CHANGELOG.md)
+> **Tip:** Fast links: [Download](https://github.com/L9Lenny/league_profile_tool/releases) • [Security Report](res/docs/SECURITY_REPORT.md) • [Changelog](res/docs/CHANGELOG.md)
 
 | 🚀 Start Here | 🔗 Link |
 |---|---|
-| Latest Release | [GitHub Releases](https://github.com/L9Lenny/lol-profile-editor/releases) |
-| CI Workflows | [GitHub Actions](https://github.com/L9Lenny/lol-profile-editor/actions) |
+| Latest Release | [GitHub Releases](https://github.com/L9Lenny/league_profile_tool/releases) |
+| CI Workflows | [GitHub Actions](https://github.com/L9Lenny/league_profile_tool/actions) |
 | Security Report | [`res/docs/SECURITY_REPORT.md`](res/docs/SECURITY_REPORT.md) |
 
 ## ✨ Main Features
@@ -54,7 +54,7 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 
 ## ⚡ Quick Start (Users)
 
-1. Download the latest build from [Releases](https://github.com/L9Lenny/lol-profile-editor/releases).
+1. Download the latest build from [Releases](https://github.com/L9Lenny/league_profile_tool/releases).
 2. Start League of Legends client.
 3. Open **League Profile Tool**.
 4. Apply your desired customizations directly through the Hextech-inspired UI.
