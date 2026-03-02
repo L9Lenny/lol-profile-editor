@@ -199,7 +199,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Send Discord Notification
-        uses: tsickert/discord-webhook@v6.0.0
+        uses: tsickert/discord-webhook@v7.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
           embed-title: "🚀 New Version Released: ${{ steps.version.outputs.tag }}"
