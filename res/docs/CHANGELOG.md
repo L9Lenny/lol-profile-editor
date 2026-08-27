@@ -8,13 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Dependencies
-- **npm:** @testing-library/jest-dom 6.9.1 → 7.0.0 (#933), typescript 6.0.3 → 7.0.2 (#934), @types/node 26.1.1 → 26.2.0 (#935), @types/react 19.2.17 → 19.2.18 (#936), @vitejs/plugin-react 6.0.3 → 6.0.5 (#937), vite 8.1.0 → 8.2.1 (#939), @testing-library/jest-dom 7.0.0 → 7.0.1 (#940), zustand 5.0.14 → 5.0.15 (#943)
-- **cargo:** quinn-proto 0.11.14 → 0.11.16 in /src-tauri (#942)
-- **github_actions:** github/codeql-action 4.37.6 → 4.37.7 (#944)
+- **npm:** lucide-react 1.31.0 → 1.33.0, vite 8.2.1 → 8.2.2, @vitejs/plugin-react 6.0.5 → 6.1.0, vitest 4.1.10 → 4.1.11, @vitest/coverage-v8 4.1.9 → 4.1.11
+- **github_actions:** github/codeql-action 4.37.7 → 4.37.8
 
 ### Notes
-- Merged 5 dependabot PRs (#933–#937) into `develop` (commit `7d1ef7c`). Resolved a conflict on #936 in `package.json` / `package-lock.json` by keeping `@types/node ^26.2.0` (from #935) with the new `@types/react ^19.2.18`; lockfile regenerated via `npm install`.
-- Merged 5 more dependabot PRs (#939, #940, #942, #943, #944) into `develop`. No conflicts. Verified with `tsc --noEmit` and `vitest run` (159/159 passing). `cargo check` skipped: host missing `gobject-2.0` system libs (environmental, unrelated to the `quinn-proto` patch bump in `Cargo.lock`).
+- Merged 6 dependabot PRs (lucide-react, vite, @vitejs/plugin-react, vitest, @vitest/coverage-v8, github/codeql-action) into `main`. Resolved conflicts on `package.json` and `package-lock.json` by keeping the latest versions. Verified with `vitest run` (159/159 passing) and `vite build` (ok).
 
 ## [1.12.0] - 2026-08-11
 
