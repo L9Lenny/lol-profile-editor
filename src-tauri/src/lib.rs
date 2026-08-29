@@ -95,8 +95,10 @@ fn is_allowed_lcu_request(method: &str, endpoint: &str) -> bool {
             | ("GET", "/lol-challenges/v1/challenges/local-player")
             | ("POST", "/lol-challenges/v1/update-player-preferences")
             | ("POST", "/lol-summoner/v1/current-summoner/summoner-profile")
+            | ("PUT", "/lol-summoner/v1/current-summoner/summoner-profile")
             | ("GET", "/lol-summoner/v1/current-summoner/summoner-profile")
             | ("GET", "/lol-summoner/v1/current-summoner")
+            | ("GET", "/lol-ranked/v1/current-ranked-stats")
             | ("POST", "/lol-lobby/v2/lobby")
             | ("POST", "/lol-lobby/v2/lobby/invitations")
             | ("GET", "/lol-lobby/v2/lobby")
@@ -245,6 +247,130 @@ fn read_text_file(path: String) -> Result<String, String> {
     fs::read_to_string(trimmed).map_err(|e| e.to_string())
 }
 
+#[tauri::command]
+fn install_pengu_plugin() -> Result<String, String> {
+    // Try common Pengu Loader installation paths
+    let possible_paths = vec![
+        PathBuf::from("C:\\Program Files\\Pengu Loader\\plugins"),
+        PathBuf::from("C:\\Program Files (x86)\\Pengu Loader\\plugins"),
+        dirs::document_dir()
+            .map(|d| d.join("Pengu Loader").join("plugins"))
+            .unwrap_or_default(),
+    ];
+    
+    let plugins_dir = possible_paths.iter()
+        .find(|p| p.exists())
+        .ok_or("Pengu Loader not found. Please install Pengu Loader first.")?;
+    
+    // v1.1.6 doesn't support @author/ folders, use simple folder name
+    let target_dir = plugins_dir.join("rank-override");
+    
+    // Create target directory
+    fs::create_dir_all(&target_dir).map_err(|e| format!("Failed to create plugin directory: {}", e))?;
+    fs::create_dir_all(target_dir.join("modules")).map_err(|e| format!("Failed to create modules directory: {}", e))?;
+    
+    // Write plugin files (embedded in binary)
+    fs::write(
+        target_dir.join("index.js"),
+        include_str!("../../pengu-plugin/rank-override/index.js")
+    ).map_err(|e| format!("Failed to write index.js: {}", e))?;
+    
+    fs::write(
+        target_dir.join("modules").join("rankOverride.js"),
+        include_str!("../../pengu-plugin/rank-override/modules/rankOverride.js")
+    ).map_err(|e| format!("Failed to write rankOverride.js: {}", e))?;
+    
+    Ok(format!("Plugin installed to: {}", target_dir.display()))
+}
+
+#[tauri::command]
+fn save_rank_config(tier: String, division: String, queue: String) -> Result<String, String> {
+    let possible_paths = vec![
+        PathBuf::from("C:\\Program Files\\Pengu Loader\\plugins"),
+        PathBuf::from("C:\\Program Files (x86)\\Pengu Loader\\plugins"),
+        dirs::document_dir()
+            .map(|d| d.join("Pengu Loader").join("plugins"))
+            .unwrap_or_default(),
+    ];
+
+    let plugins_dir = possible_paths.iter()
+        .find(|p| p.exists())
+        .ok_or("Pengu Loader not found")?;
+
+    // Write to all possible plugin locations
+    let locations = vec![
+        plugins_dir.join("rank-override"),
+        plugins_dir.join("@default").join("rank-override"),
+        plugins_dir.join("@l9lenny").join("rank-override"),
+    ];
+
+    let config = serde_json::json!({
+        "tier": tier,
+        "division": division,
+        "queue": queue,
+    });
+
+    let config_str = serde_json::to_string_pretty(&config).map_err(|e| e.to_string())?;
+    let mut written = String::new();
+
+    for dir in &locations {
+        if dir.exists() {
+            let config_path = dir.join("rank-config.json");
+            if let Some(parent) = config_path.parent() {
+                let _ = fs::create_dir_all(parent);
+            }
+            fs::write(&config_path, &config_str).map_err(|e| format!("Failed to write config: {}", e))?;
+            written.push_str(&format!("{}; ", config_path.display()));
+        }
+    }
+
+    if written.is_empty() {
+        return Err("No plugin folder found".to_string());
+    }
+
+    Ok(format!("Config written to: {}", written))
+}
+
+#[tauri::command]
+fn open_pengu_plugins_folder() -> Result<String, String> {
+    let possible_paths = vec![
+        PathBuf::from("C:\\Program Files\\Pengu Loader\\plugins"),
+        PathBuf::from("C:\\Program Files (x86)\\Pengu Loader\\plugins"),
+        dirs::document_dir()
+            .map(|d| d.join("Pengu Loader").join("plugins"))
+            .unwrap_or_default(),
+    ];
+    
+    let plugins_dir = possible_paths.iter()
+        .find(|p| p.exists())
+        .ok_or("Pengu Loader not found. Please install Pengu Loader first.")?;
+    
+    // Open the folder in explorer
+    #[cfg(target_os = "windows")]
+    {
+        std::process::Command::new("explorer")
+            .arg(plugins_dir)
+            .spawn()
+            .map_err(|e| format!("Failed to open folder: {}", e))?;
+    }
+    
+    Ok(format!("Opened: {}", plugins_dir.display()))
+}
+
+fn copy_dir_all(src: &PathBuf, dst: &PathBuf) -> std::io::Result<()> {
+    fs::create_dir_all(dst)?;
+    for entry in fs::read_dir(src)? {
+        let entry = entry?;
+        let ty = entry.file_type()?;
+        if ty.is_dir() {
+            copy_dir_all(&entry.path(), &dst.join(entry.file_name()))?;
+        } else {
+            fs::copy(entry.path(), dst.join(entry.file_name()))?;
+        }
+    }
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -314,7 +440,7 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_lcu_connection, update_bio, set_minimize_to_tray, get_minimize_to_tray, lcu_request, save_logs_to_path, force_quit, load_presets, save_presets, read_text_file])
+        .invoke_handler(tauri::generate_handler![get_lcu_connection, update_bio, set_minimize_to_tray, get_minimize_to_tray, lcu_request, save_logs_to_path, force_quit, load_presets, save_presets, read_text_file, install_pengu_plugin, open_pengu_plugins_folder, save_rank_config])
         .build(tauri::generate_context!())
         .expect("error while building tauri application")
         .run(|_, _| {});

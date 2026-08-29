@@ -238,7 +238,7 @@ function App() {
 
       <div className="main-container">
         <main className="content-area">
-          {activeTab === 'home' && <ErrorBoundary name="Home"><HomeTab lcu={lcu} clientVersion={clientVersion} setActiveTab={setActiveTab} lcuRequest={lcuRequest} /></ErrorBoundary>}
+          {activeTab === 'home' && <ErrorBoundary name="Home"><HomeTab lcu={lcu} clientVersion={clientVersion} setActiveTab={setActiveTab} lcuRequest={lcuRequest} showToast={showToast} /></ErrorBoundary>}
           {activeTab === 'profile' && <ErrorBoundary name="Profile"><ProfileTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} musicSyncActive={musicBio.enabled} /></ErrorBoundary>}
           {activeTab === 'friends' && <ErrorBoundary name="Friends"><FriendManagerTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} /></ErrorBoundary>}
           {activeTab === 'background' && <ErrorBoundary name="Background"><BackgroundTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} /></ErrorBoundary>}

@@ -30,6 +30,9 @@ export const ICON_DATA_VERSION_KEY = "icon_data_version";
 // Presets (localStorage fallback — also persisted to disk via Tauri)
 export const PRESETS_LS_KEY = "profile_presets_list_v1";
 
+// Pengu Loader
+export const PENGU_PLUGIN_INSTALLED_KEY = "pengu_plugin_installed_v1";
+
 // Analytics (intentionally NOT in ALL_SAVED_KEYS — survives Clear All)
 export const ANALYTICS_ID_KEY = "lp_analytics_id";
 

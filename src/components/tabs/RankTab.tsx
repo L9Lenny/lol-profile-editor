@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { invoke } from '@tauri-apps/api/core';
 import { LcuInfo } from '../../hooks/useLcu';
 import { LcuRequestFn, patchChatLol } from '../../utils/chatMe';
 import { 
@@ -112,6 +113,13 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
             localStorage.setItem(SAVED_RANK_DIV_KEY, soloDiv);
             localStorage.setItem(SAVED_CHALLENGE_CRYSTAL_KEY, challengeCrystalLevel);
             localStorage.setItem(SAVED_CHALLENGE_POINTS_KEY, String(challengePoints || "0"));
+
+            // Write config for Pengu Loader plugin
+            try {
+                await invoke("save_rank_config", { tier: soloTier, division: soloDiv, queue: queueType });
+            } catch (e) {
+                // Plugin may not be installed — ignore silently
+            }
 
             showToast("Rank Overrides Applied!", "success");
             addLog(`Rank overrides updated successfully.`);
