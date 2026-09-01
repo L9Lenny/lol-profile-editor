@@ -109,16 +109,19 @@ jobs:
           $certificateDir = Join-Path $env:RUNNER_TEMP 'league-profile-tool-signing'
           New-Item -ItemType Directory -Force -Path $certificateDir | Out-Null
           $certificatePath = Join-Path $certificateDir 'certificate.pfx'
+          $passwordPath = Join-Path $certificateDir 'password.txt'
+          Set-Content -Path $passwordPath -Value $env:WINDOWS_CERTIFICATE_PASSWORD -NoNewline
           [IO.File]::WriteAllBytes($certificatePath, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE))
 
-          $certificate = Import-PfxCertificate `
-            -FilePath $certificatePath `
-            -CertStoreLocation Cert:\CurrentUser\My `
-            -Password (ConvertTo-SecureString $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force)
+          certutil.exe -importpfx -p $env:WINDOWS_CERTIFICATE_PASSWORD -f Cert:\CurrentUser\My $certificatePath
+
+          $certificate = Get-ChildItem -Path Cert:\CurrentUser\My -CodeSigningCert | Select-Object -First 1
 
           if ($null -eq $certificate) {
             throw 'The Windows code-signing certificate could not be imported.'
           }
+
+          Remove-Item -Force $passwordPath -ErrorAction SilentlyContinue
 
           $tauriConfig = @{
             bundle = @{
