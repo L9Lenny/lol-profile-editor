@@ -1,20 +1,20 @@
 # Security Report
 
 - Repository: `lenny-ts/league_profile_tool`
-- Release Tag: `v1.11.0`
-- Release Name: League Profile Tool v1.11.0
-- Published At: 2026-08-07T15:59:23Z
-- Generated At (UTC): 2026-08-07T16:02:43Z
+- Release Tag: `v1.12.1`
+- Release Name: League Profile Tool v1.12.1
+- Published At: 2026-09-01T18:47:31Z
+- Generated At (UTC): 2026-09-01T18:52:11Z
 - Source: [VirusTotal](https://www.virustotal.com/)
 
 ## Asset Scan Results
 
 | Asset | Verdict | Malicious | Suspicious | Undetected | Harmless | Report |
 |---|---:|---:|---:|---:|---:|---|
-| `League-Profile-Tool_1.11.0_aarch64.app.tar.gz` | timeout | - | - | - | - | n/a |
-| `League-Profile-Tool_1.11.0_aarch64.dmg` | clean | 0 | 0 | 32 | 60 | [open](https://www.virustotal.com/gui/url/aHR0cHM6Ly9naXRodWIuY29tL0w5TGVubnkvbGVhZ3VlX3Byb2ZpbGVfdG9vbC9yZWxlYXNlcy9kb3dubG9hZC92MS4xMS4wL0xlYWd1ZS1Qcm9maWxlLVRvb2xfMS4xMS4wX2FhcmNoNjQuZG1n/detection) |
-| `League-Profile-Tool_1.11.0_x64-setup.exe` | clean | 0 | 0 | 32 | 60 | [open](https://www.virustotal.com/gui/url/aHR0cHM6Ly9naXRodWIuY29tL0w5TGVubnkvbGVhZ3VlX3Byb2ZpbGVfdG9vbC9yZWxlYXNlcy9kb3dubG9hZC92MS4xMS4wL0xlYWd1ZS1Qcm9maWxlLVRvb2xfMS4xMS4wX3g2NC1zZXR1cC5leGU/detection) |
-| `League-Profile-Tool_1.11.0_x64_en-US.msi` | clean | 0 | 0 | 32 | 60 | [open](https://www.virustotal.com/gui/url/aHR0cHM6Ly9naXRodWIuY29tL0w5TGVubnkvbGVhZ3VlX3Byb2ZpbGVfdG9vbC9yZWxlYXNlcy9kb3dubG9hZC92MS4xMS4wL0xlYWd1ZS1Qcm9maWxlLVRvb2xfMS4xMS4wX3g2NF9lbi1VUy5tc2k/detection) |
+| `League-Profile-Tool_1.12.1_aarch64.app.tar.gz` | timeout | - | - | - | - | n/a |
+| `League-Profile-Tool_1.12.1_aarch64.dmg` | clean | 0 | 0 | 31 | 60 | [open](https://www.virustotal.com/gui/url/aHR0cHM6Ly9naXRodWIuY29tL2xlbm55LXRzL2xlYWd1ZV9wcm9maWxlX3Rvb2wvcmVsZWFzZXMvZG93bmxvYWQvdjEuMTIuMS9MZWFndWUtUHJvZmlsZS1Ub29sXzEuMTIuMV9hYXJjaDY0LmRtZw/detection) |
+| `League-Profile-Tool_1.12.1_x64-setup.exe` | clean | 0 | 0 | 31 | 60 | [open](https://www.virustotal.com/gui/url/aHR0cHM6Ly9naXRodWIuY29tL2xlbm55LXRzL2xlYWd1ZV9wcm9maWxlX3Rvb2wvcmVsZWFzZXMvZG93bmxvYWQvdjEuMTIuMS9MZWFndWUtUHJvZmlsZS1Ub29sXzEuMTIuMV94NjQtc2V0dXAuZXhl/detection) |
+| `League-Profile-Tool_1.12.1_x64_en-US.msi` | clean | 0 | 0 | 30 | 61 | [open](https://www.virustotal.com/gui/url/aHR0cHM6Ly9naXRodWIuY29tL2xlbm55LXRzL2xlYWd1ZV9wcm9maWxlX3Rvb2wvcmVsZWFzZXMvZG93bmxvYWQvdjEuMTIuMS9MZWFndWUtUHJvZmlsZS1Ub29sXzEuMTIuMV94NjRfZW4tVVMubXNp/detection) |
 
 ## Notes
 
