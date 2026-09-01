@@ -4,6 +4,28 @@ The release workflow signs the Windows and macOS artifacts. Certificates and pri
 
 ## Windows
 
+### Self-Signed Certificate (Quick Start)
+
+Generate a self-signed certificate for testing or small projects:
+
+```powershell
+.\scripts\generate-cert.ps1
+```
+
+This creates a `.pfx` file in the current directory. Then encode it:
+
+```bash
+openssl base64 -A -in cert.pfx -out cert-base64.txt
+```
+
+Add to GitHub repo secrets:
+- `WINDOWS_CERTIFICATE`: content of `cert-base64.txt`
+- `WINDOWS_CERTIFICATE_PASSWORD`: password you entered
+
+> **Note:** Self-signed certificates will show a "Unknown publisher" warning on first run. This is normal. For production, purchase an Authenticode certificate from a trusted CA.
+
+### Authenticode Certificate (Recommended for Production)
+
 Purchase an Authenticode code-signing certificate from a trusted certificate authority and export it as a password-protected `.pfx` file.
 
 Create these repository secrets:

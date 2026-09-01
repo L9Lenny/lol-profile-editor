@@ -29,3 +29,5 @@ coverage
 src-tauri/target/
 src-tauri/gen/
 **/*.key
+**/*.pfx
+**/*.p12
