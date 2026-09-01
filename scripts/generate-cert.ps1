@@ -29,11 +29,9 @@ $cert = New-SelfSignedCertificate `
     -KeyExportPolicy Exportable `
     -NotAfter (Get-Date).AddYears(3)
 
-# Export to PFX
-Export-PfxCertificate `
-    -Cert $cert `
-    -FilePath $OutputPath `
-    -Password $SecurePassword | Out-Null
+# Export to PFX using certutil for better compatibility
+$certPath = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
+certutil -exportPFX -p $PasswordPlain $certPath $OutputPath | Out-Null
 
 Write-Host "Certificate created successfully!" -ForegroundColor Green
 Write-Host "  Thumbprint: $($cert.Thumbprint)"
