@@ -18,8 +18,8 @@ import process from 'process';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const SONAR_TOKEN = process.env.SONAR_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPOSITORY || 'lenny-ts/lol-profile-editor';
-const SONAR_PROJECT_KEY = process.env.SONAR_PROJECT_KEY || 'lenny-ts_lol-profile-editor';
-const SONAR_ORGANIZATION = process.env.SONAR_ORGANIZATION || 'lenny-ts';
+const SONAR_PROJECT_KEY = process.env.SONAR_PROJECT_KEY || 'L9Lenny_lol-profile-editor';
+const SONAR_ORGANIZATION = process.env.SONAR_ORGANIZATION || 'l9lenny';
 const SONAR_BRANCH = process.env.SONAR_BRANCH || 'main';
 
 // PR information (optional, from GitHub Actions)
