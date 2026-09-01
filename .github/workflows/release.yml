@@ -108,11 +108,8 @@ jobs:
 
           $certificateDir = Join-Path $env:RUNNER_TEMP 'league-profile-tool-signing'
           New-Item -ItemType Directory -Force -Path $certificateDir | Out-Null
-          $encodedPath = Join-Path $certificateDir 'certificate.txt'
           $certificatePath = Join-Path $certificateDir 'certificate.pfx'
-          Set-Content -Path $encodedPath -Value $env:WINDOWS_CERTIFICATE -NoNewline
-          certutil.exe -decode $encodedPath $certificatePath | Out-Host
-          Remove-Item $encodedPath -Force
+          [IO.File]::WriteAllBytes($certificatePath, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE))
 
           $certificate = Import-PfxCertificate `
             -FilePath $certificatePath `
