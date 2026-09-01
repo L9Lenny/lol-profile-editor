@@ -14,7 +14,7 @@ export interface NowPlayingTrack {
 }
 
 export const MUSIC_BIO_STORAGE_KEY = "music_bio_settings_v1";
-export const MAX_BIO_LENGTH = 500;
+export const MAX_BIO_LENGTH = 1000;
 
 export const clampPollInterval = (value: number) => {
     if (!Number.isFinite(value)) return 15;
