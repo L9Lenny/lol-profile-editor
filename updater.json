@@ -1,7 +1,7 @@
 {
     "version": "1.12.2",
     "notes": "## [1.12.2] - 2026-09-01  ### Added - **Code signing**: Windows and macOS releases are now signed with Authenticode and Apple Developer ID certificates. - **Self-signed certificate script**: Added `scripts/generate-cert.ps1` for generating a self-signed code signing certificate.  ### Security - **VirusTotal report**: Automated VirusTotal scanning after each release.  ",
-    "pub_date": "2026-09-01T23:30:00Z",
+    "pub_date": "2026-09-01T22:10:24Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
