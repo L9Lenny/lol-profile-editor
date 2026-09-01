@@ -235,7 +235,7 @@ const MusicTab: React.FC<MusicTabProps> = ({ lcu, musicBio, setMusicBio, showToa
                             style={{ background: 'rgba(0, 0, 0, 0.3)', fontFamily: 'monospace', fontSize: '0.80rem' }}
                         />
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px', fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
-                            <Info size={10} /> This replaces your Profile Bio when music sync is active. Use multiple lines for ASCII art.
+                            <Info size={10} /> {musicBio.idleText.length} chars. This replaces your Profile Bio when music sync is active. Use multiple lines for ASCII art.
                         </div>
                     </div>
                 </div>

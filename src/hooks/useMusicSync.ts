@@ -14,14 +14,14 @@ export interface NowPlayingTrack {
 }
 
 export const MUSIC_BIO_STORAGE_KEY = "music_bio_settings_v1";
-
 export const clampPollInterval = (value: number) => {
     if (!Number.isFinite(value)) return 15;
     return Math.max(5, Math.min(120, Math.round(value)));
 };
 
-export const truncateBio = (value: string, max = 255) => {
+export const truncateBio = (value: string, max?: number) => {
     const trimmed = value.trim();
+    if (max === undefined) return trimmed;
     if (trimmed.length <= max) return trimmed;
     return `${trimmed.slice(0, max - 3)}...`;
 };

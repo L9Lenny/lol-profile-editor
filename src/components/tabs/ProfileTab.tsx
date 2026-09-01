@@ -147,7 +147,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, showToast, addLog, lcuRequ
                 <div className="input-group">
                     {useIdleAsBio ? (
                         <>
-                            <label htmlFor="idle-bio-input">Bio (from Music Sync idle text — up to 255 chars)</label>
+                            <label htmlFor="idle-bio-input">Bio (from Music Sync idle text)</label>
                             <AutoExpandingTextarea
                                 id="idle-bio-input"
                                 value={musicBio.idleText}
@@ -162,12 +162,12 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, showToast, addLog, lcuRequ
                                 style={{ background: 'rgba(0, 0, 0, 0.3)', fontFamily: 'monospace', fontSize: '0.80rem' }}
                             />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px', fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
-                                <Info size={10} /> {musicBio.idleText.length}/255 chars
+                                <Info size={10} /> {musicBio.idleText.length} chars
                             </div>
                         </>
                     ) : (
                         <>
-                            <label htmlFor="bio-input">New Status Message (up to 255 chars)</label>
+                            <label htmlFor="bio-input">New Status Message</label>
                             <AutoExpandingTextarea
                                 id="bio-input"
                                 value={bio}
@@ -179,7 +179,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, showToast, addLog, lcuRequ
                                 style={{ background: 'rgba(0, 0, 0, 0.3)', fontFamily: 'monospace', fontSize: '0.80rem' }}
                             />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px', fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
-                                <Info size={10} /> {bio.length}/255 chars
+                                <Info size={10} /> {bio.length} chars
                             </div>
                         </>
                     )}
