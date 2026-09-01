@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ProfileTab from './ProfileTab';
 import { invoke } from "@tauri-apps/api/core";
+import { MAX_BIO_LENGTH } from '../../hooks/useMusicSync';
 
 // Mock Tauri invoke
 vi.mock('@tauri-apps/api/core', () => ({
@@ -36,7 +37,7 @@ describe('ProfileTab', () => {
         const props = createProps();
         render(<ProfileTab {...props} />);
 
-        const textarea = await screen.findByLabelText('New Status Message (up to 255 chars)');
+        const textarea = await screen.findByLabelText(`New Status Message (up to ${MAX_BIO_LENGTH} chars)`);
         fireEvent.change(textarea, { target: { value: 'New Bio' } });
 
         const applyBtn = screen.getByText('APPLY BIO');
@@ -68,7 +69,7 @@ describe('ProfileTab', () => {
         vi.mocked(invoke).mockRejectedValueOnce(new Error("Fail"));
         render(<ProfileTab {...props} />);
 
-        const textarea = await screen.findByLabelText('New Status Message (up to 255 chars)');
+        const textarea = await screen.findByLabelText(`New Status Message (up to ${MAX_BIO_LENGTH} chars)`);
         fireEvent.change(textarea, { target: { value: 'test' } });
 
         const applyBtn = screen.getByText('APPLY BIO');

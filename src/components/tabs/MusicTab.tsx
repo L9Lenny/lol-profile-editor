@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { LcuInfo } from '../../hooks/useLcu';
-import { MusicBioSettings, DEFAULT_IDLE_BIO, clampPollInterval } from '../../hooks/useMusicSync';
+import { MusicBioSettings, DEFAULT_IDLE_BIO, MAX_BIO_LENGTH, clampPollInterval } from '../../hooks/useMusicSync';
 import { Disc3, HelpCircle, ChevronRight, ChevronDown, ExternalLink, Activity, Info } from 'lucide-react';
 import { AutoExpandingTextarea } from '../../hooks/useAutoGrowingTextarea';
 
@@ -230,12 +230,13 @@ const MusicTab: React.FC<MusicTabProps> = ({ lcu, musicBio, setMusicBio, showToa
                             value={musicBio.idleText}
                             onChange={(e) => setMusicBio(prev => ({ ...prev, idleText: e.target.value }))}
                             placeholder={DEFAULT_IDLE_BIO}
+                            maxLength={MAX_BIO_LENGTH}
                             minRows={5}
                             maxRows={200}
                             style={{ background: 'rgba(0, 0, 0, 0.3)', fontFamily: 'monospace', fontSize: '0.80rem' }}
                         />
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px', fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
-                            <Info size={10} /> This replaces your Profile Bio when music sync is active. Use multiple lines for ASCII art.
+                            <Info size={10} /> {musicBio.idleText.length}/{MAX_BIO_LENGTH} chars. This replaces your Profile Bio when music sync is active. Use multiple lines for ASCII art.
                         </div>
                     </div>
                 </div>

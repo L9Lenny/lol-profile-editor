@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import {
     useMusicSync,
+    MAX_BIO_LENGTH,
     clampPollInterval,
     truncateBio,
     buildBioFromTemplate,
@@ -24,7 +25,7 @@ describe('useMusicSync utilities', () => {
 
     it('truncateBio should trim and limit length', () => {
         expect(truncateBio('  hello  ')).toBe('hello');
-        expect(truncateBio('a'.repeat(300))).toBe('a'.repeat(252) + '...');
+        expect(truncateBio('a'.repeat(MAX_BIO_LENGTH + 45))).toBe('a'.repeat(MAX_BIO_LENGTH - 3) + '...');
         expect(truncateBio('short')).toBe('short');
     });
 

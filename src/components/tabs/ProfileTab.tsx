@@ -6,7 +6,7 @@ import { SAVED_BIO_KEY, SAVED_AVAILABILITY_KEY } from '../../hooks/useAutoRestor
 import { SAVED_ENFORCE_OFFLINE_KEY, SAVED_USE_IDLE_AS_BIO_KEY } from '../../storageKeys';
 import { AutoExpandingTextarea } from '../../hooks/useAutoGrowingTextarea';
 import { useAppStore } from '../../store';
-import { truncateBio } from '../../hooks/useMusicSync';
+import { MAX_BIO_LENGTH, truncateBio } from '../../hooks/useMusicSync';
 
 interface ProfileTabProps {
     lcu: LcuInfo | null;
@@ -147,7 +147,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, showToast, addLog, lcuRequ
                 <div className="input-group">
                     {useIdleAsBio ? (
                         <>
-                            <label htmlFor="idle-bio-input">Bio (from Music Sync idle text — up to 255 chars)</label>
+                            <label htmlFor="idle-bio-input">Bio (from Music Sync idle text — up to {MAX_BIO_LENGTH} chars)</label>
                             <AutoExpandingTextarea
                                 id="idle-bio-input"
                                 value={musicBio.idleText}
@@ -157,29 +157,31 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, showToast, addLog, lcuRequ
                                 }}
                                 placeholder="Enter your bio text or ASCII art here..."
                                 disabled={!lcu || loading}
+                                maxLength={MAX_BIO_LENGTH}
                                 minRows={8}
                                 maxRows={200}
                                 style={{ background: 'rgba(0, 0, 0, 0.3)', fontFamily: 'monospace', fontSize: '0.80rem' }}
                             />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px', fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
-                                <Info size={10} /> {musicBio.idleText.length}/255 chars
+                                <Info size={10} /> {musicBio.idleText.length}/{MAX_BIO_LENGTH} chars
                             </div>
                         </>
                     ) : (
                         <>
-                            <label htmlFor="bio-input">New Status Message (up to 255 chars)</label>
+                            <label htmlFor="bio-input">New Status Message (up to {MAX_BIO_LENGTH} chars)</label>
                             <AutoExpandingTextarea
                                 id="bio-input"
                                 value={bio}
                                 onChange={(e) => { bioDirtyRef.current = true; setBio(e.target.value); }}
                                 placeholder="Tell your friends what you're up to..."
                                 disabled={!lcu || loading}
+                                maxLength={MAX_BIO_LENGTH}
                                 minRows={8}
                                 maxRows={200}
                                 style={{ background: 'rgba(0, 0, 0, 0.3)', fontFamily: 'monospace', fontSize: '0.80rem' }}
                             />
                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '6px', fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
-                                <Info size={10} /> {bio.length}/255 chars
+                                <Info size={10} /> {bio.length}/{MAX_BIO_LENGTH} chars
                             </div>
                         </>
                     )}
