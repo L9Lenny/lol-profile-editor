@@ -250,7 +250,7 @@ fn read_text_file(path: String) -> Result<String, String> {
 #[tauri::command]
 fn install_pengu_plugin() -> Result<String, String> {
     // Try common Pengu Loader installation paths
-    let possible_paths = vec![
+    let possible_paths = [
         PathBuf::from("C:\\Program Files\\Pengu Loader\\plugins"),
         PathBuf::from("C:\\Program Files (x86)\\Pengu Loader\\plugins"),
         dirs::document_dir()
@@ -290,7 +290,7 @@ fn save_rank_config(
     queue: String,
     overview_enabled: bool,
 ) -> Result<String, String> {
-    let possible_paths = vec![
+    let possible_paths = [
         PathBuf::from("C:\\Program Files\\Pengu Loader\\plugins"),
         PathBuf::from("C:\\Program Files (x86)\\Pengu Loader\\plugins"),
         dirs::document_dir()
@@ -339,7 +339,7 @@ fn save_rank_config(
 
 #[tauri::command]
 fn open_pengu_plugins_folder() -> Result<String, String> {
-    let possible_paths = vec![
+    let possible_paths = [
         PathBuf::from("C:\\Program Files\\Pengu Loader\\plugins"),
         PathBuf::from("C:\\Program Files (x86)\\Pengu Loader\\plugins"),
         dirs::document_dir()
@@ -361,20 +361,6 @@ fn open_pengu_plugins_folder() -> Result<String, String> {
     }
     
     Ok(format!("Opened: {}", plugins_dir.display()))
-}
-
-fn copy_dir_all(src: &PathBuf, dst: &PathBuf) -> std::io::Result<()> {
-    fs::create_dir_all(dst)?;
-    for entry in fs::read_dir(src)? {
-        let entry = entry?;
-        let ty = entry.file_type()?;
-        if ty.is_dir() {
-            copy_dir_all(&entry.path(), &dst.join(entry.file_name()))?;
-        } else {
-            fs::copy(entry.path(), dst.join(entry.file_name()))?;
-        }
-    }
-    Ok(())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

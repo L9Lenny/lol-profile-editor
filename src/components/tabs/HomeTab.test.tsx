@@ -8,12 +8,10 @@ describe('HomeTab', () => {
         clientVersion: '1.3.7',
         setActiveTab: vi.fn(),
         lcuRequest: vi.fn(),
-        showToast: vi.fn()
     };
 
     it('should render profile header and categories', () => {
         render(<HomeTab {...mockProps} />);
-        // Instead of title, look for categories and version
         expect(screen.getByText('Customization')).toBeDefined();
         expect(screen.getByText('Enhancements')).toBeDefined();
         expect(screen.getByText('System')).toBeDefined();

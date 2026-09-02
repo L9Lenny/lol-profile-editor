@@ -68,7 +68,7 @@ The API key needs permission to submit builds for notarization. The workflow cre
 After a tagged release completes, verify the signatures locally:
 
 ```powershell
-Get-AuthenticodeSignature .\League-Profile-Tool_1.12.1_x64-setup.exe
+Get-AuthenticodeSignature .\League-Profile-Tool_1.13.0_x64-setup.exe
 ```
 
 ```bash

@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] - 2026-09-02
+
+### Added
+- **Challenge Level editor**: Added a dedicated section for changing the challenge crystal level and challenge points independently from rank overrides.
+- **Profile Overview rank override**: Added an optional, persisted PenguLoader-powered override for the rank shown on the League Profile Overview card.
+- **PenguLoader setup guidance**: Added an installation status, prominent three-step setup instructions, plugin update action, and manual installation documentation.
+
+### Changed
+- **Rank Override interface**: Reworked queue, tier, and division controls into a clearer card-based layout consistent with the rest of the application.
+- **Independent feature navigation**: Rank Override and Challenge Level now have separate sidebar and Home entries.
+- **PenguLoader plugin**: The bundled plugin now updates the Overview queue label, tier text, and regalia emblem while respecting the Overview toggle.
+- **Responsive layout**: Rank and Challenge editors now use vertical cards with mobile-friendly control grids.
+
+### Tests
+- Added dedicated Challenge Level coverage and expanded Rank Override and Home navigation tests. The complete frontend suite passes with 165 tests.
+
 ## [1.12.2] - 2026-09-01
 
 ### Added

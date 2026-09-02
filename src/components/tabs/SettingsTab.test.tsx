@@ -231,6 +231,88 @@ describe('SettingsTab', () => {
         });
     });
 
+    describe('PenguLoader Integration', () => {
+        beforeEach(() => {
+            mockInvoke.mockReset();
+            localStorage.clear();
+        });
+
+        it('should show install button with correct label when not installed', () => {
+            render(<SettingsTab {...mockProps} />);
+            expect(screen.getByText('Install Plugin')).toBeDefined();
+            expect(screen.queryByText('Reinstall Plugin')).toBeNull();
+            expect(screen.queryByText('✓ Plugin installed')).toBeNull();
+        });
+
+        it('should show reinstall button and status when plugin is installed', () => {
+            localStorage.setItem('pengu_plugin_installed_v1', 'true');
+            render(<SettingsTab {...mockProps} />);
+            expect(screen.getByText('Reinstall Plugin')).toBeDefined();
+            expect(screen.queryByText('Install Plugin')).toBeNull();
+            expect(screen.getByText('✓ Plugin installed')).toBeDefined();
+        });
+
+        it('should install plugin successfully and update state', async () => {
+            mockInvoke.mockResolvedValue('Plugin installed');
+            const showToast = vi.fn();
+            render(<SettingsTab {...mockProps} showToast={showToast} />);
+
+            fireEvent.click(screen.getByText('Install Plugin'));
+            await waitFor(() => {
+                expect(mockInvoke).toHaveBeenCalledWith('install_pengu_plugin');
+                expect(showToast).toHaveBeenCalledWith('Plugin installed! Restart League Client.', 'success');
+                expect(screen.getByText('✓ Plugin installed')).toBeDefined();
+            });
+        });
+
+        it('should handle plugin install failure gracefully', async () => {
+            mockInvoke.mockRejectedValue(new Error('Pengu Loader not found'));
+            const showToast = vi.fn();
+            render(<SettingsTab {...mockProps} showToast={showToast} />);
+
+            fireEvent.click(screen.getByText('Install Plugin'));
+            await waitFor(() => {
+                expect(showToast).toHaveBeenCalledWith('Install failed: Error: Pengu Loader not found', 'error');
+            });
+        });
+
+        it('should open plugins folder successfully', async () => {
+            mockInvoke.mockResolvedValue('Opened');
+            render(<SettingsTab {...mockProps} />);
+
+            fireEvent.click(screen.getByText('Open Plugins Folder'));
+            await waitFor(() => {
+                expect(mockInvoke).toHaveBeenCalledWith('open_pengu_plugins_folder');
+                expect(mockProps.addLog).toHaveBeenCalledWith('Opened Pengu Loader plugins folder.');
+            });
+        });
+
+        it('should handle open plugins folder failure', async () => {
+            mockInvoke.mockRejectedValue(new Error('Folder not found'));
+            const showToast = vi.fn();
+            render(<SettingsTab {...mockProps} showToast={showToast} />);
+
+            fireEvent.click(screen.getByText('Open Plugins Folder'));
+            await waitFor(() => {
+                expect(showToast).toHaveBeenCalledWith('Failed to open folder: Error: Folder not found', 'error');
+            });
+        });
+
+        it('should show manual installation instructions', () => {
+            render(<SettingsTab {...mockProps} />);
+            expect(screen.getByText('Manual Installation:')).toBeDefined();
+            expect(screen.getByText(/Copy the complete/)).toBeDefined();
+            expect(screen.getByText(/Pengu Loader\\plugins\\rank-override/)).toBeDefined();
+        });
+
+        it('should show download link', () => {
+            render(<SettingsTab {...mockProps} />);
+            const link = screen.getByText('Download Pengu Loader').closest('a');
+            expect(link).toHaveAttribute('href', 'https://github.com/PenguLoader/PenguLoader/releases');
+            expect(link).toHaveAttribute('target', '_blank');
+        });
+    });
+
     describe('exportSettings', () => {
         beforeEach(() => {
             mockInvoke.mockReset();

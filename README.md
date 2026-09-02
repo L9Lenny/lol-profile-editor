@@ -58,7 +58,9 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 - **🖼️ Profile Background**: Dedicated tab to set any champion skin as your profile background with lazy loading.
 - **🆕 Profile Tokens**: Customize your 3 challenge medals with a visual image picker powered by HD Community Dragon assets.
 - **🎵 Music Integration**: Synchronize your profile bio with your **Last.fm** scrobbles automatically. Supports 255-char bios with ASCII art; idle text can be used standalone as your profile bio via a toggle switch.
-- **🏆 Rank Mirror**: Customize your visible **Solo/Duo rank** with live draft previews and holographic grids.
+- **🏆 Rank Override**: Customize the visible queue, tier, and division used by chat and social cards.
+- **🔷 Challenge Level**: Set the challenge crystal level and challenge points from a dedicated editor.
+- **🐧 PenguLoader Overview Override**: Optionally mirror the selected rank in the League Profile Overview card, tooltip text, and regalia emblem through the bundled PenguLoader plugin.
 - **🖼️ Icon Swapper**: Browse and apply **6,000+ profile icons** with descriptive names (e.g., "Blue Minion Bruiser").
 - **📝 Presence Control**: Edit **bio/chat status** and set LCU presence (**Online, Away, Mobile, Offline**). Auto-expanding textareas with monospace font for ASCII art, live char counter (N/255), and a toggle to use the Music Sync idle text as your bio for more room.
 - **⚡ Performance Optimized**: Version-aware local cache for metadata and JPG previews for instant loading.
@@ -72,6 +74,17 @@ A desktop tool built with **Tauri v2** and **React** for League of Legends profi
 3. Open **League Profile Tool**.
 4. Join our [Discord Server](https://discord.gg/G3M4X3B) (Optional) for support and updates.
 5. Apply your desired customizations directly through the Hextech-inspired UI.
+
+### Profile Overview override
+
+Chat and social rank overrides work directly through the LCU. Overriding the rank shown in the League **Profile Overview** additionally requires [PenguLoader](https://github.com/PenguLoader/PenguLoader):
+
+1. Install PenguLoader from its official releases page.
+2. Open **Settings > Pengu Loader** in League Profile Tool.
+3. Select **Install / Update Plugin**.
+4. Enable **PenguLoader Overview Override** in the Rank Override section, apply the changes, and fully restart League.
+
+The Overview toggle is independent: disabling it does not affect chat or social hover cards.
 
 ## 🛠️ Development
 
