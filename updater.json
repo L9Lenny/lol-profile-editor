@@ -1,19 +1,19 @@
 {
-    "version": "1.12.2",
-    "notes": "## [1.12.2] - 2026-09-01  ### Added - **Code signing**: Windows and macOS releases are now signed with Authenticode and Apple Developer ID certificates. - **Self-signed certificate script**: Added `scripts/generate-cert.ps1` for generating a self-signed code signing certificate.  ### Security - **VirusTotal report**: Automated VirusTotal scanning after each release.  ",
-    "pub_date": "2026-09-01T22:10:24Z",
+    "version": "1.13.0",
+    "notes": "## [1.13.0] - 2026-09-02  ### Added - **Challenge Level editor**: Added a dedicated section for changing the challenge crystal level and challenge points independently from rank overrides. - **Profile Overview rank override**: Added an optional, persisted PenguLoader-powered override for the rank shown on the League Profile Overview card. - **PenguLoader setup guidance**: Added an installation status, prominent three-step setup instructions, plugin update action, and manual installation documentation.  ### Changed - **Rank Override interface**: Reworked queue, tier, and division controls into a clearer card-based layout consistent with the rest of the application. - **Independent feature navigation**: Rank Override and Challenge Level now have separate sidebar and Home entries. - **PenguLoader plugin**: The bundled plugin now updates the Overview queue label, tier text, and regalia emblem while respecting the Overview toggle. - **Responsive layout**: Rank and Challenge editors now use vertical cards with mobile-friendly control grids.  ### Tests - Added dedicated Challenge Level coverage and expanded Rank Override and Home navigation tests. The complete frontend suite passes with 165 tests.  ",
+    "pub_date": "2026-09-02T19:44:27Z",
     "platforms": {
         "windows-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/lenny-ts/league_profile_tool/releases/download/v1.12.2/League-Profile-Tool_1.12.2_x64-setup.exe"
+            "url": "https://github.com/lenny-ts/league_profile_tool/releases/download/v1.13.0/League-Profile-Tool_1.13.0_x64-setup.exe"
         },
         "darwin-x86_64": {
             "signature": "Not Found",
-            "url": "https://github.com/lenny-ts/league_profile_tool/releases/download/v1.12.2/League-Profile-Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/lenny-ts/league_profile_tool/releases/download/v1.13.0/League-Profile-Tool_aarch64.app.tar.gz"
         },
         "darwin-aarch64": {
             "signature": "Not Found",
-            "url": "https://github.com/lenny-ts/league_profile_tool/releases/download/v1.12.2/League-Profile-Tool_aarch64.app.tar.gz"
+            "url": "https://github.com/lenny-ts/league_profile_tool/releases/download/v1.13.0/League-Profile-Tool_aarch64.app.tar.gz"
         }
     }
 }
