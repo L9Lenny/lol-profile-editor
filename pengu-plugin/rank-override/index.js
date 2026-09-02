@@ -7,6 +7,7 @@
 var overrideRank = null
 var observer = null
 var cssInjected = false
+var overviewEnabled = true
 
 function log(msg) { console.log('[RankOverride] ' + msg) }
 
@@ -42,6 +43,26 @@ function isTargetWrapper(wrapper, rank) {
   var titleText = title.textContent.toLowerCase()
   return (rank.queue === 'RANKED_SOLO_5x5' && (titleText.indexOf('solo') >= 0 || titleText.indexOf('duo') >= 0)) ||
          (rank.queue === 'RANKED_FLEX_SR' && titleText.indexOf('flex') >= 0)
+}
+
+async function fetchOverviewSetting() {
+  try {
+    var res = await fetch('//plugins/rank-override/rank-config.json?t=' + Date.now(), { cache: 'no-store' })
+    if (!res.ok) return true
+    var config = await res.json()
+    return config.overviewEnabled !== false
+  } catch (e) { return true }
+}
+
+function queryAllDeep(root, selector) {
+  var results = Array.prototype.slice.call(root.querySelectorAll(selector))
+  var elements = root.querySelectorAll('*')
+  for (var i = 0; i < elements.length; i++) {
+    if (elements[i].shadowRoot) {
+      results = results.concat(queryAllDeep(elements[i].shadowRoot, selector))
+    }
+  }
+  return results
 }
 
 function patchRankedQueues(queues, rank) {
@@ -92,7 +113,7 @@ function installFetchInterceptor() {
     return origFetch.apply(this, arguments).then(function(res) {
       var cloned = res.clone()
       return cloned.json().then(function(data) {
-        if (overrideRank) data = interceptRankedData(data, overrideRank)
+        if (overviewEnabled && overrideRank) data = interceptRankedData(data, overrideRank)
         return new Response(JSON.stringify(data), {
           status: res.status, statusText: res.statusText, headers: res.headers
         })
@@ -118,7 +139,7 @@ function installXHRInterceptor() {
         if (self.readyState === 4 && self.status === 200) {
           try {
             var data = JSON.parse(self.responseText)
-            if (overrideRank) data = interceptRankedData(data, overrideRank)
+            if (overviewEnabled && overrideRank) data = interceptRankedData(data, overrideRank)
             var body = JSON.stringify(data)
             Object.defineProperty(self, 'responseText', { value: body, configurable: true })
             Object.defineProperty(self, 'response', { value: body, configurable: true })
@@ -145,6 +166,34 @@ function overrideText(rank) {
     if (sub && sub.innerText !== text) sub.innerText = text
     var ranked = wrappers[i].querySelector('.style-profile-emblem-subheader-ranked')
     if (ranked && ranked.innerText !== text) ranked.innerText = text
+  }
+
+  var tooltipQueues = queryAllDeep(document, '.ranked-tooltip-queue')
+  for (var q = 0; q < tooltipQueues.length; q++) {
+    var queueLabel = tooltipQueues[q].querySelector('.ranked-tooltip-queue-name')
+    if (!queueLabel) continue
+    var labelText = queueLabel.textContent.toLowerCase()
+    var isTargetQueue =
+      (rank.queue === 'RANKED_SOLO_5x5' && (labelText.indexOf('solo') >= 0 || labelText.indexOf('duo') >= 0)) ||
+      (rank.queue === 'RANKED_FLEX_SR' && labelText.indexOf('flex') >= 0)
+    if (!isTargetQueue) continue
+
+    var emblem = tooltipQueues[q].querySelector('lol-regalia-emblem-element')
+    var emblemDivision = noDiv ? 'O' : div
+    if (emblem) {
+      emblem.setAttribute('ranked-tier', tier.toLowerCase())
+      emblem.setAttribute('ranked-division', emblemDivision)
+      if (emblem.shadowRoot) {
+        var innerEmblem = emblem.shadowRoot.querySelector('div > div')
+        if (innerEmblem) {
+          innerEmblem.setAttribute('ranked-tier', tier.toLowerCase())
+          innerEmblem.setAttribute('ranked-division', emblemDivision)
+        }
+      }
+    }
+
+    var tooltipTier = tooltipQueues[q].querySelector('.ranked-tooltip-queue-tier')
+    if (tooltipTier && tooltipTier.textContent !== text) tooltipTier.textContent = text
   }
 }
 
@@ -177,7 +226,7 @@ function patchEmblemAttributes(rank) {
 }
 
 function applyRank(rank) {
-  if (!rank) return
+  if (!overviewEnabled || !rank) return
   injectCSS()
   overrideText(rank)
   patchEmblemAttributes(rank)
@@ -200,10 +249,13 @@ function startPolling() {
 }
 
 function init() {
-  fetchDesiredRank().then(function(rank) {
+  Promise.all([fetchDesiredRank(), fetchOverviewSetting()]).then(function(values) {
+    var rank = values[0]
+    overviewEnabled = values[1]
     if (!rank) { log('No rank found'); return }
     overrideRank = rank
     log('Rank: ' + rank.tier + ' ' + rank.division + ' (' + rank.queue + ')')
+    log('Profile Overview override: ' + (overviewEnabled ? 'enabled' : 'disabled'))
 
     installFetchInterceptor()
     installXHRInterceptor()

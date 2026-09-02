@@ -284,7 +284,12 @@ fn install_pengu_plugin() -> Result<String, String> {
 }
 
 #[tauri::command]
-fn save_rank_config(tier: String, division: String, queue: String) -> Result<String, String> {
+fn save_rank_config(
+    tier: String,
+    division: String,
+    queue: String,
+    overview_enabled: bool,
+) -> Result<String, String> {
     let possible_paths = vec![
         PathBuf::from("C:\\Program Files\\Pengu Loader\\plugins"),
         PathBuf::from("C:\\Program Files (x86)\\Pengu Loader\\plugins"),
@@ -308,6 +313,7 @@ fn save_rank_config(tier: String, division: String, queue: String) -> Result<Str
         "tier": tier,
         "division": division,
         "queue": queue,
+        "overviewEnabled": overview_enabled,
     });
 
     let config_str = serde_json::to_string_pretty(&config).map_err(|e| e.to_string())?;

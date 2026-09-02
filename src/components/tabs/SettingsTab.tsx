@@ -357,8 +357,9 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                 
                 <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                     <strong style={{ color: 'var(--hextech-gold)' }}>Manual Installation:</strong><br />
-                    Copy the <code>rank-override</code> folder to:<br />
-                    <code>C:\Program Files\Pengu Loader\plugins\@l9lenny\</code>
+                    Copy the complete <code>rank-override</code> folder to:<br />
+                    <code>C:\Program Files\Pengu Loader\plugins\rank-override\</code><br />
+                    Then restart the League Client and enable <strong>Profile Overview</strong> from the Rank tab.
                 </div>
             </div>
 

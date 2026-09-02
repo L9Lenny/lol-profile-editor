@@ -6,10 +6,10 @@ import {
     SAVED_RANK_QUEUE_KEY, 
     SAVED_RANK_TIER_KEY, 
     SAVED_RANK_DIV_KEY, 
-    SAVED_CHALLENGE_CRYSTAL_KEY, 
-    SAVED_CHALLENGE_POINTS_KEY 
+    PENGU_OVERVIEW_OVERRIDE_KEY,
+    PENGU_PLUGIN_INSTALLED_KEY,
 } from '../../storageKeys';
-import { Shield, Sparkles, RefreshCw } from 'lucide-react';
+import { Shield, RefreshCw, Monitor, Puzzle, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface RankTabProps {
     lcu: LcuInfo | null;
@@ -26,8 +26,6 @@ const QUEUES = [
     { value: "RANKED_FLEX_TT", label: "Flex 3v3" },
     { value: "RANKED_TFT", label: "TFT" }
 ];
-const CRYSTAL_TIERS = ["NONE", "IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"];
-
 const TIER_COLORS: Record<string, string> = {
     NONE: "#595959",
     IRON: "#595959",
@@ -50,21 +48,14 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const [soloTier, setSoloTier] = useState("CHALLENGER");
     const [soloDiv, setSoloDiv] = useState("I");
     const [queueType, setQueueType] = useState("RANKED_SOLO_5x5");
-
-    // Challenge stats
-    const [challengeCrystalLevel, setChallengeCrystalLevel] = useState("CHALLENGER");
-    const [challengePoints, setChallengePoints] = useState("1200");
+    const [overviewEnabled, setOverviewEnabled] = useState(() => localStorage.getItem(PENGU_OVERVIEW_OVERRIDE_KEY) !== 'false');
+    const pluginInstalled = localStorage.getItem(PENGU_PLUGIN_INSTALLED_KEY) === 'true';
 
     const applyLolData = useCallback((raw: string | Record<string, unknown>) => {
         const lol = typeof raw === 'string' ? JSON.parse(raw) as Record<string, unknown> : raw;
         if (lol.rankedLeagueTier) setSoloTier(lol.rankedLeagueTier as string);
         if (lol.rankedLeagueDivision) setSoloDiv(lol.rankedLeagueDivision as string);
         if (lol.rankedLeagueQueue) setQueueType(lol.rankedLeagueQueue as string);
-        if (lol.challengeCrystalLevel) setChallengeCrystalLevel(lol.challengeCrystalLevel as string);
-        if (lol.challengePoints !== undefined) {
-            const cp = lol.challengePoints;
-            setChallengePoints(typeof cp === 'number' || typeof cp === 'string' ? String(cp) : "0");
-        }
     }, []);
 
     const fetchCurrentData = useCallback(async () => {
@@ -103,20 +94,22 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                 rankedLeagueTier: soloTier,
                 rankedLeagueDivision: soloDiv,
                 rankedLeagueQueue: queueType,
-                challengeCrystalLevel: challengeCrystalLevel,
-                challengePoints: String(challengePoints || "0")
             }));
 
             // Save overrides to local storage for the Auto-Enforcer
             localStorage.setItem(SAVED_RANK_QUEUE_KEY, queueType);
             localStorage.setItem(SAVED_RANK_TIER_KEY, soloTier);
             localStorage.setItem(SAVED_RANK_DIV_KEY, soloDiv);
-            localStorage.setItem(SAVED_CHALLENGE_CRYSTAL_KEY, challengeCrystalLevel);
-            localStorage.setItem(SAVED_CHALLENGE_POINTS_KEY, String(challengePoints || "0"));
+            localStorage.setItem(PENGU_OVERVIEW_OVERRIDE_KEY, overviewEnabled.toString());
 
             // Write config for Pengu Loader plugin
             try {
-                await invoke("save_rank_config", { tier: soloTier, division: soloDiv, queue: queueType });
+                await invoke("save_rank_config", {
+                    tier: soloTier,
+                    division: soloDiv,
+                    queue: queueType,
+                    overviewEnabled,
+                });
             } catch (e) {
                 // Plugin may not be installed — ignore silently
             }
@@ -135,31 +128,29 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const hasDivision = !["MASTER", "GRANDMASTER", "CHALLENGER"].includes(soloTier);
 
     return (
-        <div className="tab-content fadeIn" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', alignItems: 'start' }}>
-            
-            {/* LEFT PANEL: Ranks & Challenge Stats Selectors */}
-            <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <Shield size={20} color="var(--hextech-gold)" />
-                        <h3 className="card-title" style={{ margin: 0 }}>Rank &amp; Stats Overrides</h3>
+        <div className="tab-content fadeIn feature-page">
+            <header className="feature-toolbar">
+                <div className="feature-toolbar-title">
+                    <Shield size={19} />
+                    <div>
+                        <h2>Rank Override</h2>
+                        <p>Presence rank, queue and Profile Overview output.</p>
                     </div>
-                    <button type="button" 
-                        className={`refresh-icon-btn ${fetching ? 'loading' : ''}`}
-                        onClick={fetchCurrentData}
-                        disabled={!lcu || fetching}
-                        title="Sync from Client"
-                    >
-                        <RefreshCw size={16} />
-                    </button>
                 </div>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '-10px 0 0 0' }}>
-                    Modify your visible rank, queue type, and challenge stats displayed in the client chat and hover cards.
-                </p>
+                <button type="button"
+                    className={`tool-action ${fetching ? 'loading' : ''}`}
+                    onClick={fetchCurrentData}
+                    disabled={!lcu || fetching}
+                    title="Sync from Client"
+                >
+                    <RefreshCw size={14} /> Sync client
+                </button>
+            </header>
 
-                {/* Queue Selection (Segmented Control) */}
-                <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
-                    <legend style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Queue Type</legend>
+            <div className="feature-workbench rank-workbench">
+                <section className="editor-surface">
+                    <fieldset className="editor-block rank-queue-block">
+                        <legend>Queue</legend>
                     <div className="rank-queue-toggles">
                         {QUEUES.map(q => (
                             <button type="button"
@@ -172,11 +163,10 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                             </button>
                         ))}
                     </div>
-                </fieldset>
+                    </fieldset>
 
-                {/* Tier Selection Grid */}
-                <fieldset style={{ border: 'none', padding: 0, margin: '15px 0 0 0' }}>
-                    <legend style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Rank Tier</legend>
+                    <fieldset className={`editor-block rank-tier-block ${hasDivision ? '' : 'editor-block-last rank-tier-full'}`}>
+                        <legend>Tier</legend>
                     <div className="tier-grid">
                         {TIERS.map(t => {
                             const isActive = soloTier === t;
@@ -185,22 +175,21 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 <button type="button"
                                     key={t}
                                     className={`tier-btn ${isActive ? 'active' : ''}`}
-                                    style={isActive ? { color, borderColor: color, boxShadow: `0 0 15px ${color}40, inset 0 0 8px ${color}20` } : {}}
+                                    style={isActive ? { color, borderColor: color } : {}}
                                     onClick={() => setSoloTier(t)}
                                     disabled={!lcu}
                                 >
-                                    <Shield size={24} color={isActive ? color : "var(--text-secondary)"} />
+                                    <Shield size={18} color={isActive ? color : "var(--text-secondary)"} />
                                     {t}
                                 </button>
                             );
                         })}
                     </div>
-                </fieldset>
+                    </fieldset>
 
-                {/* Division Selection Grid */}
-                {hasDivision && (
-                    <fieldset style={{ border: 'none', padding: 0, margin: '15px 0 0 0' }}>
-                        <legend style={{ display: 'block', marginBottom: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Division</legend>
+                    {hasDivision && (
+                        <fieldset className="editor-block editor-block-last rank-division-block">
+                            <legend>Division</legend>
                         <div className="division-grid">
                             {DIVISIONS.map(d => (
                                 <button type="button"
@@ -213,74 +202,66 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 </button>
                             ))}
                         </div>
-                    </fieldset>
-                )}
-
-                <hr style={{ border: 'none', borderTop: '1px solid var(--glass-border)' }} />
-
-                {/* Challenge Stats */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                    <div className="input-group">
-                        <label htmlFor="crystal-tier-select">Challenge Crystal Level</label>
-                        <select id="crystal-tier-select" value={challengeCrystalLevel} onChange={(e) => setChallengeCrystalLevel(e.target.value)} disabled={!lcu}>
-                            {CRYSTAL_TIERS.map(c => <option key={c} value={c}>{c}</option>)}
-                        </select>
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="challenge-points-input">Challenge Points</label>
-                        <input 
-                            id="challenge-points-input" 
-                            type="number" 
-                            value={challengePoints} 
-                            onChange={(e) => setChallengePoints(e.target.value)} 
-                            placeholder="e.g. 1200"
-                            disabled={!lcu}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            {/* RIGHT PANEL: Preview & Apply */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                
-                <div className="profile-preview-card">
-                    <div style={{ position: 'absolute', top: 15, left: 15, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        <Sparkles size={14} color="var(--hextech-gold)" /> Preview
-                    </div>
-                    
-                    <div className="profile-rank-display">
-                        <div className="profile-rank-tier" style={{ color: TIER_COLORS[soloTier] || "#ffffff" }}>
-                            {soloTier} {hasDivision ? soloDiv : ''}
-                        </div>
-                        <div className="profile-rank-queue">
-                            {QUEUES.find(q => q.value === queueType)?.label || queueType}
-                        </div>
-                    </div>
-
-                    <div className="profile-challenge-crystal">
-                        <div className="profile-crystal-dot" style={{ color: TIER_COLORS[challengeCrystalLevel] || "#595959", backgroundColor: TIER_COLORS[challengeCrystalLevel] || "#595959" }}></div>
-                        {challengeCrystalLevel} Crystal
-                        <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>• {challengePoints} pts</span>
-                    </div>
-                </div>
-
-                <div className="card">
-                    <button type="button" 
-                        className="primary-btn" 
-                        style={{ width: '100%', padding: '16px', fontSize: '1rem', fontWeight: 'bold', letterSpacing: '1px' }} 
-                        onClick={applyChanges} 
-                        disabled={!lcu || loading || fetching}
-                    >
-                        {loading ? 'APPLYING...' : 'APPLY RANK OVERRIDES'}
-                    </button>
-                    {!lcu && (
-                        <p style={{ color: '#ff3232', fontSize: '0.85rem', margin: '10px 0 0 0', textAlign: 'center' }}>
-                            ⚠ League client connection required.
-                        </p>
+                        </fieldset>
                     )}
-                </div>
+                </section>
 
+                <aside className="inspector-surface">
+                    <div className="inspector-heading">Pending output</div>
+                    <div className="rank-readout" style={{ color: TIER_COLORS[soloTier] || '#ffffff' }}>
+                        <Shield size={28} />
+                        <div>
+                            <strong>{soloTier}{hasDivision ? ` ${soloDiv}` : ''}</strong>
+                            <span>{QUEUES.find(q => q.value === queueType)?.label || queueType}</span>
+                        </div>
+                    </div>
+                    <dl className="output-list">
+                        <div><dt>Presence</dt><dd>Chat and social cards</dd></div>
+                        <div><dt>Queue source</dt><dd>{QUEUES.find(q => q.value === queueType)?.label}</dd></div>
+                    </dl>
+
+                    <section className={`overview-inline ${overviewEnabled ? 'enabled' : ''}`} aria-labelledby="overview-override-title">
+                        <div className="overview-inline-row">
+                            <Monitor size={24} />
+                            <div className="overview-inline-copy">
+                                <div>
+                                    <h3 id="overview-override-title">PenguLoader Overview Override</h3>
+                                <span className={`overview-status ${pluginInstalled ? 'ready' : 'setup'}`}>
+                                    {pluginInstalled ? <CheckCircle2 size={12} /> : <AlertTriangle size={12} />}
+                                    {pluginInstalled ? 'Pengu ready' : 'Setup required'}
+                                </span>
+                                </div>
+                                <p>Required to apply the selected rank to your Profile Overview card and tooltip.</p>
+                            </div>
+                            <label className="switch overview-switch">
+                                <span className="sr-only">Toggle Profile Overview rank override</span>
+                                <input type="checkbox" checked={overviewEnabled} onChange={(event) => setOverviewEnabled(event.target.checked)} />
+                                <span className="slider"></span>
+                            </label>
+                        </div>
+
+                        {overviewEnabled && (
+                            <div className="overview-help">
+                                <div className="overview-help-title"><Puzzle size={17} /> How to enable the Overview override</div>
+                                <ol className="overview-setup-steps">
+                                    <li><span>1</span><p>Open <strong>Settings &gt; Pengu Loader</strong> and install PenguLoader if it is not already installed.</p></li>
+                                    <li><span>2</span><p>Click <strong>Install / Update Plugin</strong> in that section.</p></li>
+                                    <li><span>3</span><p>Return here, apply the override, then fully restart League.</p></li>
+                                </ol>
+                                <small>PenguLoader is only required for Profile Overview. Chat and social hover cards work independently.</small>
+                            </div>
+                        )}
+                    </section>
+
+                    <div className="inspector-actions">
+                        <button type="button" className="primary-btn" onClick={applyChanges} disabled={!lcu || loading || fetching}>
+                            {loading ? 'APPLYING...' : 'APPLY RANK OVERRIDES'}
+                        </button>
+                    {!lcu && (
+                            <p className="feature-client-warning">League client connection required.</p>
+                    )}
+                    </div>
+                </aside>
             </div>
         </div>
     );

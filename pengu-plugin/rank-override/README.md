@@ -41,6 +41,17 @@ This plugin works in conjunction with [League Profile Tool](https://github.com/L
 3. It overrides the rank attributes to display your custom rank
 4. A MutationObserver watches for DOM changes and re-applies overrides
 
+## Profile Overview Setting
+
+The **Profile Overview** switch in League Profile Tool controls whether Pengu changes the rank card and its tooltip in `Profile > Overview`. Chat and social hover cards continue to use the LCU presence override independently.
+
+After changing this option:
+
+1. Click **Apply Rank Overrides** in the Rank tab.
+2. Restart the League Client so Pengu reloads the configuration.
+
+The setting is stored as `overviewEnabled` in `rank-config.json`. Missing values default to enabled for compatibility with older plugin installations.
+
 ## File Structure
 
 ```

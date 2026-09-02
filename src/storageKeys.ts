@@ -32,6 +32,7 @@ export const PRESETS_LS_KEY = "profile_presets_list_v1";
 
 // Pengu Loader
 export const PENGU_PLUGIN_INSTALLED_KEY = "pengu_plugin_installed_v1";
+export const PENGU_OVERVIEW_OVERRIDE_KEY = "pengu_overview_override_v1";
 
 // Analytics (intentionally NOT in ALL_SAVED_KEYS — survives Clear All)
 export const ANALYTICS_ID_KEY = "lp_analytics_id";
@@ -58,4 +59,5 @@ export const ALL_SAVED_KEYS: string[] = [
     PROFILE_ICONS_KEY,
     ICON_DATA_VERSION_KEY,
     PRESETS_LS_KEY,
+    PENGU_OVERVIEW_OVERRIDE_KEY,
 ];

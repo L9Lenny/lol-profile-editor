@@ -18,7 +18,8 @@ import {
     Menu,
     ChevronLeft,
     Users,
-    FolderOpen
+    FolderOpen,
+    Gem
 } from 'lucide-react';
 import "./App.css";
 
@@ -37,6 +38,7 @@ import HomeTab from "./components/tabs/HomeTab";
 import ProfileTab from "./components/tabs/ProfileTab";
 import MusicTab from "./components/tabs/MusicTab";
 import RankTab from "./components/tabs/RankTab";
+import ChallengeLevelTab from "./components/tabs/ChallengeLevelTab";
 import IconTab from "./components/tabs/IconTab";
 import LogsTab from "./components/tabs/LogsTab";
 import TokensTab from "./components/tabs/TokensTab";
@@ -219,6 +221,7 @@ function App() {
             {!isCollapsed && <div className="nav-category-title">Enhancements</div>}
             <NavItem icon={<Disc3 size={18} />} label="Music Sync" active={activeTab === 'music'} onClick={() => setActiveTab('music')} collapsed={isCollapsed} />
             <NavItem icon={<Trophy size={18} />} label="Rank Overrides" active={activeTab === 'rank'} onClick={() => setActiveTab('rank')} collapsed={isCollapsed} />
+            <NavItem icon={<Gem size={18} />} label="Challenge Level" active={activeTab === 'challenge'} onClick={() => setActiveTab('challenge')} collapsed={isCollapsed} />
             <NavItem icon={<Users size={18} />} label="Lobby Manager" active={activeTab === 'lobby'} onClick={() => setActiveTab('lobby')} collapsed={isCollapsed} />
           </div>
 
@@ -246,6 +249,7 @@ function App() {
           {activeTab === 'tokens' && <ErrorBoundary name="Tokens"><TokensTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} /></ErrorBoundary>}
           {activeTab === 'presets' && <ErrorBoundary name="Presets"><PresetsTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} /></ErrorBoundary>}
           {activeTab === 'rank' && <ErrorBoundary name="Rank"><RankTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} /></ErrorBoundary>}
+          {activeTab === 'challenge' && <ErrorBoundary name="Challenge Level"><ChallengeLevelTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} /></ErrorBoundary>}
           {activeTab === 'lobby' && <ErrorBoundary name="Lobby"><LobbyTab lcu={lcu} showToast={showToast} addLog={addLog} lcuRequest={lcuRequest} /></ErrorBoundary>}
           {activeTab === 'icons' && <ErrorBoundary name="Icons"><IconTab lcu={lcu} showToast={showToast} addLog={addLog} {...icons} /></ErrorBoundary>}
           {activeTab === 'logs' && <ErrorBoundary name="Logs"><LogsTab logs={logs} exportLogs={exportLogs} clearLogs={clearLogs} showToast={showToast} /></ErrorBoundary>}

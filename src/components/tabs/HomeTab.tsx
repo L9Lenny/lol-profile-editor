@@ -17,7 +17,8 @@ import {
     UserMinus,
     Shield,
     ChevronDown,
-    ChevronUp
+    ChevronUp,
+    Gem
 } from 'lucide-react';
 import { LcuInfo } from '../../hooks/useLcu';
 import { LcuRequestFn, patchChatLol } from '../../utils/chatMe';
@@ -174,6 +175,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ lcu, clientVersion, setActiveTab, lcu
                 { id: 'lobby', title: 'Lobby Manager', desc: 'Mass invite friends and manage your lobby.', icon: <Users size={24} /> },
                 { id: 'friends', title: 'Friend Cleaner', desc: 'Identify and remove inactive friends.', icon: <UserMinus size={24} /> },
                 { id: 'rank', title: 'Rank Overrides', desc: 'Modify visible Solo/Duo rankings.', icon: <Trophy size={24} /> },
+                { id: 'challenge', title: 'Challenge Level', desc: 'Customize your challenge crystal and score.', icon: <Gem size={24} /> },
                 { id: 'music', title: 'Music Sync', desc: 'Auto-update bio with your current track.', icon: <Disc3 size={24} /> },
             ]
         },
