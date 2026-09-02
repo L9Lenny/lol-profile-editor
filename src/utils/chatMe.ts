@@ -49,3 +49,18 @@ export async function patchChatLol(
     lolMutex = next.then(() => undefined, () => undefined);
     return next;
 }
+
+/**
+ * Read current ranked stats from the LCU.
+ * Returns the ranked stats object or null if unavailable.
+ */
+export async function getCurrentRankedStats(
+    lcuRequest: LcuRequestFn
+): Promise<Record<string, unknown> | null> {
+    try {
+        const res = await lcuRequest("GET", "/lol-ranked/v1/current-ranked-stats") as Record<string, unknown> | null;
+        return res;
+    } catch {
+        return null;
+    }
+}

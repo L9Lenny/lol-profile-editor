@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { RefreshCw, Cpu, Trash2, X, Check, Download, Upload } from 'lucide-react';
+import { RefreshCw, Cpu, Trash2, X, Check, Download, Upload, Puzzle, FolderOpen, ExternalLink } from 'lucide-react';
 import { enable, disable } from "@tauri-apps/plugin-autostart";
 import { save, open } from "@tauri-apps/plugin-dialog";
 import { invoke } from "@tauri-apps/api/core";
-import { SAVED_AUTO_ENFORCE_KEY, SAVED_ENFORCE_OFFLINE_KEY, SAVED_ICON_KEY, ALL_SAVED_KEYS } from '../../storageKeys';
+import { SAVED_AUTO_ENFORCE_KEY, SAVED_ENFORCE_OFFLINE_KEY, SAVED_ICON_KEY, ALL_SAVED_KEYS, PENGU_PLUGIN_INSTALLED_KEY } from '../../storageKeys';
 import { patchChatLol } from '../../utils/chatMe';
 
 const MAX_STORAGE_VALUE_LENGTH = 10000;
@@ -34,6 +34,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
     showToast, lcuRequest
 }) => {
     const [autoEnforce, setAutoEnforce] = useState(() => localStorage.getItem(SAVED_AUTO_ENFORCE_KEY) === 'true');
+    const [pluginInstalled, setPluginInstalled] = useState(() => localStorage.getItem(PENGU_PLUGIN_INSTALLED_KEY) === 'true');
 
     const toggleAutoEnforce = (checked: boolean) => {
         setAutoEnforce(checked);
@@ -289,6 +290,76 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                     <button type="button" className="ghost-btn" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={importSettings}>
                         <Upload size={16} /> Import
                     </button>
+                </div>
+            </div>
+
+            <div className="card">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                    <Puzzle size={20} style={{ color: 'var(--hextech-gold)' }} />
+                    <h3 className="card-title" style={{ margin: 0 }}>Pengu Loader Integration</h3>
+                </div>
+                <p className="settings-desc" style={{ marginBottom: '12px' }}>
+                    Install the Rank Override plugin to show custom ranks in the League client's profile overview. 
+                    Requires <a href="https://github.com/PenguLoader/PenguLoader" target="_blank" rel="noreferrer" style={{ color: 'var(--hextech-gold)' }}>Pengu Loader</a> to be installed.
+                    {pluginInstalled && (
+                        <span style={{ color: '#2ecc71', marginLeft: '8px' }}>✓ Plugin installed</span>
+                    )}
+                </p>
+                
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <button 
+                        type="button" 
+                        className="ghost-btn" 
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                        onClick={async () => {
+                            try {
+                                await invoke("install_pengu_plugin");
+                                localStorage.setItem(PENGU_PLUGIN_INSTALLED_KEY, 'true');
+                                setPluginInstalled(true);
+                                addLog("Pengu Loader plugin installed successfully.");
+                                showToast?.("Plugin installed! Restart League Client.", "success");
+                            } catch (err) {
+                                addLog(`Plugin install failed: ${err}`);
+                                showToast?.(`Install failed: ${err}`, "error");
+                            }
+                        }}
+                    >
+                        <Puzzle size={16} /> {pluginInstalled ? 'Reinstall Plugin' : 'Install Plugin'}
+                    </button>
+                    
+                    <button 
+                        type="button" 
+                        className="ghost-btn" 
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                        onClick={async () => {
+                            try {
+                                await invoke("open_pengu_plugins_folder");
+                                addLog("Opened Pengu Loader plugins folder.");
+                            } catch (err) {
+                                addLog(`Failed to open plugins folder: ${err}`);
+                                showToast?.(`Failed to open folder: ${err}`, "error");
+                            }
+                        }}
+                    >
+                        <FolderOpen size={16} /> Open Plugins Folder
+                    </button>
+                    
+                    <a 
+                        href="https://github.com/PenguLoader/PenguLoader/releases" 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="ghost-btn"
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
+                    >
+                        <ExternalLink size={16} /> Download Pengu Loader
+                    </a>
+                </div>
+                
+                <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    <strong style={{ color: 'var(--hextech-gold)' }}>Manual Installation:</strong><br />
+                    Copy the complete <code>rank-override</code> folder to:<br />
+                    <code>C:\Program Files\Pengu Loader\plugins\rank-override\</code><br />
+                    Then restart the League Client and enable <strong>Profile Overview</strong> from the Rank tab.
                 </div>
             </div>
 

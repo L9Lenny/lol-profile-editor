@@ -14,7 +14,8 @@ import {
     Sparkles,
     Cpu,
     Users,
-    UserMinus
+    UserMinus,
+    Gem
 } from 'lucide-react';
 import { LcuInfo } from '../../hooks/useLcu';
 import { LcuRequestFn } from '../../utils/chatMe';
@@ -94,6 +95,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ lcu, clientVersion, setActiveTab, lcu
                 { id: 'lobby', title: 'Lobby Manager', desc: 'Mass invite friends and manage your lobby.', icon: <Users size={24} /> },
                 { id: 'friends', title: 'Friend Cleaner', desc: 'Identify and remove inactive friends.', icon: <UserMinus size={24} /> },
                 { id: 'rank', title: 'Rank Overrides', desc: 'Modify visible Solo/Duo rankings.', icon: <Trophy size={24} /> },
+                { id: 'challenge', title: 'Challenge Level', desc: 'Customize your challenge crystal and score.', icon: <Gem size={24} /> },
                 { id: 'music', title: 'Music Sync', desc: 'Auto-update bio with your current track.', icon: <Disc3 size={24} /> },
             ]
         },
@@ -122,7 +124,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ lcu, clientVersion, setActiveTab, lcu
     return (
         <div className="tab-content fadeIn" style={{ padding: '0 20px 40px 20px' }}>
             
-            {/* Profile Banner - Now the only header */}
+            {/* Profile Banner */}
             <div className="card profile-header-card" style={{ 
                 marginTop: '10px',
                 marginBottom: '20px', 
@@ -158,7 +160,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ lcu, clientVersion, setActiveTab, lcu
                     <h2 style={{ margin: 0, color: 'white', fontSize: '1.2rem', fontWeight: 700 }}>
                         {getSummonerName()}
                     </h2>
-                    <div style={{ display: 'flex', gap: '15px', marginTop: '3px' }}>
+                    <div style={{ display: 'flex', gap: '15px', marginTop: '3px', alignItems: 'center' }}>
                         <div className={`connection-status-pill ${lcu ? 'connected' : 'disconnected'}`} style={{ margin: 0, fontSize: '0.55rem', padding: '2px 8px' }}>
                             <div className="status-dot"></div>
                             {lcu ? 'CONNECTED' : 'WAITING'}
@@ -168,7 +170,7 @@ const HomeTab: React.FC<HomeTabProps> = ({ lcu, clientVersion, setActiveTab, lcu
                 </div>
             </div>
 
-            {/* View Title / Back Button - Minimalist */}
+            {/* View Title / Back Button */}
             <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 {view === 'category-detail' && (
                     <button type="button" className="ghost-btn" onClick={() => setView('categories')} style={{ padding: '5px 10px', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '5px' }}>

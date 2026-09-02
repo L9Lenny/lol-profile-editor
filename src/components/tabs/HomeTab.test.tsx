@@ -7,12 +7,11 @@ describe('HomeTab', () => {
         lcu: { port: '1234', token: 'secret' },
         clientVersion: '1.3.7',
         setActiveTab: vi.fn(),
-        lcuRequest: vi.fn()
+        lcuRequest: vi.fn(),
     };
 
     it('should render profile header and categories', () => {
         render(<HomeTab {...mockProps} />);
-        // Instead of title, look for categories and version
         expect(screen.getByText('Customization')).toBeDefined();
         expect(screen.getByText('Enhancements')).toBeDefined();
         expect(screen.getByText('System')).toBeDefined();
@@ -42,6 +41,8 @@ describe('HomeTab', () => {
 
         // Click on Enhancements category
         fireEvent.click(screen.getByText('Enhancements').closest('button')!);
+        fireEvent.click(screen.getByText('Challenge Level').closest('button')!);
+        expect(mockProps.setActiveTab).toHaveBeenCalledWith('challenge');
         fireEvent.click(screen.getByText('Music Sync').closest('button')!);
         expect(mockProps.setActiveTab).toHaveBeenCalledWith('music');
     });
