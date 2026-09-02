@@ -94,6 +94,48 @@ jobs:
             exit 1
           fi
 
+      - name: Import Windows code-signing certificate
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_CERTIFICATE) -or [string]::IsNullOrWhiteSpace($env:WINDOWS_CERTIFICATE_PASSWORD)) {
+            throw 'Missing WINDOWS_CERTIFICATE or WINDOWS_CERTIFICATE_PASSWORD secret.'
+          }
+
+          $certificateDir = Join-Path $env:RUNNER_TEMP 'league-profile-tool-signing'
+          New-Item -ItemType Directory -Force -Path $certificateDir | Out-Null
+          $certificatePath = Join-Path $certificateDir 'certificate.pfx'
+          $base64 = $env:WINDOWS_CERTIFICATE.Trim()
+          [IO.File]::WriteAllBytes($certificatePath, [Convert]::FromBase64String($base64))
+
+          $securePassword = ConvertTo-SecureString $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+          $certificate = Import-PfxCertificate `
+            -FilePath $certificatePath `
+            -CertStoreLocation Cert:\CurrentUser\My `
+            -Password $securePassword `
+            -Exportable
+
+          if ($null -eq $certificate) {
+            throw 'The Windows code-signing certificate could not be imported.'
+          }
+
+          Write-Host "Certificate imported: $($certificate.Thumbprint)"
+
+          $tauriConfig = @{
+            bundle = @{
+              windows = @{
+                certificateThumbprint = $certificate.Thumbprint
+                digestAlgorithm = 'sha256'
+                timestampUrl = 'http://timestamp.digicert.com'
+              }
+            }
+          }
+          $tauriConfig | ConvertTo-Json -Depth 5 | Set-Content -Path 'src-tauri/tauri.windows.conf.json'
+
       - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ env.RELEASE_TOKEN }}
@@ -106,6 +148,13 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
+      - name: Remove Windows signing material
+        if: always() && matrix.platform == 'windows-latest'
+        shell: pwsh
+        run: |
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:RUNNER_TEMP/league-profile-tool-signing"
+          Remove-Item -Force -ErrorAction SilentlyContinue 'src-tauri/tauri.windows.conf.json'
 
   update-updater-json:
     needs: publish-tauri

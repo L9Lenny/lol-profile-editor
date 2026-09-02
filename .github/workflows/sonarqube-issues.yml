@@ -1,4 +1,4 @@
-name: SonarQube Analysis and Auto-Create Issues
+name: SonarQube Analysis
 
 on:
   push:
@@ -34,29 +34,6 @@ jobs:
         with:
           args: >
             -Dsonar.qualitygate.wait=true
-        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Create issues from SonarQube findings
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: lenny-ts_lol-profile-editor
-          SONAR_ORGANIZATION: lenny-ts
-          SONAR_BRANCH: ${{ github.ref_name }}
-          SONAR_SEVERITIES: BLOCKER,CRITICAL,MAJOR
-        run: node .github/scripts/create-sonarqube-issues.js
-
-      - name: Auto-close resolved issues
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: lenny-ts_lol-profile-editor
-          SONAR_ORGANIZATION: lenny-ts
-          SONAR_BRANCH: ${{ github.ref_name }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
-        run: node .github/scripts/auto-detect-fixed-issues.js

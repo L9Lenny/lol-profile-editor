@@ -2138,7 +2138,7 @@ dependencies = [
 
 [[package]]
 name = "league-profile-tool"
-version = "1.11.0"
+version = "1.12.1"
 dependencies = [
  "base64 0.23.1",
  "dirs 5.0.1",

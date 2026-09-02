@@ -36,7 +36,7 @@ describe('ProfileTab', () => {
         const props = createProps();
         render(<ProfileTab {...props} />);
 
-        const textarea = await screen.findByLabelText('New Status Message (up to 255 chars)');
+        const textarea = await screen.findByLabelText('New Status Message');
         fireEvent.change(textarea, { target: { value: 'New Bio' } });
 
         const applyBtn = screen.getByText('APPLY BIO');
@@ -68,7 +68,7 @@ describe('ProfileTab', () => {
         vi.mocked(invoke).mockRejectedValueOnce(new Error("Fail"));
         render(<ProfileTab {...props} />);
 
-        const textarea = await screen.findByLabelText('New Status Message (up to 255 chars)');
+        const textarea = await screen.findByLabelText('New Status Message');
         fireEvent.change(textarea, { target: { value: 'test' } });
 
         const applyBtn = screen.getByText('APPLY BIO');
