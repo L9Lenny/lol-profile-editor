@@ -329,14 +329,19 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
     };
 
     return (
-        <div className="tab-content fadeIn">
-            {/* 1. Direct Skin ID Card (Always at the top) */}
-            <div className="card" style={{ marginBottom: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                    <Hash size={18} style={{ color: 'var(--hextech-gold)' }} />
-                    <h3 className="card-title" style={{ margin: 0 }}>Direct Skin ID</h3>
+        <div className="tab-content fadeIn" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0 20px 40px 20px' }}>
+            {/* 1. Direct Skin ID Card */}
+            <div className="card" style={{ marginBottom: '12px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                    <div style={{ 
+                        width: '28px', height: '28px', borderRadius: '6px', 
+                        background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                        <Hash size={14} style={{ color: 'var(--hextech-gold)' }} />
+                    </div>
+                    <h3 className="card-title" style={{ margin: 0, fontSize: '0.85rem' }}>Quick Apply by ID</h3>
                 </div>
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'stretch' }}>
                     <div ref={searchRef} style={{ flex: 1, position: 'relative' }}>
                         <input
                             type="text"
@@ -349,14 +354,15 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                             onFocus={() => {
                                 if (skinSuggestions.length > 0) setShowSuggestions(true);
                             }}
-                            style={{ width: '100%', padding: '10px' }}
+                            style={{ width: '100%', padding: '10px 12px', fontSize: '0.82rem' }}
                         />
                         {showSuggestions && (
                             <div style={{
                                 position: 'absolute', top: '100%', left: 0, right: 0,
-                                background: '#1e1e2f', border: '1px solid #333',
-                                borderRadius: '8px', zIndex: 100, maxHeight: '300px',
+                                background: '#18181b', border: '1px solid var(--glass-border)',
+                                borderRadius: '8px', zIndex: 100, maxHeight: '240px',
                                 overflowY: 'auto', marginTop: '4px',
+                                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)'
                             }}>
                                 {skinSuggestions.map(s => (
                                     <button
@@ -369,16 +375,16 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                                         style={{
                                             display: 'block', width: '100%', padding: '10px 12px',
                                             textAlign: 'left', background: 'none', border: 'none',
-                                            borderBottom: '1px solid #2a2a3e', cursor: 'pointer',
-                                            color: '#ddd', fontFamily: 'inherit', fontSize: '0.85rem',
+                                            borderBottom: '1px solid rgba(255,255,255,0.03)', cursor: 'pointer',
+                                            color: 'var(--text-primary)', fontFamily: 'inherit', fontSize: '0.82rem',
                                         }}
-                                        onMouseEnter={(e) => e.currentTarget.style.background = '#2a2a3e'}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.05)'}
                                         onMouseLeave={(e) => e.currentTarget.style.background = 'none'}
                                     >
-                                        <span style={{ color: '#c8aa6e' }}>{s.championName}</span>
-                                        {' — '}{s.name}
-                                        <span style={{ color: '#666', marginLeft: '8px', fontSize: '0.75rem' }}>
-                                            ID: {s.id}
+                                        <span style={{ color: 'var(--hextech-gold)', fontWeight: 600 }}>{s.championName}</span>
+                                        <span style={{ color: 'var(--text-secondary)' }}>{' — '}{s.name}</span>
+                                        <span style={{ color: 'var(--text-secondary)', opacity: 0.5, marginLeft: '8px', fontSize: '0.7rem' }}>
+                                            #{s.id}
                                         </span>
                                     </button>
                                 ))}
@@ -396,55 +402,67 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                             }
                         }}
                         disabled={!lcu || loading || (!selectedDirectSkin && (!skinQuery.trim() || Number.isNaN(Number.parseInt(skinQuery, 10))))}
-                        style={{ padding: '10px 25px' }}
+                        style={{ padding: '10px 20px', fontSize: '0.75rem', borderRadius: '8px' }}
                     >
                         APPLY
                     </button>
                 </div>
             </div>
 
-            {/* 2. Main Browser Card */}
-            <div className="card">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            {/* 2. Main Browser Card — fills remaining space */}
+            <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexShrink: 0 }}>
                     <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                            <Image size={20} style={{ color: 'var(--hextech-gold)' }} />
-                            <h3 className="card-title" style={{ margin: 0 }}>Profile Background</h3>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2px' }}>
+                            <div style={{ 
+                                width: '28px', height: '28px', borderRadius: '6px', 
+                                background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            }}>
+                                <Image size={14} style={{ color: 'var(--hextech-gold)' }} />
+                            </div>
+                            <h3 className="card-title" style={{ margin: 0, fontSize: '0.85rem' }}>Profile Background</h3>
                         </div>
-                        <p className="music-subtitle" style={{ margin: 0 }}>Browse champions and select a skin.</p>
+                        <p style={{ margin: '0 0 0 38px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Browse champions and select a skin.</p>
                     </div>
                     {lcu && currentBgId !== null && (
-                        <div className="bg-current-equipped">
-                            <div className="bg-current-equipped-info">
-                                <span className="bg-current-equipped-label">EQUIPPED BACKGROUND</span>
-                                <span className="bg-current-equipped-value">{currentBgId === 0 ? 'DEFAULT' : `ID ${currentBgId}`}</span>
-                            </div>
+                        <div style={{
+                            padding: '6px 12px', borderRadius: '8px',
+                            background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.15)',
+                            display: 'flex', alignItems: 'center', gap: '8px'
+                        }}>
+                            <span style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Equipped</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--hextech-gold)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                                {currentBgId === 0 ? 'DEFAULT' : `#${currentBgId}`}
+                            </span>
                         </div>
                     )}
                 </div>
 
                 {selectedChampion ? (
-                    <>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', flexShrink: 0 }}>
                             <button type="button"
                                 className="ghost-btn"
                                 onClick={() => { setSelectedChampion(null); setSkins([]); setSelectedSkin(null); }}
+                                style={{ padding: '6px 12px', fontSize: '0.72rem' }}
                             >
                                 ← BACK
                             </button>
-                            <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                {selectedChampion.name} — select a skin
+                            <span style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600 }}>
+                                {selectedChampion.name}
                             </span>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>— select a skin</span>
                         </div>
 
                         {loadingSkins && (
-                            <div style={{ textAlign: 'center', padding: '20px' }}>
-                                <Loader2 className="intel-spinner" size={24} style={{ color: 'var(--hextech-gold)' }} />
+                            <div style={{ textAlign: 'center', padding: '40px', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                <Loader2 className="intel-spinner" size={28} style={{ color: 'var(--hextech-gold)', marginBottom: '10px' }} />
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', margin: 0 }}>Loading skins...</p>
                             </div>
                         )}
 
-                        {skins.length > 0 && (
-                            <div ref={skinGridRef} className="bg-skin-grid">
+                        {!loadingSkins && skins.length > 0 && (
+                            <div ref={skinGridRef} className="bg-skin-grid" style={{ flex: 1, minHeight: 0 }}>
                                 {skins.map(skin => (
                                     <button
                                         key={skin.id}
@@ -464,7 +482,7 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                         )}
 
                         {selectedSkin && (
-                            <div className="bg-preview-strip fadeIn">
+                            <div className="bg-preview-strip fadeIn" style={{ flexShrink: 0 }}>
                                 <img src={cdnUrl(selectedSkin.splashPath)} className="bg-preview-thumb" alt="" onError={handleImgError} />
                                 <div className="bg-preview-text">
                                     <span className="bg-preview-name">{selectedSkin.name}</span>
@@ -478,14 +496,14 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                             id="apply-background-btn"
                             onClick={() => selectedSkin && applyBackground(selectedSkin.id, selectedSkin.name)}
                             disabled={!lcu || loading || !selectedSkin}
-                            style={{ width: '100%', marginTop: '12px' }}
+                            style={{ width: '100%', marginTop: '12px', padding: '12px', fontSize: '0.8rem', flexShrink: 0 }}
                         >
                             {getApplyButtonLabel()}
                         </button>
-                    </>
+                    </div>
                 ) : (
-                    <>
-                        <div style={{ marginBottom: '12px', position: 'relative', width: '100%' }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+                        <div style={{ marginBottom: '12px', position: 'relative', width: '100%', flexShrink: 0 }}>
                             <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                             <input
                                 type="text"
@@ -493,19 +511,19 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                                 placeholder="Search by champion name..."
                                 value={champSearch}
                                 onChange={(e) => setChampSearch(e.target.value)}
-                                style={{ width: '100%', padding: '8px 10px 8px 35px', fontSize: '0.85rem' }}
+                                style={{ width: '100%', padding: '10px 12px 10px 35px', fontSize: '0.82rem' }}
                             />
                         </div>
 
                         {loadingChamps && (
-                            <div style={{ textAlign: 'center', padding: '30px' }}>
-                                <Loader2 className="intel-spinner" size={32} style={{ color: 'var(--hextech-gold)', marginBottom: '10px' }} />
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>Loading champions...</p>
+                            <div style={{ textAlign: 'center', padding: '40px', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                <Loader2 className="intel-spinner" size={28} style={{ color: 'var(--hextech-gold)', marginBottom: '10px' }} />
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', margin: 0 }}>Loading champions...</p>
                             </div>
                         )}
 
-                        {champsLoaded && (
-                            <div className="bg-champ-grid">
+                        {!loadingChamps && champsLoaded && (
+                            <div className="bg-champ-grid" style={{ flex: 1, minHeight: 0 }}>
                                 {filteredChampions.map(champ => (
                                     <button
                                         key={champ.id}
@@ -520,14 +538,14 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                                 ))}
                             </div>
                         )}
-                    </>
+                    </div>
                 )}
             </div>
 
             {!lcu && (
-                <p style={{ color: '#ff3232', fontSize: '0.8rem', marginTop: '15px', textAlign: 'center' }}>
-                    ⚠ Start League of Legends to enable this feature.
-                </p>
+                <div style={{ marginTop: '16px', padding: '14px 16px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '10px', textAlign: 'center', flexShrink: 0 }}>
+                    <span style={{ color: '#ef4444', fontSize: '0.8rem' }}>Start League of Legends to enable this feature.</span>
+                </div>
             )}
         </div>
     );
