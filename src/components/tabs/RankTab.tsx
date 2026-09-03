@@ -264,38 +264,51 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     </div>
 
                     {/* PenguLoader */}
-                    <div className="card" style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                                <Monitor size={12} style={{ color: 'var(--hextech-gold)', flexShrink: 0 }} />
-                                <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-primary)' }}>Profile Overview</span>
+                    <div className="card" style={{ padding: '12px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <Monitor size={12} style={{ color: 'var(--hextech-gold)' }} />
+                                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-primary)' }}>Profile Overview Override</span>
+                                <span style={{ 
+                                    fontSize: '0.5rem', padding: '1px 5px', borderRadius: '3px',
+                                    background: pluginInstalled ? 'rgba(34, 197, 94, 0.1)' : 'rgba(251, 191, 36, 0.1)',
+                                    color: pluginInstalled ? '#22c55e' : '#fbbf24',
+                                    fontWeight: 600
+                                }}>
+                                    {pluginInstalled ? 'Pengu ready' : 'Setup required'}
+                                </span>
                             </div>
-                            <span style={{ 
-                                fontSize: '0.5rem', padding: '1px 5px', borderRadius: '3px',
-                                background: pluginInstalled ? 'rgba(34, 197, 94, 0.1)' : 'rgba(251, 191, 36, 0.1)',
-                                color: pluginInstalled ? '#22c55e' : '#fbbf24',
-                                fontWeight: 600
-                            }}>
-                                {pluginInstalled ? 'Ready' : 'Setup'}
-                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setOverviewEnabled(!overviewEnabled)}
+                                style={{
+                                    width: '34px', height: '18px', borderRadius: '9px', border: 'none', cursor: 'pointer',
+                                    background: overviewEnabled ? 'var(--hextech-gold)' : 'rgba(255, 255, 255, 0.1)',
+                                    position: 'relative', transition: 'all 0.2s', flexShrink: 0
+                                }}
+                            >
+                                <span style={{
+                                    position: 'absolute', top: '2px',
+                                    left: overviewEnabled ? '18px' : '2px',
+                                    width: '14px', height: '14px', borderRadius: '50%',
+                                    background: overviewEnabled ? '#09090b' : 'rgba(255, 255, 255, 0.5)',
+                                    transition: 'all 0.2s'
+                                }}></span>
+                            </button>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => setOverviewEnabled(!overviewEnabled)}
-                            style={{
-                                width: '34px', height: '18px', borderRadius: '9px', border: 'none', cursor: 'pointer',
-                                background: overviewEnabled ? 'var(--hextech-gold)' : 'rgba(255, 255, 255, 0.1)',
-                                position: 'relative', transition: 'all 0.2s', flexShrink: 0
-                            }}
-                        >
-                            <span style={{
-                                position: 'absolute', top: '2px',
-                                left: overviewEnabled ? '18px' : '2px',
-                                width: '14px', height: '14px', borderRadius: '50%',
-                                background: overviewEnabled ? '#09090b' : 'rgba(255, 255, 255, 0.5)',
-                                transition: 'all 0.2s'
-                            }}></span>
-                        </button>
+                        <p style={{ margin: '0 0 8px 0', fontSize: '0.68rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                            Applies your rank to the Profile Overview card and tooltip. Requires PenguLoader.
+                        </p>
+                        <div style={{ padding: '8px 10px', borderRadius: '6px', background: 'rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)' }}>
+                            <div style={{ fontSize: '0.6rem', fontWeight: 700, color: 'var(--hextech-gold)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <Puzzle size={11} /> How to enable
+                            </div>
+                            <ol style={{ margin: 0, paddingLeft: '14px', fontSize: '0.62rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                                <li>Go to <strong>Settings &gt; Pengu Loader</strong> and install PenguLoader</li>
+                                <li>Click <strong>Install / Update Plugin</strong></li>
+                                <li>Return here, toggle this on, then restart League</li>
+                            </ol>
+                        </div>
                     </div>
 
                     {/* Apply Button */}
