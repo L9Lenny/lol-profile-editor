@@ -329,9 +329,9 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
     };
 
     return (
-        <div className="tab-content fadeIn" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0 20px 40px 20px' }}>
+        <div className="tab-content fadeIn" style={{ padding: '0 20px 40px 20px' }}>
             {/* 1. Direct Skin ID Card */}
-            <div className="card" style={{ marginBottom: '12px', flexShrink: 0 }}>
+            <div className="card" style={{ marginBottom: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
                     <div style={{ 
                         width: '28px', height: '28px', borderRadius: '6px', 
@@ -410,7 +410,7 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
             </div>
 
             {/* 2. Main Browser Card */}
-            <div className="card" style={selectedChampion ? {} : { flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+            <div className="card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2px' }}>
@@ -502,8 +502,8 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                         </button>
                     </>
                 ) : (
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                        <div style={{ marginBottom: '12px', position: 'relative', width: '100%', flexShrink: 0 }}>
+                    <>
+                        <div style={{ marginBottom: '12px', position: 'relative', width: '100%' }}>
                             <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                             <input
                                 type="text"
@@ -516,14 +516,14 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                         </div>
 
                         {loadingChamps && (
-                            <div style={{ textAlign: 'center', padding: '40px', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ textAlign: 'center', padding: '40px' }}>
                                 <Loader2 className="intel-spinner" size={28} style={{ color: 'var(--hextech-gold)', marginBottom: '10px' }} />
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', margin: 0 }}>Loading champions...</p>
                             </div>
                         )}
 
                         {!loadingChamps && champsLoaded && (
-                            <div className="bg-champ-grid" style={{ flex: 1, minHeight: 0 }}>
+                            <div className="bg-champ-grid">
                                 {filteredChampions.map(champ => (
                                     <button
                                         key={champ.id}
@@ -538,7 +538,7 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                                 ))}
                             </div>
                         )}
-                    </div>
+                    </>
                 )}
             </div>
 
