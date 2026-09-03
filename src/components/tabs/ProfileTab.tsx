@@ -137,28 +137,57 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, showToast, addLog, lcuRequ
 
                 {/* Music Sync Toggle */}
                 <div style={{ 
-                    marginBottom: '16px', padding: '12px 14px', 
-                    background: useIdleAsBio ? 'rgba(59, 130, 246, 0.08)' : 'rgba(0, 0, 0, 0.2)',
-                    border: `1px solid ${useIdleAsBio ? 'rgba(59, 130, 246, 0.2)' : 'var(--glass-border)'}`,
-                    borderRadius: '10px', transition: 'all 0.2s'
+                    marginBottom: '16px', padding: '14px 16px', 
+                    background: useIdleAsBio ? 'rgba(59, 130, 246, 0.06)' : 'rgba(0, 0, 0, 0.15)',
+                    border: `1px solid ${useIdleAsBio ? 'rgba(59, 130, 246, 0.25)' : 'var(--glass-border)'}`,
+                    borderRadius: '12px', transition: 'all 0.25s ease',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px'
                 }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '0.82rem' }}>
-                        <input
-                            type="checkbox"
-                            checked={useIdleAsBio}
-                            onChange={(e) => toggleUseIdleAsBio(e.target.checked)}
-                            style={{ width: '16px', height: '16px', accentColor: 'var(--hextech-gold)' }}
-                        />
-                        <span style={{ color: useIdleAsBio ? 'var(--hextech-gold)' : 'var(--text-primary)', transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <ArrowLeftRight size={13} />
-                            Use Music Sync idle text as bio
-                        </span>
-                    </label>
-                    <p style={{ margin: '6px 0 0 26px', fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                        {useIdleAsBio
-                            ? "Editing the Music Sync idle text. More room for ASCII art."
-                            : "Toggle to use the Music Sync idle text instead of the normal status message."}
-                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
+                        <div style={{ 
+                            width: '32px', height: '32px', borderRadius: '8px',
+                            background: useIdleAsBio ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            color: useIdleAsBio ? 'var(--hextech-gold)' : 'var(--text-secondary)',
+                            transition: 'all 0.25s ease', flexShrink: 0
+                        }}>
+                            <ArrowLeftRight size={15} />
+                        </div>
+                        <div>
+                            <span style={{ 
+                                fontSize: '0.82rem', fontWeight: 600,
+                                color: useIdleAsBio ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                transition: 'color 0.2s', display: 'block', lineHeight: 1.3
+                            }}>
+                                Use Music Sync idle text as bio
+                            </span>
+                            <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', opacity: 0.7 }}>
+                                {useIdleAsBio ? "Active — editing idle text" : "Toggle to use idle text instead"}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    {/* Custom Toggle Switch */}
+                    <button
+                        type="button"
+                        onClick={() => toggleUseIdleAsBio(!useIdleAsBio)}
+                        disabled={!lcu || loading}
+                        style={{
+                            width: '44px', height: '24px', borderRadius: '12px', border: 'none', cursor: 'pointer',
+                            background: useIdleAsBio ? 'var(--hextech-gold)' : 'rgba(255, 255, 255, 0.1)',
+                            position: 'relative', transition: 'all 0.25s ease', flexShrink: 0,
+                            boxShadow: useIdleAsBio ? '0 0 12px rgba(59, 130, 246, 0.3)' : 'none'
+                        }}
+                    >
+                        <span style={{
+                            position: 'absolute', top: '3px',
+                            left: useIdleAsBio ? '23px' : '3px',
+                            width: '18px', height: '18px', borderRadius: '50%',
+                            background: useIdleAsBio ? '#09090b' : 'rgba(255, 255, 255, 0.6)',
+                            transition: 'all 0.25s ease',
+                            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'
+                        }}></span>
+                    </button>
                 </div>
 
                 {/* Bio Input */}
