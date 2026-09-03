@@ -18,6 +18,7 @@ import {
     Menu,
     ChevronLeft,
     Users,
+    UserMinus,
     FolderOpen,
     Gem
 } from 'lucide-react';
@@ -212,16 +213,20 @@ function App() {
             <NavItem icon={<ShieldCheck size={18} />} label="Profile Bio" active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} collapsed={isCollapsed} />
             <NavItem icon={<Image size={18} />} label="Background" active={activeTab === 'background'} onClick={() => setActiveTab('background')} collapsed={isCollapsed} />
             <NavItem icon={<UserCircle size={18} />} label="Icons" active={activeTab === 'icons'} onClick={() => setActiveTab('icons')} collapsed={isCollapsed} />
-            <NavItem icon={<Users size={18} />} label="Friends" active={activeTab === 'friends'} onClick={() => setActiveTab('friends')} collapsed={isCollapsed} />
             <NavItem icon={<Award size={18} />} label="Tokens" active={activeTab === 'tokens'} onClick={() => setActiveTab('tokens')} collapsed={isCollapsed} />
             <NavItem icon={<FolderOpen size={18} />} label="Presets" active={activeTab === 'presets'} onClick={() => setActiveTab('presets')} collapsed={isCollapsed} />
           </div>
 
           <div className="nav-category">
             {!isCollapsed && <div className="nav-category-title">Enhancements</div>}
-            <NavItem icon={<Disc3 size={18} />} label="Music Sync" active={activeTab === 'music'} onClick={() => setActiveTab('music')} collapsed={isCollapsed} />
             <NavItem icon={<Trophy size={18} />} label="Rank Overrides" active={activeTab === 'rank'} onClick={() => setActiveTab('rank')} collapsed={isCollapsed} />
             <NavItem icon={<Gem size={18} />} label="Challenge Level" active={activeTab === 'challenge'} onClick={() => setActiveTab('challenge')} collapsed={isCollapsed} />
+            <NavItem icon={<Disc3 size={18} />} label="Music Sync" active={activeTab === 'music'} onClick={() => setActiveTab('music')} collapsed={isCollapsed} />
+          </div>
+
+          <div className="nav-category">
+            {!isCollapsed && <div className="nav-category-title">Social</div>}
+            <NavItem icon={<UserMinus size={18} />} label="Friends" active={activeTab === 'friends'} onClick={() => setActiveTab('friends')} collapsed={isCollapsed} />
             <NavItem icon={<Users size={18} />} label="Lobby Manager" active={activeTab === 'lobby'} onClick={() => setActiveTab('lobby')} collapsed={isCollapsed} />
           </div>
 
