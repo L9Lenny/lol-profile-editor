@@ -67,8 +67,8 @@ input[type="password"]:focus,
 input[type="number"]:focus,
 input:not([type]):focus {
   outline: none;
-  border-color: rgba(200, 155, 60, 0.65);
-  box-shadow: 0 0 0 3px rgba(200, 155, 60, 0.12);
+  border-color: rgba(59, 130, 246, 0.65);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
 .music-subtitle {
@@ -185,7 +185,7 @@ input:not([type]):focus {
   height: 64px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.4);
-  border: 2px dashed rgba(200, 155, 60, 0.45);
+  border: 2px dashed rgba(59, 130, 246, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -200,7 +200,7 @@ input:not([type]):focus {
   border-color: var(--hextech-gold);
   transform: scale(1.08);
   background: rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 16px rgba(200, 155, 60, 0.35);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.35);
 }
 
 .token-slot img {
@@ -225,8 +225,8 @@ input:not([type]):focus {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(200, 155, 60, 0.1);
-  border: 1px solid rgba(200, 155, 60, 0.3);
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
   color: var(--hextech-gold-light);
   padding: 8px 16px;
   border-radius: 20px;
@@ -244,7 +244,7 @@ input:not([type]):focus {
   border-color: var(--hextech-gold);
   color: var(--league-blue-deep);
   transform: translateX(-4px);
-  box-shadow: 0 0 15px rgba(200, 155, 60, 0.4);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
 }
 
 /* ── Token Picker Modal ── */
@@ -278,7 +278,7 @@ input:not([type]):focus {
   gap: 12px;
   padding: 10px 14px;
   border-radius: 8px;
-  border: 1px solid rgba(200, 155, 60, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.2);
   background: rgba(255, 255, 255, 0.03);
 }
 
@@ -448,8 +448,8 @@ input:not([type]):focus {
 
 .token-slot.active {
   border-color: var(--hextech-gold);
-  background: rgba(200, 155, 60, 0.1);
-  box-shadow: 0 0 15px rgba(200, 155, 60, 0.2);
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
 }
 
 .token-slot-label {
@@ -517,7 +517,7 @@ button.bg-champ-item {
 
 button.bg-champ-item:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(200, 155, 60, 0.4);
+  border-color: rgba(59, 130, 246, 0.4);
   transform: translateY(-2px);
 }
 
@@ -577,14 +577,14 @@ button.bg-skin-item {
 }
 
 button.bg-skin-item:hover {
-  border-color: rgba(200, 155, 60, 0.5);
+  border-color: rgba(59, 130, 246, 0.5);
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 button.bg-skin-item.selected {
   border-color: var(--hextech-gold);
-  box-shadow: 0 0 20px rgba(200, 155, 60, 0.35);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
 }
 
 button.bg-skin-item:focus {
@@ -640,8 +640,8 @@ button.bg-skin-item:hover .bg-skin-overlay {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(200, 155, 60, 0.08);
-  border: 1px solid rgba(200, 155, 60, 0.3);
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.3);
   padding: 8px 16px;
   border-radius: 12px;
   margin: 0;
@@ -649,8 +649,8 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .bg-current-equipped:hover {
-  background: rgba(200, 155, 60, 0.12);
-  border-color: rgba(200, 155, 60, 0.5);
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.5);
 }
 
 .bg-current-equipped-info {
@@ -804,7 +804,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-banner-level-text {
   font-size: 0.65rem;
   font-weight: 800;
-  color: #f0e6d2;
+  color: #fafafa;
   letter-spacing: 0.5px;
   line-height: 1;
 }
@@ -830,10 +830,10 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .tokens-banner-summoner-name {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 14px;
   font-weight: bold;
-  color: #f0e6d2;
+  color: #fafafa;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -866,7 +866,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(9, 20, 40, 0.9) 0%, rgba(2, 6, 12, 0.98) 100%);
+  background: radial-gradient(circle, rgba(24, 24, 27, 0.9) 0%, rgba(9, 9, 11, 0.98) 100%);
   border: 1.5px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
@@ -885,7 +885,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-banner-slot.selected {
   border-style: solid;
   border-color: var(--hextech-gold-light);
-  box-shadow: 0 0 15px rgba(200, 155, 60, 0.65), inset 0 0 8px rgba(200, 155, 60, 0.25);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.65), inset 0 0 8px rgba(59, 130, 246, 0.25);
   transform: scale(1.06);
 }
 
@@ -936,7 +936,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-banner-controls-card {
   width: 100%;
   background: rgba(5, 12, 24, 0.55);
-  border: 1px solid rgba(200, 155, 60, 0.25);
+  border: 1px solid rgba(59, 130, 246, 0.25);
   border-radius: 12px;
   padding: 10px 14px;
   box-sizing: border-box;
@@ -950,7 +950,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-forge-info-card {
   width: 100%;
   background: rgba(5, 12, 24, 0.55);
-  border: 1px solid rgba(200, 155, 60, 0.25);
+  border: 1px solid rgba(59, 130, 246, 0.25);
   border-radius: 12px;
   padding: 14px;
   box-sizing: border-box;
@@ -987,14 +987,14 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-mini-rings.outer {
   width: 50px;
   height: 50px;
-  border: 1px dashed rgba(200, 155, 60, 0.3);
+  border: 1px dashed rgba(59, 130, 246, 0.3);
   animation: rotateRunic 12s linear infinite;
 }
 
 .tokens-mini-rings.inner {
   width: 38px;
   height: 38px;
-  border: 1px solid rgba(200, 155, 60, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.15);
   animation: rotateRunicReverse 8s linear infinite;
 }
 
@@ -1096,7 +1096,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   min-width: 0;
   height: 100%;
   background: rgba(5, 12, 24, 0.6);
-  border: 1px solid rgba(200, 155, 60, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.15);
   backdrop-filter: blur(15px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   display: flex;
@@ -1127,7 +1127,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 
 .tokens-search-input-wrapper:focus-within {
   border-color: var(--hextech-gold);
-  box-shadow: 0 0 12px rgba(200, 155, 60, 0.15);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
   background: rgba(0, 0, 0, 0.55);
 }
 
@@ -1200,16 +1200,16 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .tokens-card-item:hover {
-  background: rgba(200, 155, 60, 0.04);
-  border-color: rgba(200, 155, 60, 0.45);
+  background: rgba(59, 130, 246, 0.04);
+  border-color: rgba(59, 130, 246, 0.45);
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .tokens-card-item.equipped {
-  background: rgba(200, 155, 60, 0.07);
+  background: rgba(59, 130, 246, 0.07);
   border-color: var(--hextech-gold);
-  box-shadow: 0 0 15px rgba(200, 155, 60, 0.15);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
 }
 
 .tokens-card-item-img {
@@ -1255,14 +1255,14 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-card-item-level.level-diamond, .tokens-active-slot-level.level-diamond { color: #5784ff; }
 .tokens-card-item-level.level-master, .tokens-active-slot-level.level-master { color: #c058ff; }
 .tokens-card-item-level.level-grandmaster, .tokens-active-slot-level.level-grandmaster { color: #ff5050; }
-.tokens-card-item-level.level-challenger, .tokens-active-slot-level.level-challenger { color: #f0e6d2; text-shadow: 0 0 5px rgba(240, 230, 210, 0.5); }
+.tokens-card-item-level.level-challenger, .tokens-active-slot-level.level-challenger { color: #fafafa; text-shadow: 0 0 5px rgba(240, 230, 210, 0.5); }
 
 
 .tokens-card-equipped-indicator {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(200, 155, 60, 0.2);
+  background: rgba(59, 130, 246, 0.2);
   border-radius: 50%;
   width: 18px;
   height: 18px;
@@ -1288,7 +1288,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   position: absolute;
   width: 85%;
   height: 25px;
-  border-top: 1.5px solid rgba(200, 155, 60, 0.25);
+  border-top: 1.5px solid rgba(59, 130, 246, 0.25);
   border-radius: 50%;
   top: 55%;
   left: 7.5%;
@@ -1301,7 +1301,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   position: absolute;
   width: 120%;
   height: 120%;
-  border: 1.5px dashed rgba(200, 155, 60, 0.2);
+  border: 1.5px dashed rgba(59, 130, 246, 0.2);
   border-radius: 50%;
   animation: rotateRunic 18s linear infinite;
   pointer-events: none;
@@ -1309,7 +1309,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .tokens-banner-slot:hover::before {
-  border-color: rgba(200, 155, 60, 0.6);
+  border-color: rgba(59, 130, 246, 0.6);
   animation-duration: 9s;
 }
 
@@ -1339,7 +1339,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-glow-diamond { box-shadow: 0 0 20px rgba(87, 132, 255, 0.7); border-color: #5784ff !important; }
 .tokens-glow-master { box-shadow: 0 0 22px rgba(192, 88, 255, 0.75); border-color: #c058ff !important; }
 .tokens-glow-grandmaster { box-shadow: 0 0 25px rgba(255, 80, 80, 0.8); border-color: #ff5050 !important; }
-.tokens-glow-challenger { box-shadow: 0 0 30px rgba(240, 230, 210, 0.9), 0 0 10px rgba(200, 155, 60, 0.4); border-color: #f0e6d2 !important; }
+.tokens-glow-challenger { box-shadow: 0 0 30px rgba(240, 230, 210, 0.9), 0 0 10px rgba(59, 130, 246, 0.4); border-color: #fafafa !important; }
 
 
 
@@ -1347,7 +1347,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 /* Duplicate selectors removed: .tokens-card-item and .tokens-card-item:hover have been defined earlier */
 
 /* ── Banner Accent Backdrop Gradients ── */
-.tokens-banner-accent- { background: linear-gradient(185deg, rgba(9, 20, 40, 0.95) 0%, rgba(2, 6, 12, 0.98) 100%); border-color: var(--hextech-gold); }
+.tokens-banner-accent- { background: linear-gradient(185deg, rgba(24, 24, 27, 0.95) 0%, rgba(9, 9, 11, 0.98) 100%); border-color: var(--hextech-gold); }
 .tokens-banner-accent-1 { background: linear-gradient(185deg, #3a3836 0%, #1a1918 100%); border-color: #8c7873; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(140, 120, 115, 0.2); }
 .tokens-banner-accent-2 { background: linear-gradient(185deg, #5c3a21 0%, #291a0f 100%); border-color: #a57458; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(165, 116, 88, 0.2); }
 .tokens-banner-accent-3 { background: linear-gradient(185deg, #4b5a66 0%, #20272c 100%); border-color: #adc2cd; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(173, 194, 205, 0.2); }
@@ -1357,7 +1357,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-banner-accent-7 { background: linear-gradient(185deg, #1c366e 0%, #0c1833 100%); border-color: #5784ff; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(87, 132, 255, 0.2); }
 .tokens-banner-accent-8 { background: linear-gradient(185deg, #4e216e 0%, #220e33 100%); border-color: #c058ff; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(192, 88, 255, 0.2); }
 .tokens-banner-accent-9 { background: linear-gradient(185deg, #6b2121 0%, #2e0e0e 100%); border-color: #ff5050; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 80, 80, 0.2); }
-.tokens-banner-accent-10 { background: linear-gradient(185deg, #705e3b 0%, #302819 100%), radial-gradient(circle at center, #1b3d54 0%, #04090f 100%); border-color: #f0e6d2; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 25px rgba(240, 230, 210, 0.25); }
+.tokens-banner-accent-10 { background: linear-gradient(185deg, #705e3b 0%, #302819 100%), radial-gradient(circle at center, #1b3d54 0%, #04090f 100%); border-color: #fafafa; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 25px rgba(240, 230, 210, 0.25); }
 
 /* ── Banner Icon Crest SVG Overlay ── */
 .tokens-banner-crest-svg {
@@ -1384,7 +1384,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #f0e6d2;
+  color: #fafafa;
   opacity: 0.35;
   margin-top: -5px;
   margin-bottom: 5px;
@@ -1396,7 +1396,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   50% { opacity: 0.55; transform: translateY(-3px); }
 }
 
-.tokens-banner-icon-frame.accent- { border-color: var(--hextech-gold); box-shadow: 0 0 15px rgba(200, 155, 60, 0.35); }
+.tokens-banner-icon-frame.accent- { border-color: var(--hextech-gold); box-shadow: 0 0 15px rgba(59, 130, 246, 0.35); }
 .tokens-banner-icon-frame.accent-1 { border-color: #8c7873; box-shadow: 0 0 12px rgba(140, 120, 115, 0.5); }
 .tokens-banner-icon-frame.accent-2 { border-color: #a57458; box-shadow: 0 0 12px rgba(165, 116, 88, 0.5); }
 .tokens-banner-icon-frame.accent-3 { border-color: #adc2cd; box-shadow: 0 0 12px rgba(173, 194, 205, 0.5); }
@@ -1406,7 +1406,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .tokens-banner-icon-frame.accent-7 { border-color: #5784ff; box-shadow: 0 0 18px rgba(87, 132, 255, 0.7); }
 .tokens-banner-icon-frame.accent-8 { border-color: #c058ff; box-shadow: 0 0 18px rgba(192, 88, 255, 0.75); }
 .tokens-banner-icon-frame.accent-9 { border-color: #ff5050; box-shadow: 0 0 18px rgba(255, 80, 80, 0.8); }
-.tokens-banner-icon-frame.accent-10 { border-color: #f0e6d2; box-shadow: 0 0 22px rgba(240, 230, 210, 0.85); }
+.tokens-banner-icon-frame.accent-10 { border-color: #fafafa; box-shadow: 0 0 22px rgba(240, 230, 210, 0.85); }
 
 /* ── Banner Identity Dropdowns Controls ── */
 .tokens-banner-customizer-row {
@@ -1435,7 +1435,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 
 .tokens-banner-customizer-group select {
   background: rgba(0, 0, 0, 0.65) !important;
-  border: 1px solid rgba(200, 155, 60, 0.25) !important;
+  border: 1px solid rgba(59, 130, 246, 0.25) !important;
   border-radius: 4px !important;
   color: white !important;
   font-size: 0.75rem !important;
@@ -1518,10 +1518,10 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .rank-queue-btn.active {
-  background: linear-gradient(180deg, rgba(200, 155, 60, 0.15) 0%, rgba(200, 155, 60, 0.05) 100%);
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
   border-color: var(--hextech-gold-light);
   color: var(--hextech-gold);
-  box-shadow: 0 0 10px rgba(200, 155, 60, 0.2);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
 }
 
 .tier-grid {
@@ -1556,9 +1556,9 @@ button.bg-skin-item:hover .bg-skin-overlay {
 
 .tier-btn.active {
   border-color: var(--hextech-gold);
-  background: rgba(200, 155, 60, 0.15);
+  background: rgba(59, 130, 246, 0.15);
   color: var(--hextech-gold);
-  box-shadow: 0 0 15px rgba(200, 155, 60, 0.3), inset 0 0 8px rgba(200, 155, 60, 0.1);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), inset 0 0 8px rgba(59, 130, 246, 0.1);
   transform: scale(1.05);
 }
 
@@ -1589,7 +1589,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 
 .division-btn.active {
   border-color: var(--hextech-gold);
-  background: rgba(200, 155, 60, 0.15);
+  background: rgba(59, 130, 246, 0.15);
   color: var(--hextech-gold);
 }
 
@@ -1597,7 +1597,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   display: grid;
   gap: 14px;
   padding: 15px;
-  border: 1px solid rgba(200, 155, 60, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 12px;
   background: linear-gradient(145deg, rgba(8, 18, 31, 0.85), rgba(2, 7, 13, 0.72));
 }
@@ -1624,8 +1624,8 @@ button.bg-skin-item:hover .bg-skin-overlay {
   place-items: center;
   flex: 0 0 auto;
   color: var(--hextech-gold);
-  border: 1px solid rgba(200, 155, 60, 0.28);
-  background: rgba(200, 155, 60, 0.07);
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  background: rgba(59, 130, 246, 0.07);
 }
 
 .challenge-editor-icon {
@@ -1758,14 +1758,14 @@ button.bg-skin-item:hover .bg-skin-overlay {
   display: flex;
   align-items: center;
   overflow: hidden;
-  border: 1px solid rgba(200, 155, 60, 0.25);
+  border: 1px solid rgba(59, 130, 246, 0.25);
   border-radius: 7px;
   background: rgba(0, 0, 0, 0.42);
 }
 
 .challenge-points-input-wrap:focus-within {
   border-color: var(--hextech-gold);
-  box-shadow: 0 0 0 2px rgba(200, 155, 60, 0.1);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
 .challenge-points-input-wrap input {
@@ -1826,7 +1826,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   justify-content: center;
   flex-direction: column;
   padding: 28px;
-  border: 1px solid rgba(200, 155, 60, 0.32);
+  border: 1px solid rgba(59, 130, 246, 0.32);
   border-radius: 14px;
   background:
     radial-gradient(circle at 50% 38%, rgba(25, 74, 112, 0.32), transparent 42%),
@@ -1838,7 +1838,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .challenge-preview-card::after {
   position: absolute;
   content: '';
-  border: 1px solid rgba(200, 155, 60, 0.13);
+  border: 1px solid rgba(59, 130, 246, 0.13);
   border-radius: 50%;
 }
 
@@ -1889,7 +1889,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .challenge-preview-card > strong {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 1.65rem;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -1911,7 +1911,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.36);
-  color: #f0e6d2;
+  color: #fafafa;
   font-size: 0.9rem;
   font-weight: 800;
 }
@@ -1960,7 +1960,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .profile-rank-tier {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 42px;
   font-weight: bold;
   text-transform: uppercase;
@@ -1985,8 +1985,8 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .overview-control.enabled {
-  border-color: rgba(200, 155, 60, 0.45);
-  box-shadow: inset 3px 0 0 rgba(200, 155, 60, 0.8), 0 10px 28px rgba(0, 0, 0, 0.22);
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: inset 3px 0 0 rgba(59, 130, 246, 0.8), 0 10px 28px rgba(0, 0, 0, 0.22);
 }
 
 .overview-control-header {
@@ -2002,10 +2002,10 @@ button.bg-skin-item:hover .bg-skin-overlay {
   width: 38px;
   height: 38px;
   flex: 0 0 38px;
-  border: 1px solid rgba(200, 155, 60, 0.32);
+  border: 1px solid rgba(59, 130, 246, 0.32);
   border-radius: 10px;
   color: var(--hextech-gold);
-  background: rgba(200, 155, 60, 0.08);
+  background: rgba(59, 130, 246, 0.08);
 }
 
 .overview-control-copy {
@@ -2065,7 +2065,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 
 .overview-setup-guide {
   padding: 14px 16px 16px;
-  border-top: 1px solid rgba(200, 155, 60, 0.16);
+  border-top: 1px solid rgba(59, 130, 246, 0.16);
   background: rgba(0, 0, 0, 0.18);
 }
 
@@ -2100,7 +2100,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   place-items: center;
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(200, 155, 60, 0.35);
+  border: 1px solid rgba(59, 130, 246, 0.35);
   border-radius: 50%;
   color: var(--hextech-gold);
   font-size: 0.66rem;
@@ -2123,8 +2123,8 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .overview-setup-guide .overview-scope-note {
   margin-top: 10px;
   padding: 9px 10px;
-  border-left: 2px solid rgba(200, 155, 60, 0.55);
-  background: rgba(200, 155, 60, 0.05);
+  border-left: 2px solid rgba(59, 130, 246, 0.55);
+  background: rgba(59, 130, 246, 0.05);
 }
 
 @media (max-width: 980px) {
@@ -2182,7 +2182,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   min-width: 0;
   align-items: center;
   gap: 10px;
-  color: #c89b3c;
+  color: #3b82f6;
 }
 
 .feature-toolbar-title > div {
@@ -2228,8 +2228,8 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .tool-action:hover:not(:disabled) {
-  border-color: rgba(200, 155, 60, 0.4);
-  background: rgba(200, 155, 60, 0.05);
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.05);
   color: var(--hextech-gold);
 }
 
@@ -2344,9 +2344,9 @@ button.bg-skin-item:hover .bg-skin-overlay {
 
 .rank-workbench .rank-queue-btn.active {
   border-color: transparent;
-  background: rgba(200, 155, 60, 0.12);
+  background: rgba(59, 130, 246, 0.12);
   color: var(--hextech-gold);
-  box-shadow: inset 0 -2px #c89b3c;
+  box-shadow: inset 0 -2px #3b82f6;
 }
 
 .rank-workbench .tier-grid {
@@ -2375,13 +2375,13 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .rank-workbench .tier-btn:hover:not(:disabled) {
-  border-color: rgba(200, 155, 60, 0.38);
+  border-color: rgba(59, 130, 246, 0.38);
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
 }
 
 .rank-workbench .tier-btn.active {
-  background: rgba(200, 155, 60, 0.08);
+  background: rgba(59, 130, 246, 0.08);
   transform: none;
   box-shadow: inset 3px 0 currentColor;
 }
@@ -2401,13 +2401,13 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .rank-workbench .division-btn:hover:not(:disabled) {
-  border-color: rgba(200, 155, 60, 0.38);
+  border-color: rgba(59, 130, 246, 0.38);
   background: rgba(255, 255, 255, 0.05);
 }
 
 .rank-workbench .division-btn.active {
   border-color: var(--hextech-gold);
-  background: rgba(200, 155, 60, 0.12);
+  background: rgba(59, 130, 246, 0.12);
   color: var(--hextech-gold);
 }
 
@@ -2441,7 +2441,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .challenge-readout strong {
   display: block;
   color: currentColor;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -2499,7 +2499,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .overview-inline.enabled > .overview-inline-row {
-  color: #c89b3c;
+  color: #3b82f6;
 }
 
 .overview-inline-copy > div {
@@ -2534,7 +2534,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 .overview-help {
   padding: 18px 20px;
   border-top: 1px solid rgba(160, 155, 140, 0.1);
-  background: rgba(200, 155, 60, 0.055);
+  background: rgba(59, 130, 246, 0.055);
 }
 
 .overview-help-title {
@@ -2584,7 +2584,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
   width: 24px;
   height: 24px;
   place-items: center;
-  border: 1px solid rgba(200, 155, 60, 0.45);
+  border: 1px solid rgba(59, 130, 246, 0.45);
   border-radius: 50%;
   color: var(--hextech-gold);
   font-size: 0.65rem;
@@ -2652,7 +2652,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 }
 
 .challenge-workbench .challenge-tier-btn:hover:not(:disabled) {
-  border-color: rgba(200, 155, 60, 0.38);
+  border-color: rgba(59, 130, 246, 0.38);
   background: rgba(255, 255, 255, 0.05);
   opacity: 1;
   transform: none;
@@ -2660,7 +2660,7 @@ button.bg-skin-item:hover .bg-skin-overlay {
 
 .challenge-workbench .challenge-tier-btn.active {
   border-color: currentColor;
-  background: rgba(200, 155, 60, 0.08);
+  background: rgba(59, 130, 246, 0.08);
   opacity: 1;
   box-shadow: inset 3px 0 currentColor;
 }
