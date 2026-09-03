@@ -191,12 +191,12 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                         onClick={() => setSoloTier(t)}
                                         disabled={!lcu}
                                         style={{
-                                            display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '3px',
-                                            padding: '3px 5px', borderRadius: '5px',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '4px',
+                                            padding: '5px 6px', borderRadius: '6px',
                                             border: isActive ? `1px solid ${color}` : '1px solid var(--glass-border)',
                                             background: isActive ? `${color}12` : 'rgba(0, 0, 0, 0.28)',
                                             color: isActive ? color : 'var(--text-secondary)',
-                                            fontSize: '0.55rem', fontWeight: 600, cursor: 'pointer',
+                                            fontSize: '0.58rem', fontWeight: 600, cursor: 'pointer',
                                             boxShadow: isActive ? `inset 2px 0 ${color}` : 'none',
                                             transition: 'all 0.15s'
                                         }}
@@ -228,11 +228,11 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                         onClick={() => setSoloDiv(d)}
                                         disabled={!lcu}
                                         style={{
-                                            padding: '3px', borderRadius: '5px',
+                                            padding: '5px', borderRadius: '6px',
                                             border: soloDiv === d ? '1px solid var(--hextech-gold)' : '1px solid var(--glass-border)',
                                             background: soloDiv === d ? 'rgba(59, 130, 246, 0.12)' : 'rgba(0, 0, 0, 0.28)',
                                             color: soloDiv === d ? 'var(--hextech-gold)' : 'var(--text-secondary)',
-                                            fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer',
+                                            fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer',
                                             transition: 'all 0.15s'
                                         }}
                                     >
