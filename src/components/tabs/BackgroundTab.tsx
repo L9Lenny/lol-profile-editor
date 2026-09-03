@@ -439,8 +439,8 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                 </div>
 
                 {selectedChampion ? (
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', flexShrink: 0 }}>
+                    <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
                             <button type="button"
                                 className="ghost-btn"
                                 onClick={() => { setSelectedChampion(null); setSkins([]); setSelectedSkin(null); }}
@@ -455,14 +455,14 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                         </div>
 
                         {loadingSkins && (
-                            <div style={{ textAlign: 'center', padding: '40px', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ textAlign: 'center', padding: '40px' }}>
                                 <Loader2 className="intel-spinner" size={28} style={{ color: 'var(--hextech-gold)', marginBottom: '10px' }} />
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', margin: 0 }}>Loading skins...</p>
                             </div>
                         )}
 
                         {!loadingSkins && skins.length > 0 && (
-                            <div ref={skinGridRef} className="bg-skin-grid" style={{ flex: 1, minHeight: 0 }}>
+                            <div ref={skinGridRef} className="bg-skin-grid">
                                 {skins.map(skin => (
                                     <button
                                         key={skin.id}
@@ -496,11 +496,11 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                             id="apply-background-btn"
                             onClick={() => selectedSkin && applyBackground(selectedSkin.id, selectedSkin.name)}
                             disabled={!lcu || loading || !selectedSkin}
-                            style={{ width: '100%', marginTop: '12px', padding: '12px', fontSize: '0.8rem', flexShrink: 0 }}
+                            style={{ width: '100%', marginTop: '12px', padding: '12px', fontSize: '0.8rem' }}
                         >
                             {getApplyButtonLabel()}
                         </button>
-                    </div>
+                    </>
                 ) : (
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
                         <div style={{ marginBottom: '12px', position: 'relative', width: '100%', flexShrink: 0 }}>
