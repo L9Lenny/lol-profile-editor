@@ -130,9 +130,6 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ lcu, showToast, addLog, lcuRequ
             <div className="card" style={{ marginBottom: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                     <h3 className="card-title" style={{ margin: 0, fontSize: '0.85rem' }}>Status Message</h3>
-                    <span style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
-                        {useIdleAsBio ? musicBio.idleText.length : bio.length} / 80
-                    </span>
                 </div>
 
                 {/* Music Sync Toggle */}
