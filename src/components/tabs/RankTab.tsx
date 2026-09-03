@@ -9,7 +9,7 @@ import {
     PENGU_OVERVIEW_OVERRIDE_KEY,
     PENGU_PLUGIN_INSTALLED_KEY,
 } from '../../storageKeys';
-import { Shield, RefreshCw, Monitor, Puzzle, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Shield, RefreshCw, Monitor, Puzzle } from 'lucide-react';
 
 interface RankTabProps {
     lcu: LcuInfo | null;
@@ -130,34 +130,34 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     return (
         <div className="tab-content fadeIn" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0 20px 40px 20px' }}>
             {/* Header */}
-            <div style={{ marginBottom: '16px', flexShrink: 0 }}>
-                <h2 style={{ margin: '0 0 4px 0', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Rank Override</h2>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Customize your visible rank, queue, and profile overview.</p>
+            <div style={{ marginBottom: '20px', flexShrink: 0 }}>
+                <h2 style={{ margin: '0 0 6px 0', fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)' }}>Rank Override</h2>
+                <p style={{ margin: 0, fontSize: '1rem', color: 'var(--text-secondary)' }}>Customize your visible rank, queue, and profile overview.</p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1, minHeight: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: 1, minHeight: 0 }}>
                 {/* Queue Card */}
-                <div className="card" style={{ padding: '12px 16px', flexShrink: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                <div className="card" style={{ padding: '20px 24px', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                         <div style={{ 
-                            width: '20px', height: '20px', borderRadius: '5px', 
+                            width: '30px', height: '30px', borderRadius: '8px', 
                             background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}>
-                            <Shield size={10} style={{ color: 'var(--hextech-gold)' }} />
+                            <Shield size={16} style={{ color: 'var(--hextech-gold)' }} />
                         </div>
-                        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Queue</span>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Queue</span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', borderRadius: '6px', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
                         {QUEUES.map(q => (
                             <button type="button"
                                 key={q.value}
                                 onClick={() => setQueueType(q.value)}
                                 disabled={!lcu}
                                 style={{
-                                    padding: '8px 6px', border: 'none', borderRight: '1px solid var(--glass-border)',
+                                    padding: '12px 10px', border: 'none', borderRight: '1px solid var(--glass-border)',
                                     background: queueType === q.value ? 'rgba(59, 130, 246, 0.12)' : 'rgba(0, 0, 0, 0.2)',
                                     color: queueType === q.value ? 'var(--hextech-gold)' : 'var(--text-secondary)',
-                                    fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer',
+                                    fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
                                     boxShadow: queueType === q.value ? 'inset 0 -2px #3b82f6' : 'none',
                                     transition: 'all 0.15s'
                                 }}
@@ -169,19 +169,19 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                 </div>
 
                 {/* Tier + Division Row */}
-                <div style={{ display: 'grid', gridTemplateColumns: hasDivision ? '1fr 180px' : '1fr', gap: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: hasDivision ? '1fr 220px' : '1fr', gap: '16px' }}>
                     {/* Tier Card */}
-                    <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', flexShrink: 0 }}>
+                    <div className="card" style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexShrink: 0 }}>
                             <div style={{ 
-                                width: '20px', height: '20px', borderRadius: '5px', 
+                                width: '30px', height: '30px', borderRadius: '8px', 
                                 background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
                             }}>
-                                <Shield size={10} style={{ color: 'var(--hextech-gold)' }} />
+                                <Shield size={16} style={{ color: 'var(--hextech-gold)' }} />
                             </div>
-                            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Tier</span>
+                            <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Tier</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
                             {TIERS.map(t => {
                                 const isActive = soloTier === t;
                                 const color = TIER_COLORS[t] || "#ffffff";
@@ -191,17 +191,17 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                         onClick={() => setSoloTier(t)}
                                         disabled={!lcu}
                                         style={{
-                                            display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '4px',
-                                            padding: '5px 6px', borderRadius: '6px',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px',
+                                            padding: '8px 10px', borderRadius: '6px',
                                             border: isActive ? `1px solid ${color}` : '1px solid var(--glass-border)',
                                             background: isActive ? `${color}12` : 'rgba(0, 0, 0, 0.28)',
                                             color: isActive ? color : 'var(--text-secondary)',
-                                            fontSize: '0.58rem', fontWeight: 600, cursor: 'pointer',
+                                            fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
                                             boxShadow: isActive ? `inset 2px 0 ${color}` : 'none',
                                             transition: 'all 0.15s'
                                         }}
                                     >
-                                        <Shield size={11} />
+                                        <Shield size={16} />
                                         {t}
                                     </button>
                                 );
@@ -211,28 +211,28 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
 
                     {/* Division Card */}
                     {hasDivision && (
-                        <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', flexShrink: 0 }}>
+                        <div className="card" style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexShrink: 0 }}>
                                 <div style={{ 
-                                    width: '20px', height: '20px', borderRadius: '5px', 
+                                    width: '30px', height: '30px', borderRadius: '8px', 
                                     background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
                                 }}>
-                                    <Shield size={10} style={{ color: 'var(--hextech-gold)' }} />
+                                    <Shield size={16} style={{ color: 'var(--hextech-gold)' }} />
                                 </div>
-                                <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Division</span>
+                                <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Division</span>
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
                                 {DIVISIONS.map(d => (
                                     <button type="button"
                                         key={d}
                                         onClick={() => setSoloDiv(d)}
                                         disabled={!lcu}
                                         style={{
-                                            padding: '5px', borderRadius: '6px',
+                                            padding: '8px', borderRadius: '6px',
                                             border: soloDiv === d ? '1px solid var(--hextech-gold)' : '1px solid var(--glass-border)',
                                             background: soloDiv === d ? 'rgba(59, 130, 246, 0.12)' : 'rgba(0, 0, 0, 0.28)',
                                             color: soloDiv === d ? 'var(--hextech-gold)' : 'var(--text-secondary)',
-                                            fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer',
+                                            fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
                                             transition: 'all 0.15s'
                                         }}
                                     >
@@ -244,94 +244,99 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     )}
                 </div>
 
-                {/* Bottom Row — Preview + PenguLoader + Buttons */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto auto', gap: '10px', flexShrink: 0 }}>
-                    {/* Preview */}
-                    <div className="card" style={{ padding: '12px 16px', textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.55rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Preview</div>
-                        <div style={{ 
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                            padding: '10px', borderRadius: '8px',
-                            background: 'rgba(0, 0, 0, 0.2)', border: '1px solid var(--glass-border)',
-                            color: TIER_COLORS[soloTier] || '#ffffff'
-                        }}>
-                            <Shield size={20} />
-                            <div style={{ textAlign: 'left' }}>
-                                <div style={{ fontWeight: 700, fontSize: '0.85rem' }}>{soloTier}{hasDivision ? ` ${soloDiv}` : ''}</div>
-                                <div style={{ fontSize: '0.6rem', opacity: 0.7 }}>{QUEUES.find(q => q.value === queueType)?.label}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* PenguLoader */}
-                    <div className="card" style={{ padding: '12px 16px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <Monitor size={12} style={{ color: 'var(--hextech-gold)' }} />
-                                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-primary)' }}>Profile Overview Override</span>
-                                <span style={{ 
-                                    fontSize: '0.5rem', padding: '1px 5px', borderRadius: '3px',
-                                    background: pluginInstalled ? 'rgba(34, 197, 94, 0.1)' : 'rgba(251, 191, 36, 0.1)',
-                                    color: pluginInstalled ? '#22c55e' : '#fbbf24',
-                                    fontWeight: 600
-                                }}>
-                                    {pluginInstalled ? 'Pengu ready' : 'Setup required'}
-                                </span>
-                            </div>
+                {/* Bottom — PenguLoader Toggle + Actions */}
+                <div className="card" style={{ padding: '16px 20px', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
+                            <Monitor size={16} style={{ color: 'var(--hextech-gold)', flexShrink: 0 }} />
+                            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>Profile Overview</span>
+                            <span style={{ 
+                                fontSize: '0.7rem', padding: '2px 8px', borderRadius: '4px',
+                                background: pluginInstalled ? 'rgba(34, 197, 94, 0.1)' : 'rgba(251, 191, 36, 0.1)',
+                                color: pluginInstalled ? '#22c55e' : '#fbbf24',
+                                fontWeight: 600, flexShrink: 0
+                            }}>
+                                {pluginInstalled ? 'Pengu ready' : 'Setup'}
+                            </span>
                             <button
                                 type="button"
                                 onClick={() => setOverviewEnabled(!overviewEnabled)}
                                 style={{
-                                    width: '34px', height: '18px', borderRadius: '9px', border: 'none', cursor: 'pointer',
+                                    width: '40px', height: '22px', borderRadius: '11px', border: 'none', cursor: 'pointer',
                                     background: overviewEnabled ? 'var(--hextech-gold)' : 'rgba(255, 255, 255, 0.1)',
                                     position: 'relative', transition: 'all 0.2s', flexShrink: 0
                                 }}
                             >
                                 <span style={{
-                                    position: 'absolute', top: '2px',
-                                    left: overviewEnabled ? '18px' : '2px',
-                                    width: '14px', height: '14px', borderRadius: '50%',
+                                    position: 'absolute', top: '3px',
+                                    left: overviewEnabled ? '21px' : '3px',
+                                    width: '16px', height: '16px', borderRadius: '50%',
                                     background: overviewEnabled ? '#09090b' : 'rgba(255, 255, 255, 0.5)',
                                     transition: 'all 0.2s'
                                 }}></span>
                             </button>
                         </div>
-                        <p style={{ margin: '0 0 8px 0', fontSize: '0.68rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                            Applies your rank to the Profile Overview card and tooltip. Requires PenguLoader.
-                        </p>
-                        <div style={{ padding: '8px 10px', borderRadius: '6px', background: 'rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)' }}>
-                            <div style={{ fontSize: '0.6rem', fontWeight: 700, color: 'var(--hextech-gold)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                <Puzzle size={11} /> How to enable
-                            </div>
-                            <ol style={{ margin: 0, paddingLeft: '14px', fontSize: '0.62rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                                <li>Go to <strong>Settings &gt; Pengu Loader</strong> and install PenguLoader</li>
-                                <li>Click <strong>Install / Update Plugin</strong></li>
-                                <li>Return here, toggle this on, then restart League</li>
-                            </ol>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+                            <button type="button" className="primary-btn" onClick={applyChanges} disabled={!lcu || loading || fetching}
+                                style={{ padding: '9px 20px', fontSize: '0.85rem', borderRadius: '8px', whiteSpace: 'nowrap' }}>
+                                {loading ? '...' : 'APPLY'}
+                            </button>
+                            <button type="button" onClick={fetchCurrentData} disabled={!lcu || fetching}
+                                title="Read current rank, queue and overview from the League Client and fill the form"
+                                style={{
+                                    padding: '9px 20px', fontSize: '0.85rem', fontWeight: 800, borderRadius: '8px',
+                                    border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)',
+                                    color: 'var(--text-secondary)', cursor: 'pointer',
+                                    textTransform: 'uppercase', letterSpacing: '1px',
+                                    display: 'flex', alignItems: 'center', gap: '5px', whiteSpace: 'nowrap'
+                                }}>
+                                <RefreshCw size={13} className={fetching ? 'intel-spinner' : ''} /> Sync
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    {/* Apply Button */}
-                    <button type="button" className="primary-btn" onClick={applyChanges} disabled={!lcu || loading || fetching}
-                        style={{ padding: '10px 18px', fontSize: '0.7rem', borderRadius: '8px', whiteSpace: 'nowrap' }}>
-                        {loading ? '...' : 'APPLY'}
-                    </button>
-
-                    {/* Sync Button */}
-                    <button type="button" onClick={fetchCurrentData} disabled={!lcu || fetching}
-                        style={{
-                            padding: '10px 14px', fontSize: '0.65rem', fontWeight: 700, borderRadius: '8px',
-                            border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)',
-                            color: 'var(--text-secondary)', cursor: 'pointer',
-                            display: 'flex', alignItems: 'center', gap: '5px', whiteSpace: 'nowrap'
+                {/* PenguLoader Setup Guide */}
+                <div className="card" style={{ padding: '20px 24px', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                        <div style={{ 
+                            width: '30px', height: '30px', borderRadius: '8px', 
+                            background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}>
-                        <RefreshCw size={11} className={fetching ? 'intel-spinner' : ''} /> Sync
-                    </button>
+                            <Puzzle size={16} style={{ color: 'var(--hextech-gold)' }} />
+                        </div>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Profile Overview — Setup Guide</span>
+                    </div>
+                    <p style={{ margin: '0 0 14px 0', fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                        The Profile Overview shows your rank in the League client's profile card and tooltip.
+                        This feature requires <a href="https://github.com/PenguLoader/PenguLoader" target="_blank" rel="noreferrer" style={{ color: 'var(--hextech-gold)' }}>PenguLoader</a> and a small plugin installed by this app.
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                        <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)' }}>
+                            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--hextech-gold)', marginBottom: '6px' }}>1. Install PenguLoader</div>
+                            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                Go to <strong>Settings &gt; Pengu Loader</strong> and click <strong>Download Pengu Loader</strong> to install it.
+                            </p>
+                        </div>
+                        <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)' }}>
+                            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--hextech-gold)', marginBottom: '6px' }}>2. Install Plugin</div>
+                            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                In <strong>Settings &gt; Pengu Loader</strong>, click <strong>Install / Update Plugin</strong>. This app installs the rank override plugin for you.
+                            </p>
+                        </div>
+                        <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)' }}>
+                            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--hextech-gold)', marginBottom: '6px' }}>3. Enable & Restart</div>
+                            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                                Toggle <strong>Profile Overview</strong> ON above, then restart the League Client. Your rank will appear on your profile.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 {!lcu && (
-                    <div style={{ padding: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', textAlign: 'center', flexShrink: 0 }}>
-                        <span style={{ color: '#ef4444', fontSize: '0.75rem' }}>Start League of Legends to enable this feature.</span>
+                    <div style={{ padding: '14px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', textAlign: 'center', flexShrink: 0 }}>
+                        <span style={{ color: '#ef4444', fontSize: '0.9rem' }}>Start League of Legends to enable this feature.</span>
                     </div>
                 )}
             </div>
