@@ -128,18 +128,18 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const hasDivision = !["MASTER", "GRANDMASTER", "CHALLENGER"].includes(soloTier);
 
     return (
-        <div className="tab-content fadeIn" style={{ padding: '0 20px 40px 20px' }}>
+        <div className="tab-content fadeIn" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0 20px 40px 20px' }}>
             {/* Header */}
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: '16px', flexShrink: 0 }}>
                 <h2 style={{ margin: '0 0 4px 0', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Rank Override</h2>
                 <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Customize your visible rank, queue, and profile overview.</p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '12px', flex: 1, minHeight: 0 }}>
                 {/* Left Column — Editor */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', minHeight: 0 }}>
                     {/* Queue Card */}
-                    <div className="card" style={{ padding: '16px 20px' }}>
+                    <div className="card" style={{ padding: '16px 20px', flexShrink: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                             <div style={{ 
                                 width: '24px', height: '24px', borderRadius: '6px', 
@@ -171,8 +171,8 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     </div>
 
                     {/* Tier Card */}
-                    <div className="card" style={{ padding: '16px 20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                    <div className="card" style={{ padding: '16px 20px', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', flexShrink: 0 }}>
                             <div style={{ 
                                 width: '24px', height: '24px', borderRadius: '6px', 
                                 background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -181,7 +181,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                             </div>
                             <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Tier</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', flex: 1, minHeight: 0 }}>
                             {TIERS.map(t => {
                                 const isActive = soloTier === t;
                                 const color = TIER_COLORS[t] || "#ffffff";
@@ -211,7 +211,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
 
                     {/* Division Card */}
                     {hasDivision && (
-                        <div className="card" style={{ padding: '16px 20px' }}>
+                        <div className="card" style={{ padding: '16px 20px', flexShrink: 0 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                                 <div style={{ 
                                     width: '24px', height: '24px', borderRadius: '6px', 
@@ -245,9 +245,9 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                 </div>
 
                 {/* Right Column — Preview & Apply */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', minHeight: 0 }}>
                     {/* Preview Card */}
-                    <div className="card" style={{ padding: '20px', textAlign: 'center' }}>
+                    <div className="card" style={{ padding: '20px', textAlign: 'center', flexShrink: 0 }}>
                         <div style={{ fontSize: '0.6rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Preview</div>
                         <div style={{ 
                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
@@ -267,8 +267,8 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     </div>
 
                     {/* PenguLoader Card */}
-                    <div className="card" style={{ padding: '16px 20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <div className="card" style={{ padding: '16px 20px', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexShrink: 0 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <Monitor size={16} style={{ color: 'var(--hextech-gold)' }} />
                                 <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)' }}>Profile Overview</span>
@@ -279,7 +279,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 style={{
                                     width: '40px', height: '22px', borderRadius: '11px', border: 'none', cursor: 'pointer',
                                     background: overviewEnabled ? 'var(--hextech-gold)' : 'rgba(255, 255, 255, 0.1)',
-                                    position: 'relative', transition: 'all 0.2s'
+                                    position: 'relative', transition: 'all 0.2s', flexShrink: 0
                                 }}
                             >
                                 <span style={{
@@ -291,7 +291,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 }}></span>
                             </button>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px', flexShrink: 0 }}>
                             <span style={{ 
                                 fontSize: '0.6rem', padding: '2px 6px', borderRadius: '4px',
                                 background: pluginInstalled ? 'rgba(34, 197, 94, 0.1)' : 'rgba(251, 191, 36, 0.1)',
@@ -301,12 +301,12 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 {pluginInstalled ? 'Pengu ready' : 'Setup required'}
                             </span>
                         </div>
-                        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1.4, flexShrink: 0 }}>
                             Applies rank to your Profile Overview card and tooltip.
                         </p>
 
                         {overviewEnabled && (
-                            <div style={{ marginTop: '12px', padding: '10px', borderRadius: '8px', background: 'rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)' }}>
+                            <div style={{ marginTop: '12px', padding: '10px', borderRadius: '8px', background: 'rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)', flex: 1, minHeight: 0, overflow: 'auto' }}>
                                 <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--hextech-gold)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     <Puzzle size={12} /> Setup Steps
                                 </div>
@@ -321,7 +321,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
 
                     {/* Apply Button */}
                     <button type="button" className="primary-btn" onClick={applyChanges} disabled={!lcu || loading || fetching}
-                        style={{ padding: '12px', fontSize: '0.8rem', borderRadius: '10px' }}>
+                        style={{ padding: '12px', fontSize: '0.8rem', borderRadius: '10px', flexShrink: 0 }}>
                         {loading ? 'APPLYING...' : 'APPLY RANK OVERRIDES'}
                     </button>
 
@@ -330,14 +330,14 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                         style={{
                             padding: '10px', fontSize: '0.72rem', fontWeight: 700, borderRadius: '8px',
                             border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)',
-                            color: 'var(--text-secondary)', cursor: 'pointer',
+                            color: 'var(--text-secondary)', cursor: 'pointer', flexShrink: 0,
                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
                         }}>
                         <RefreshCw size={13} className={fetching ? 'intel-spinner' : ''} /> Sync from Client
                     </button>
 
                     {!lcu && (
-                        <div style={{ padding: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', textAlign: 'center' }}>
+                        <div style={{ padding: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', textAlign: 'center', flexShrink: 0 }}>
                             <span style={{ color: '#ef4444', fontSize: '0.75rem' }}>Start League of Legends to enable this feature.</span>
                         </div>
                     )}
