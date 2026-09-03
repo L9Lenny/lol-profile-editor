@@ -1606,31 +1606,29 @@ input:checked+.slider:before {
 .quick-start-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 16px;
   margin-bottom: 20px;
 }
 
 .feature-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  padding: 18px;
-  border-radius: 18px;
+  padding: 20px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
 
 .feature-card:hover {
-  background: rgba(59, 130, 246, 0.03);
-  border-color: rgba(59, 130, 246, 0.4);
-  transform: translateY(-5px) scale(1.02);
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 15px rgba(59, 130, 246, 0.1);
+  background: rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .feature-card::after {
@@ -1639,10 +1637,10 @@ input:checked+.slider:before {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.25s ease;
 }
 
 .feature-card:hover::after {
@@ -1650,29 +1648,32 @@ input:checked+.slider:before {
 }
 
 .feature-icon {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   background: rgba(59, 130, 246, 0.1);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--hextech-gold);
+  flex-shrink: 0;
 }
 
 .feature-body {
   flex: 1;
+  min-width: 0;
 }
 
 .feature-body h3 {
-  margin: 0 0 5px 0;
-  font-size: 1rem;
+  margin: 0 0 4px 0;
+  font-size: 0.92rem;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
 .feature-body p {
   margin: 0;
-  font-size: 0.84rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   line-height: 1.4;
 }
@@ -1680,12 +1681,13 @@ input:checked+.slider:before {
 .feature-arrow {
   color: var(--text-secondary);
   opacity: 0.3;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .feature-card:hover .feature-arrow {
   opacity: 1;
-  transform: translateX(3px);
+  transform: translateX(2px);
   color: var(--hextech-gold);
 }
 
