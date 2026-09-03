@@ -488,7 +488,6 @@ input:not([type]):focus {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
   gap: 6px;
-  max-height: 320px;
   overflow-y: auto;
   padding-right: 6px;
 }
