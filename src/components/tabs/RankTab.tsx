@@ -128,140 +128,220 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const hasDivision = !["MASTER", "GRANDMASTER", "CHALLENGER"].includes(soloTier);
 
     return (
-        <div className="tab-content fadeIn feature-page">
-            <header className="feature-toolbar">
-                <div className="feature-toolbar-title">
-                    <Shield size={19} />
-                    <div>
-                        <h2>Rank Override</h2>
-                        <p>Presence rank, queue and Profile Overview output.</p>
-                    </div>
-                </div>
-                <button type="button"
-                    className={`tool-action ${fetching ? 'loading' : ''}`}
-                    onClick={fetchCurrentData}
-                    disabled={!lcu || fetching}
-                    title="Sync from Client"
-                >
-                    <RefreshCw size={14} /> Sync client
-                </button>
-            </header>
+        <div className="tab-content fadeIn" style={{ padding: '0 20px 40px 20px' }}>
+            {/* Header */}
+            <div style={{ marginBottom: '24px' }}>
+                <h2 style={{ margin: '0 0 4px 0', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Rank Override</h2>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Customize your visible rank, queue, and profile overview.</p>
+            </div>
 
-            <div className="feature-workbench rank-workbench">
-                <section className="editor-surface">
-                    <fieldset className="editor-block rank-queue-block">
-                        <legend>Queue</legend>
-                    <div className="rank-queue-toggles">
-                        {QUEUES.map(q => (
-                            <button type="button"
-                                key={q.value}
-                                className={`rank-queue-btn ${queueType === q.value ? 'active' : ''}`}
-                                onClick={() => setQueueType(q.value)}
-                                disabled={!lcu}
-                            >
-                                {q.label}
-                            </button>
-                        ))}
-                    </div>
-                    </fieldset>
-
-                    <fieldset className={`editor-block rank-tier-block ${hasDivision ? '' : 'editor-block-last rank-tier-full'}`}>
-                        <legend>Tier</legend>
-                    <div className="tier-grid">
-                        {TIERS.map(t => {
-                            const isActive = soloTier === t;
-                            const color = TIER_COLORS[t] || "#ffffff";
-                            return (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '12px' }}>
+                {/* Left Column — Editor */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {/* Queue Card */}
+                    <div className="card" style={{ padding: '16px 20px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                            <div style={{ 
+                                width: '24px', height: '24px', borderRadius: '6px', 
+                                background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            }}>
+                                <Shield size={12} style={{ color: 'var(--hextech-gold)' }} />
+                            </div>
+                            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Queue</span>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
+                            {QUEUES.map(q => (
                                 <button type="button"
-                                    key={t}
-                                    className={`tier-btn ${isActive ? 'active' : ''}`}
-                                    style={isActive ? { color, borderColor: color } : {}}
-                                    onClick={() => setSoloTier(t)}
+                                    key={q.value}
+                                    onClick={() => setQueueType(q.value)}
                                     disabled={!lcu}
+                                    style={{
+                                        padding: '10px 8px', border: 'none', borderRight: '1px solid var(--glass-border)',
+                                        background: queueType === q.value ? 'rgba(59, 130, 246, 0.12)' : 'rgba(0, 0, 0, 0.2)',
+                                        color: queueType === q.value ? 'var(--hextech-gold)' : 'var(--text-secondary)',
+                                        fontSize: '0.72rem', fontWeight: 700, cursor: 'pointer',
+                                        boxShadow: queueType === q.value ? 'inset 0 -2px #3b82f6' : 'none',
+                                        transition: 'all 0.15s'
+                                    }}
                                 >
-                                    <Shield size={18} color={isActive ? color : "var(--text-secondary)"} />
-                                    {t}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    </fieldset>
-
-                    {hasDivision && (
-                        <fieldset className="editor-block editor-block-last rank-division-block">
-                            <legend>Division</legend>
-                        <div className="division-grid">
-                            {DIVISIONS.map(d => (
-                                <button type="button"
-                                    key={d}
-                                    className={`division-btn ${soloDiv === d ? 'active' : ''}`}
-                                    onClick={() => setSoloDiv(d)}
-                                    disabled={!lcu}
-                                >
-                                    {d}
+                                    {q.label}
                                 </button>
                             ))}
                         </div>
-                        </fieldset>
-                    )}
-                </section>
+                    </div>
 
-                <aside className="inspector-surface">
-                    <div className="inspector-heading">Pending output</div>
-                    <div className="rank-readout" style={{ color: TIER_COLORS[soloTier] || '#ffffff' }}>
-                        <Shield size={28} />
-                        <div>
-                            <strong>{soloTier}{hasDivision ? ` ${soloDiv}` : ''}</strong>
-                            <span>{QUEUES.find(q => q.value === queueType)?.label || queueType}</span>
+                    {/* Tier Card */}
+                    <div className="card" style={{ padding: '16px 20px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                            <div style={{ 
+                                width: '24px', height: '24px', borderRadius: '6px', 
+                                background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            }}>
+                                <Shield size={12} style={{ color: 'var(--hextech-gold)' }} />
+                            </div>
+                            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Tier</span>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+                            {TIERS.map(t => {
+                                const isActive = soloTier === t;
+                                const color = TIER_COLORS[t] || "#ffffff";
+                                return (
+                                    <button type="button"
+                                        key={t}
+                                        onClick={() => setSoloTier(t)}
+                                        disabled={!lcu}
+                                        style={{
+                                            display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px',
+                                            padding: '8px', borderRadius: '8px',
+                                            border: isActive ? `1px solid ${color}` : '1px solid var(--glass-border)',
+                                            background: isActive ? `${color}12` : 'rgba(0, 0, 0, 0.28)',
+                                            color: isActive ? color : 'var(--text-secondary)',
+                                            fontSize: '0.6rem', fontWeight: 600, cursor: 'pointer',
+                                            boxShadow: isActive ? `inset 3px 0 ${color}` : 'none',
+                                            transition: 'all 0.15s'
+                                        }}
+                                    >
+                                        <Shield size={14} />
+                                        {t}
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
-                    <dl className="output-list">
-                        <div><dt>Presence</dt><dd>Chat and social cards</dd></div>
-                        <div><dt>Queue source</dt><dd>{QUEUES.find(q => q.value === queueType)?.label}</dd></div>
-                    </dl>
 
-                    <section className={`overview-inline ${overviewEnabled ? 'enabled' : ''}`} aria-labelledby="overview-override-title">
-                        <div className="overview-inline-row">
-                            <Monitor size={24} />
-                            <div className="overview-inline-copy">
-                                <div>
-                                    <h3 id="overview-override-title">PenguLoader Overview Override</h3>
-                                <span className={`overview-status ${pluginInstalled ? 'ready' : 'setup'}`}>
-                                    {pluginInstalled ? <CheckCircle2 size={12} /> : <AlertTriangle size={12} />}
-                                    {pluginInstalled ? 'Pengu ready' : 'Setup required'}
-                                </span>
+                    {/* Division Card */}
+                    {hasDivision && (
+                        <div className="card" style={{ padding: '16px 20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                                <div style={{ 
+                                    width: '24px', height: '24px', borderRadius: '6px', 
+                                    background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}>
+                                    <Shield size={12} style={{ color: 'var(--hextech-gold)' }} />
                                 </div>
-                                <p>Required to apply the selected rank to your Profile Overview card and tooltip.</p>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Division</span>
                             </div>
-                            <label className="switch overview-switch">
-                                <span className="sr-only">Toggle Profile Overview rank override</span>
-                                <input type="checkbox" checked={overviewEnabled} onChange={(event) => setOverviewEnabled(event.target.checked)} />
-                                <span className="slider"></span>
-                            </label>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+                                {DIVISIONS.map(d => (
+                                    <button type="button"
+                                        key={d}
+                                        onClick={() => setSoloDiv(d)}
+                                        disabled={!lcu}
+                                        style={{
+                                            padding: '10px', borderRadius: '8px',
+                                            border: soloDiv === d ? '1px solid var(--hextech-gold)' : '1px solid var(--glass-border)',
+                                            background: soloDiv === d ? 'rgba(59, 130, 246, 0.12)' : 'rgba(0, 0, 0, 0.28)',
+                                            color: soloDiv === d ? 'var(--hextech-gold)' : 'var(--text-secondary)',
+                                            fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer',
+                                            transition: 'all 0.15s'
+                                        }}
+                                    >
+                                        {d}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
+                    )}
+                </div>
+
+                {/* Right Column — Preview & Apply */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {/* Preview Card */}
+                    <div className="card" style={{ padding: '20px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '0.6rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Preview</div>
+                        <div style={{ 
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+                            padding: '16px', borderRadius: '10px',
+                            background: 'rgba(0, 0, 0, 0.2)', border: '1px solid var(--glass-border)',
+                            color: TIER_COLORS[soloTier] || '#ffffff'
+                        }}>
+                            <Shield size={28} />
+                            <div style={{ textAlign: 'left' }}>
+                                <div style={{ fontWeight: 700, fontSize: '1rem' }}>{soloTier}{hasDivision ? ` ${soloDiv}` : ''}</div>
+                                <div style={{ fontSize: '0.7rem', opacity: 0.7 }}>{QUEUES.find(q => q.value === queueType)?.label}</div>
+                            </div>
+                        </div>
+                        <div style={{ marginTop: '12px', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
+                            Chat & social cards
+                        </div>
+                    </div>
+
+                    {/* PenguLoader Card */}
+                    <div className="card" style={{ padding: '16px 20px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Monitor size={16} style={{ color: 'var(--hextech-gold)' }} />
+                                <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)' }}>Profile Overview</span>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setOverviewEnabled(!overviewEnabled)}
+                                style={{
+                                    width: '40px', height: '22px', borderRadius: '11px', border: 'none', cursor: 'pointer',
+                                    background: overviewEnabled ? 'var(--hextech-gold)' : 'rgba(255, 255, 255, 0.1)',
+                                    position: 'relative', transition: 'all 0.2s'
+                                }}
+                            >
+                                <span style={{
+                                    position: 'absolute', top: '3px',
+                                    left: overviewEnabled ? '21px' : '3px',
+                                    width: '16px', height: '16px', borderRadius: '50%',
+                                    background: overviewEnabled ? '#09090b' : 'rgba(255, 255, 255, 0.5)',
+                                    transition: 'all 0.2s'
+                                }}></span>
+                            </button>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                            <span style={{ 
+                                fontSize: '0.6rem', padding: '2px 6px', borderRadius: '4px',
+                                background: pluginInstalled ? 'rgba(34, 197, 94, 0.1)' : 'rgba(251, 191, 36, 0.1)',
+                                color: pluginInstalled ? '#22c55e' : '#fbbf24',
+                                fontWeight: 600
+                            }}>
+                                {pluginInstalled ? 'Pengu ready' : 'Setup required'}
+                            </span>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                            Applies rank to your Profile Overview card and tooltip.
+                        </p>
 
                         {overviewEnabled && (
-                            <div className="overview-help">
-                                <div className="overview-help-title"><Puzzle size={17} /> How to enable the Overview override</div>
-                                <ol className="overview-setup-steps">
-                                    <li><span>1</span><p>Open <strong>Settings &gt; Pengu Loader</strong> and install PenguLoader if it is not already installed.</p></li>
-                                    <li><span>2</span><p>Click <strong>Install / Update Plugin</strong> in that section.</p></li>
-                                    <li><span>3</span><p>Return here, apply the override, then fully restart League.</p></li>
+                            <div style={{ marginTop: '12px', padding: '10px', borderRadius: '8px', background: 'rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)' }}>
+                                <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--hextech-gold)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <Puzzle size={12} /> Setup Steps
+                                </div>
+                                <ol style={{ margin: 0, paddingLeft: '16px', fontSize: '0.68rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                                    <li>Install PenguLoader in Settings</li>
+                                    <li>Click Install / Update Plugin</li>
+                                    <li>Apply override, then restart League</li>
                                 </ol>
-                                <small>PenguLoader is only required for Profile Overview. Chat and social hover cards work independently.</small>
                             </div>
                         )}
-                    </section>
-
-                    <div className="inspector-actions">
-                        <button type="button" className="primary-btn" onClick={applyChanges} disabled={!lcu || loading || fetching}>
-                            {loading ? 'APPLYING...' : 'APPLY RANK OVERRIDES'}
-                        </button>
-                    {!lcu && (
-                            <p className="feature-client-warning">League client connection required.</p>
-                    )}
                     </div>
-                </aside>
+
+                    {/* Apply Button */}
+                    <button type="button" className="primary-btn" onClick={applyChanges} disabled={!lcu || loading || fetching}
+                        style={{ padding: '12px', fontSize: '0.8rem', borderRadius: '10px' }}>
+                        {loading ? 'APPLYING...' : 'APPLY RANK OVERRIDES'}
+                    </button>
+
+                    {/* Sync Button */}
+                    <button type="button" onClick={fetchCurrentData} disabled={!lcu || fetching}
+                        style={{
+                            padding: '10px', fontSize: '0.72rem', fontWeight: 700, borderRadius: '8px',
+                            border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)',
+                            color: 'var(--text-secondary)', cursor: 'pointer',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
+                        }}>
+                        <RefreshCw size={13} className={fetching ? 'intel-spinner' : ''} /> Sync from Client
+                    </button>
+
+                    {!lcu && (
+                        <div style={{ padding: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', textAlign: 'center' }}>
+                            <span style={{ color: '#ef4444', fontSize: '0.75rem' }}>Start League of Legends to enable this feature.</span>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
