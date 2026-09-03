@@ -169,9 +169,9 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                 </div>
 
                 {/* Tier + Division Row */}
-                <div style={{ display: 'grid', gridTemplateColumns: hasDivision ? '1fr 180px' : '1fr', gap: '12px', flex: 1, minHeight: 0 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: hasDivision ? '1fr 180px' : '1fr', gap: '12px' }}>
                     {/* Tier Card */}
-                    <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+                    <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', flexShrink: 0 }}>
                             <div style={{ 
                                 width: '20px', height: '20px', borderRadius: '5px', 
@@ -181,7 +181,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                             </div>
                             <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Tier</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px', flex: 1, minHeight: 0 }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px' }}>
                             {TIERS.map(t => {
                                 const isActive = soloTier === t;
                                 const color = TIER_COLORS[t] || "#ffffff";
@@ -221,7 +221,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 </div>
                                 <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Division</span>
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px', flex: 1 }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px' }}>
                                 {DIVISIONS.map(d => (
                                     <button type="button"
                                         key={d}
