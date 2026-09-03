@@ -329,9 +329,9 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
     };
 
     return (
-        <div className="tab-content fadeIn" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0 20px 40px 20px' }}>
+        <div className="tab-content fadeIn" style={{ padding: '0 20px 40px 20px' }}>
             {/* 1. Direct Skin ID Card */}
-            <div className="card" style={{ marginBottom: '12px', flexShrink: 0 }}>
+            <div className="card" style={{ marginBottom: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
                     <div style={{ 
                         width: '28px', height: '28px', borderRadius: '6px', 
@@ -409,9 +409,9 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                 </div>
             </div>
 
-            {/* 2. Main Browser Card — fills remaining space */}
-            <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexShrink: 0 }}>
+            {/* 2. Main Browser Card */}
+            <div className="card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2px' }}>
                             <div style={{ 
@@ -482,7 +482,7 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                         )}
 
                         {selectedSkin && (
-                            <div className="bg-preview-strip fadeIn" style={{ flexShrink: 0 }}>
+                            <div className="bg-preview-strip fadeIn">
                                 <img src={cdnUrl(selectedSkin.splashPath)} className="bg-preview-thumb" alt="" onError={handleImgError} />
                                 <div className="bg-preview-text">
                                     <span className="bg-preview-name">{selectedSkin.name}</span>
@@ -502,8 +502,8 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                         </button>
                     </>
                 ) : (
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                        <div style={{ marginBottom: '12px', position: 'relative', width: '100%', flexShrink: 0 }}>
+                    <>
+                        <div style={{ marginBottom: '12px', position: 'relative', width: '100%' }}>
                             <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                             <input
                                 type="text"
@@ -516,14 +516,14 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                         </div>
 
                         {loadingChamps && (
-                            <div style={{ textAlign: 'center', padding: '40px', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ textAlign: 'center', padding: '40px' }}>
                                 <Loader2 className="intel-spinner" size={28} style={{ color: 'var(--hextech-gold)', marginBottom: '10px' }} />
                                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', margin: 0 }}>Loading champions...</p>
                             </div>
                         )}
 
                         {!loadingChamps && champsLoaded && (
-                            <div className="bg-champ-grid" style={{ flex: 1, minHeight: 0 }}>
+                            <div className="bg-champ-grid">
                                 {filteredChampions.map(champ => (
                                     <button
                                         key={champ.id}
@@ -538,12 +538,12 @@ const BackgroundTab: React.FC<BackgroundTabProps> = ({ lcu, showToast, addLog, l
                                 ))}
                             </div>
                         )}
-                    </div>
+                    </>
                 )}
             </div>
 
             {!lcu && (
-                <div style={{ marginTop: '16px', padding: '14px 16px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '10px', textAlign: 'center', flexShrink: 0 }}>
+                <div style={{ marginTop: '16px', padding: '14px 16px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '10px', textAlign: 'center' }}>
                     <span style={{ color: '#ef4444', fontSize: '0.8rem' }}>Start League of Legends to enable this feature.</span>
                 </div>
             )}
