@@ -56,41 +56,48 @@ const IconTab: React.FC<IconTabProps> = ({
     };
 
     return (
-        <div className="tab-content fadeIn">
-            <div className="card">
-                <h3 className="card-title">Icon Swapper</h3>
+        <div className="tab-content fadeIn" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0 20px 40px 20px' }}>
+            {/* Header */}
+            <div style={{ marginBottom: '16px' }}>
+                <h2 style={{ margin: '0 0 4px 0', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Icon Swapper</h2>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Equip hidden summoner icons instantly.</p>
+            </div>
+
+            <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+                {/* Note */}
                 <div style={{ 
-                    background: 'rgba(200, 155, 60, 0.05)', 
-                    border: '1px solid rgba(200, 155, 60, 0.2)', 
-                    borderRadius: '8px', 
-                    padding: '10px 12px', 
-                    marginBottom: '15px', 
-                    fontSize: '0.75rem',
+                    background: 'rgba(59, 130, 246, 0.06)', 
+                    border: '1px solid rgba(59, 130, 246, 0.15)', 
+                    borderRadius: '10px', 
+                    padding: '12px 14px', 
+                    marginBottom: '16px', 
+                    fontSize: '0.78rem',
                     color: 'var(--text-secondary)',
-                    lineHeight: '1.4'
+                    lineHeight: '1.5'
                 }}>
-                    <strong style={{ color: 'var(--hextech-gold)' }}>Note:</strong> Due to server-side ownership checks by Riot, equipping an icon you do not own will only display in chat and above the friends list. Your official profile page inside the client will continue to display your previously owned icon.
-                </div>
-                <div style={{ marginBottom: '12px' }}>
-                    <div style={{ position: 'relative', width: '100%' }}>
-                        <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-                        <input
-                            type="text"
-                            placeholder="Search by name or ID..."
-                            value={iconSearchTerm}
-                            onChange={(e) => setIconSearchTerm(e.target.value)}
-                            style={{ width: '100%', padding: '8px 10px 8px 35px', fontSize: '0.85rem' }}
-                        />
-                    </div>
+                    <span style={{ color: 'var(--hextech-gold)', fontWeight: 600 }}>Note:</span> Due to server-side ownership checks, equipping an icon you do not own will only display in chat and above the friends list.
                 </div>
 
+                {/* Search */}
+                <div style={{ marginBottom: '12px', position: 'relative', width: '100%', flexShrink: 0 }}>
+                    <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                    <input
+                        type="text"
+                        placeholder="Search by name or ID..."
+                        value={iconSearchTerm}
+                        onChange={(e) => setIconSearchTerm(e.target.value)}
+                        style={{ width: '100%', padding: '10px 12px 10px 35px', fontSize: '0.82rem' }}
+                    />
+                </div>
+
+                {/* Icon Grid */}
                 <div
                     ref={gridRef}
                     className="icon-grid"
                     onScroll={handleScroll}
                     style={{
-                        display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-                        gap: '8px', maxHeight: '420px', overflowY: 'auto', paddingRight: '10px',
+                        display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))',
+                        gap: '8px', flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: '6px',
                         contentVisibility: 'auto'
                     }}
                 >
@@ -101,22 +108,24 @@ const IconTab: React.FC<IconTabProps> = ({
                             className={`icon-item ${selectedIcon === icon.id ? 'selected' : ''}`}
                             onClick={() => setSelectedIcon(icon.id)}
                             style={{
-                                cursor: 'pointer', borderRadius: '10px', background: 'rgba(255,255,255,0.03)',
-                                padding: '10px', textAlign: 'center', border: selectedIcon === icon.id ? '2px solid var(--hextech-gold)' : '2px solid transparent',
+                                cursor: 'pointer', borderRadius: '10px', 
+                                background: selectedIcon === icon.id ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255,255,255,0.03)',
+                                padding: '10px', textAlign: 'center', 
+                                border: selectedIcon === icon.id ? '2px solid var(--hextech-gold)' : '2px solid transparent',
                                 transition: 'all 0.2s ease'
                             }}
                         >
                             <img 
                                 src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${icon.id}.jpg`} 
                                 alt={icon.name} 
-                                style={{ width: '100%', borderRadius: '6px', marginBottom: '8px', aspectRatio: '1/1', background: 'rgba(255,255,255,0.02)' }} 
+                                style={{ width: '100%', borderRadius: '8px', marginBottom: '6px', aspectRatio: '1/1', background: 'rgba(255,255,255,0.02)' }} 
                                 loading="lazy" 
                             />
                             <div 
                                 title={icon.name}
                                 style={{ 
-                                    fontSize: '0.65rem', 
-                                    color: 'var(--text-secondary)', 
+                                    fontSize: '0.62rem', 
+                                    color: selectedIcon === icon.id ? 'var(--text-primary)' : 'var(--text-secondary)', 
                                     fontWeight: 600, 
                                     overflow: 'hidden', 
                                     textOverflow: 'ellipsis', 
@@ -125,25 +134,30 @@ const IconTab: React.FC<IconTabProps> = ({
                                     WebkitBoxOrient: 'vertical',
                                     lineHeight: '1.2',
                                     height: '2.4em',
-                                    marginBottom: '4px'
                                 }}
                             >
                                 {icon.name}
                             </div>
-                            <div style={{ fontSize: '0.55rem', opacity: 0.5 }}>ID: {icon.id}</div>
                         </button>
                     ))}
                 </div>
 
+                {/* Apply Button */}
                 <button type="button"
                     className="primary-btn"
-                    style={{ width: '100%', marginTop: '12px' }}
+                    style={{ width: '100%', marginTop: '12px', padding: '12px', fontSize: '0.8rem', flexShrink: 0 }}
                     onClick={applyIcon}
                     disabled={!lcu || loading || selectedIcon === null}
                 >
-                    APPLY ICON
+                    {loading ? 'APPLYING...' : 'APPLY ICON'}
                 </button>
             </div>
+
+            {!lcu && (
+                <div style={{ marginTop: '16px', padding: '14px 16px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '10px', textAlign: 'center', flexShrink: 0 }}>
+                    <span style={{ color: '#ef4444', fontSize: '0.8rem' }}>Start League of Legends to enable this feature.</span>
+                </div>
+            )}
         </div>
     );
 };
