@@ -203,10 +203,33 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         }
     };
 
+    const settingsRowStyle: React.CSSProperties = {
+        width: '100%',
+        margin: 0,
+        padding: '14px 16px',
+        border: '1px solid var(--glass-border)',
+        borderRadius: '10px',
+        background: 'rgba(0, 0, 0, 0.2)',
+        textAlign: 'left',
+    };
+
     return (
-        <div className="tab-content fadeIn">
-            <div className="card">
-                <h3 className="card-title">Technical Settings</h3>
+        <div className="tab-content fadeIn" style={{ padding: '0 20px 40px' }}>
+            <div style={{ marginBottom: '8px' }}>
+                <h2 style={{ margin: '0 0 6px', fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)' }}>Settings</h2>
+                <p style={{ margin: 0, fontSize: '1rem', color: 'var(--text-secondary)' }}>Configure startup behavior, backups, integrations, and saved profile data.</p>
+            </div>
+
+            <div className="card" style={{ padding: '20px 24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                    <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Cpu size={16} style={{ color: 'var(--hextech-gold)' }} />
+                    </div>
+                    <div>
+                        <h3 className="card-title" style={{ margin: 0, fontSize: '0.95rem' }}>Technical Settings</h3>
+                        <p className="settings-desc" style={{ margin: '2px 0 0' }}>Choose how the application behaves in Windows and with the League Client.</p>
+                    </div>
+                </div>
                 <button type="button" className="settings-row" onClick={async () => {
                     const newState = !isAutostartEnabled;
                     try {
@@ -217,7 +240,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                         addLog(`Failed to toggle auto-launch: ${err}`);
                         showToast?.(`Failed to toggle auto-launch: ${err}`, "error");
                     }
-                }}>
+                }} style={settingsRowStyle}>
                     <div className="settings-info">
                         <span className="settings-label">Auto-launch</span>
                         <p className="settings-desc">Launch the app automatically when your PC starts.</p>
@@ -229,7 +252,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                     </span>
                 </button>
 
-                <button type="button" className="settings-row" onClick={toggleMinimizeToTray} style={{ marginTop: '10px' }}>
+                <button type="button" className="settings-row" onClick={toggleMinimizeToTray} style={{ ...settingsRowStyle, marginTop: '10px' }}>
                     <div className="settings-info">
                         <span className="settings-label">Minimize to Tray</span>
                         <p className="settings-desc">Close button will minimize the app to the system tray.</p>
@@ -241,7 +264,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                     </span>
                 </button>
 
-                <button type="button" className="settings-row" onClick={() => toggleAutoEnforce(!autoEnforce)} style={{ marginTop: '10px' }}>
+                <button type="button" className="settings-row" onClick={() => toggleAutoEnforce(!autoEnforce)} style={{ ...settingsRowStyle, marginTop: '10px' }}>
                     <div className="settings-info">
                         <span className="settings-label">Auto-Restore Profile</span>
                         <p className="settings-desc">Automatically re-apply profile overrides (rank, icons, status) when the League Client opens.</p>
@@ -254,21 +277,23 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                 </button>
 
                 {showResetConfirm ? (
-                    <div style={{ marginTop: '10px', padding: '12px 16px', background: 'rgba(255,107,107,0.04)', borderRadius: 'var(--radius)' }}>
-                        <span className="settings-label" style={{ color: 'var(--text-secondary)', marginBottom: '10px', display: 'block' }}>What to clear?</span>
-                        {Object.entries(resetLabels).map(([key, label]) => (
-                            <label key={key} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-primary)' }}>
-                                <input type="checkbox" checked={resetChecks[key]} onChange={() => setResetChecks(prev => ({ ...prev, [key]: !prev[key] }))} style={{ accentColor: '#ff6b6b' }} />
-                                {label}
-                            </label>
-                        ))}
-                        <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
-                            <button type="button" className="ghost-btn" style={{ color: '#c0392b', display: 'flex', alignItems: 'center', gap: '4px' }} onClick={clearAllSettings}><Check size={14} />Clear Selected</button>
-                            <button type="button" className="ghost-btn" onClick={() => setShowResetConfirm(false)} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><X size={14} />Cancel</button>
+                    <div style={{ marginTop: '10px', padding: '16px', background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.18)', borderRadius: '10px' }}>
+                        <span className="settings-label" style={{ color: '#f87171', marginBottom: '12px', display: 'block' }}>What to clear?</span>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '6px 16px' }}>
+                            {Object.entries(resetLabels).map(([key, label]) => (
+                                <label key={key} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '5px 0', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-primary)' }}>
+                                    <input type="checkbox" checked={resetChecks[key]} onChange={() => setResetChecks(prev => ({ ...prev, [key]: !prev[key] }))} style={{ accentColor: '#ef4444' }} />
+                                    {label}
+                                </label>
+                            ))}
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
+                            <button type="button" className="ghost-btn" style={{ color: '#f87171', borderColor: 'rgba(239, 68, 68, 0.25)', display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 14px' }} onClick={clearAllSettings}><Check size={14} />Clear Selected</button>
+                            <button type="button" className="ghost-btn" onClick={() => setShowResetConfirm(false)} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 14px' }}><X size={14} />Cancel</button>
                         </div>
                     </div>
                 ) : (
-                    <button type="button" className="settings-row" onClick={() => setShowResetConfirm(true)} style={{ marginTop: '10px' }}>
+                    <button type="button" className="settings-row" onClick={() => setShowResetConfirm(true)} style={{ ...settingsRowStyle, marginTop: '10px', borderColor: 'rgba(239, 68, 68, 0.14)' }}>
                         <div className="settings-info">
                             <span className="settings-label">Clear Saved Data</span>
                             <p className="settings-desc">Reset profile overrides, rank, tokens, status, icon &amp; more</p>
@@ -278,31 +303,48 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                 )}
             </div>
 
-            <div className="card">
-                <h3 className="card-title">Backup &amp; Restore</h3>
-                <p className="settings-desc" style={{ marginBottom: '10px' }}>
-                    Export all saved settings to a JSON file, or import a previously exported backup.
-                </p>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                    <button type="button" className="ghost-btn" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={exportSettings}>
-                        <Download size={16} /> Export
-                    </button>
-                    <button type="button" className="ghost-btn" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={importSettings}>
-                        <Upload size={16} /> Import
-                    </button>
+            <div className="card" style={{ padding: '20px 24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+                        <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Download size={16} style={{ color: 'var(--hextech-gold)' }} />
+                        </div>
+                        <div>
+                            <h3 className="card-title" style={{ margin: 0, fontSize: '0.95rem' }}>Backup &amp; Restore</h3>
+                            <p className="settings-desc" style={{ margin: '2px 0 0' }}>Export your saved profile settings or restore them from a JSON backup.</p>
+                        </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                        <button type="button" className="ghost-btn" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 15px' }} onClick={exportSettings}>
+                            <Download size={15} /> Export
+                        </button>
+                        <button type="button" className="ghost-btn" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 15px' }} onClick={importSettings}>
+                            <Upload size={15} /> Import
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div className="card">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                    <Puzzle size={20} style={{ color: 'var(--hextech-gold)' }} />
-                    <h3 className="card-title" style={{ margin: 0 }}>Pengu Loader Integration</h3>
+            <div className="card" style={{ padding: '20px 24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Puzzle size={16} style={{ color: 'var(--hextech-gold)' }} />
+                        </div>
+                        <div>
+                            <h3 className="card-title" style={{ margin: 0, fontSize: '0.95rem' }}>Pengu Loader Integration</h3>
+                            <p className="settings-desc" style={{ margin: '2px 0 0' }}>Required to display custom ranks in the League profile overview.</p>
+                        </div>
+                    </div>
+                    <span style={{ padding: '4px 9px', borderRadius: '999px', background: pluginInstalled ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)', border: pluginInstalled ? '1px solid rgba(34, 197, 94, 0.25)' : '1px solid rgba(245, 158, 11, 0.25)', color: pluginInstalled ? '#22c55e' : '#f59e0b', fontSize: '0.68rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                        {pluginInstalled ? 'PLUGIN READY' : 'SETUP REQUIRED'}
+                    </span>
                 </div>
-                <p className="settings-desc" style={{ marginBottom: '12px' }}>
-                    Install the Rank Override plugin to show custom ranks in the League client's profile overview. 
+                <p className="settings-desc" style={{ margin: '0 0 14px', lineHeight: 1.5 }}>
+                    Install the Rank Override plugin to show custom ranks in the League client's profile overview.
                     Requires <a href="https://github.com/PenguLoader/PenguLoader" target="_blank" rel="noreferrer" style={{ color: 'var(--hextech-gold)' }}>Pengu Loader</a> to be installed.
                     {pluginInstalled && (
-                        <span style={{ color: '#2ecc71', marginLeft: '8px' }}>✓ Plugin installed</span>
+                        <span style={{ color: '#22c55e', marginLeft: '8px' }}>✓ Plugin installed</span>
                     )}
                 </p>
                 
@@ -310,7 +352,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                     <button 
                         type="button" 
                         className="ghost-btn" 
-                        style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 15px' }}
                         onClick={async () => {
                             try {
                                 await invoke("install_pengu_plugin");
@@ -330,7 +372,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                     <button 
                         type="button" 
                         className="ghost-btn" 
-                        style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 15px' }}
                         onClick={async () => {
                             try {
                                 await invoke("open_pengu_plugins_folder");
@@ -349,17 +391,16 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                         target="_blank" 
                         rel="noreferrer"
                         className="ghost-btn"
-                        style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 15px', textDecoration: 'none' }}
                     >
                         <ExternalLink size={16} /> Download Pengu Loader
                     </a>
                 </div>
                 
-                <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                <div style={{ marginTop: '14px', padding: '12px 14px', background: 'rgba(0,0,0,0.22)', border: '1px solid var(--glass-border)', borderRadius: '8px', fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                     <strong style={{ color: 'var(--hextech-gold)' }}>Manual Installation:</strong><br />
-                    Copy the complete <code>rank-override</code> folder to:<br />
-                    <code>C:\Program Files\Pengu Loader\plugins\rank-override\</code><br />
-                    Then restart the League Client and enable <strong>Profile Overview</strong> from the Rank tab.
+                    Copy the complete <code>rank-override</code> folder to <code>C:\Program Files\Pengu Loader\plugins\rank-override\</code>.<br />
+                    Restart the League Client and enable <strong>Profile Overview</strong> from the Rank tab.
                 </div>
             </div>
 
@@ -380,12 +421,14 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                 </div>
             )}
 
-            <div className="card" style={{ marginTop: '12px', background: 'rgba(200, 155, 60, 0.03)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <Cpu size={24} style={{ color: 'var(--hextech-gold)' }} />
+            <div className="card" style={{ padding: '16px 20px', background: 'rgba(59, 130, 246, 0.04)', borderColor: 'rgba(59, 130, 246, 0.15)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Cpu size={16} style={{ color: 'var(--hextech-gold)' }} />
+                    </div>
                     <div>
-                        <h4 style={{ margin: 0, color: 'var(--hextech-gold)', fontSize: '0.9rem' }}>Bridge Interface</h4>
-                        <p style={{ margin: '5px 0 0 0', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                        <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '0.88rem' }}>Bridge Interface</h4>
+                        <p style={{ margin: '3px 0 0', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                             High-performance LCU communication layer via Tauri v2 Core.
                         </p>
                     </div>
