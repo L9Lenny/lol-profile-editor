@@ -190,7 +190,7 @@ function App() {
         <div className="nav-header">
           {!isCollapsed && (
             <>
-              <img src="/app-icon.png" alt="App Icon" className="nav-logo" style={{ width: '34px', height: '34px', borderRadius: '6px', objectFit: 'contain' }} />
+              <img src="/app-icon.svg" alt="App Icon" className="nav-logo" style={{ width: '34px', height: '34px', borderRadius: '6px', objectFit: 'contain' }} />
               <span className="nav-title">LP TOOL</span>
             </>
           )}
