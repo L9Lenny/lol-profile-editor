@@ -8,10 +8,64 @@ var overrideRank = null
 var observer = null
 var cssInjected = false
 var overviewEnabled = true
+var touchedElements = []
 
 function log(msg) { console.log('[RankOverride] ' + msg) }
 
+function rememberAttribute(element, name) {
+  if (!element._rankOverrideOriginal) {
+    element._rankOverrideOriginal = {}
+    touchedElements.push(element)
+  }
+  if (!(name in element._rankOverrideOriginal)) element._rankOverrideOriginal[name] = element.getAttribute(name)
+}
+
+function rememberText(element) {
+  if (!element || element._rankOverrideOriginalText !== undefined) return
+  element._rankOverrideOriginalText = element.textContent
+  touchedElements.push(element)
+}
+
+function restoreOverrides() {
+  for (var i = 0; i < touchedElements.length; i++) {
+    var element = touchedElements[i]
+    var attrs = element._rankOverrideOriginal
+    if (attrs) {
+      for (var name in attrs) {
+        if (attrs[name] === null) element.removeAttribute(name)
+        else element.setAttribute(name, attrs[name])
+      }
+      delete element._rankOverrideOriginal
+    }
+    if (element._rankOverrideOriginalText !== undefined) {
+      element.textContent = element._rankOverrideOriginalText
+      delete element._rankOverrideOriginalText
+    }
+    // Regalia web components cache emblem art internally; reconnect them so
+    // removing the override attributes also refreshes the rendered icon.
+    if (element.isConnected && (element.tagName === 'LOL-REGALIA-CREST-V2-ELEMENT' || element.tagName === 'LOL-REGALIA-EMBLEM-ELEMENT')) {
+      element.replaceWith(element.cloneNode(true))
+    }
+  }
+  touchedElements = []
+}
+
 async function fetchDesiredRank() {
+  try {
+    var configRes = await fetch('//plugins/rank-override/rank-config.json?t=' + Date.now(), { cache: 'no-store' })
+    if (configRes.ok) {
+      var config = await configRes.json()
+      // The settings reset writes NONE. Treat it as an explicit clear instead
+      // of falling back to stale LCU data from a previous queue.
+      if (config.tier === 'NONE' || !config.tier) return null
+      return {
+        tier: config.tier,
+        division: config.division || 'I',
+        queue: config.queue || 'RANKED_SOLO_5x5'
+      }
+    }
+  } catch (e) {}
+
   try {
     var res = await fetch('/lol-chat/v1/me', { credentials: 'include' })
     if (!res.ok) return null
@@ -30,11 +84,18 @@ async function fetchDesiredRank() {
 }
 
 function injectCSS() {
-  if (cssInjected) return
+  if (cssInjected || document.getElementById('rank-override-css')) return
   cssInjected = true
   var style = document.createElement('style')
+  style.id = 'rank-override-css'
   style.textContent = '.style-profile-emblem-header-subtitle, .style-profile-emblem-subheader-ranked { color: #ffffff !important; }'
   document.head.appendChild(style)
+}
+
+function removeCSS() {
+  var style = document.getElementById('rank-override-css')
+  if (style) style.remove()
+  cssInjected = false
 }
 
 function isTargetWrapper(wrapper, rank) {
@@ -45,7 +106,9 @@ function isTargetWrapper(wrapper, rank) {
          (rank.queue === 'RANKED_FLEX_SR' && titleText.indexOf('flex') >= 0) ||
          (rank.queue === 'RANKED_PREMADE_5x5' && titleText.indexOf('5v5') >= 0 && titleText.indexOf('flex') < 0) ||
          (rank.queue === 'RANKED_TFT' && titleText.indexOf('tft') >= 0 && titleText.indexOf('double') < 0) ||
-         (rank.queue === 'RANKED_TFT_DOUBLE_UP' && titleText.indexOf('double') >= 0)
+         (rank.queue === 'RANKED_TFT_DOUBLE_UP' &&
+           (titleText.indexOf('double') >= 0 || titleText.indexOf('2v2') >= 0 ||
+             (titleText.indexOf('tft') >= 0 && titleText.indexOf('duo') >= 0)))
 }
 
 async function fetchOverviewSetting() {
@@ -166,9 +229,15 @@ function overrideText(rank) {
   for (var i = 0; i < wrappers.length; i++) {
     if (!isTargetWrapper(wrappers[i], rank)) continue
     var sub = wrappers[i].querySelector('.style-profile-emblem-header-subtitle')
-    if (sub && sub.innerText !== text) sub.innerText = text
+    if (sub && sub.innerText !== text) {
+      rememberText(sub)
+      sub.innerText = text
+    }
     var ranked = wrappers[i].querySelector('.style-profile-emblem-subheader-ranked')
-    if (ranked && ranked.innerText !== text) ranked.innerText = text
+    if (ranked && ranked.innerText !== text) {
+      rememberText(ranked)
+      ranked.innerText = text
+    }
   }
 
   var tooltipQueues = queryAllDeep(document, '.ranked-tooltip-queue')
@@ -181,17 +250,23 @@ function overrideText(rank) {
       (rank.queue === 'RANKED_FLEX_SR' && labelText.indexOf('flex') >= 0) ||
       (rank.queue === 'RANKED_PREMADE_5x5' && labelText.indexOf('5v5') >= 0 && labelText.indexOf('flex') < 0) ||
       (rank.queue === 'RANKED_TFT' && labelText.indexOf('tft') >= 0 && labelText.indexOf('double') < 0) ||
-      (rank.queue === 'RANKED_TFT_DOUBLE_UP' && labelText.indexOf('double') >= 0)
+      (rank.queue === 'RANKED_TFT_DOUBLE_UP' &&
+        (labelText.indexOf('double') >= 0 || labelText.indexOf('2v2') >= 0 ||
+          (labelText.indexOf('tft') >= 0 && labelText.indexOf('duo') >= 0)))
     if (!isTargetQueue) continue
 
     var emblem = tooltipQueues[q].querySelector('lol-regalia-emblem-element')
     var emblemDivision = noDiv ? 'O' : div
     if (emblem) {
+      rememberAttribute(emblem, 'ranked-tier')
+      rememberAttribute(emblem, 'ranked-division')
       emblem.setAttribute('ranked-tier', tier.toLowerCase())
       emblem.setAttribute('ranked-division', emblemDivision)
       if (emblem.shadowRoot) {
         var innerEmblem = emblem.shadowRoot.querySelector('div > div')
         if (innerEmblem) {
+          rememberAttribute(innerEmblem, 'ranked-tier')
+          rememberAttribute(innerEmblem, 'ranked-division')
           innerEmblem.setAttribute('ranked-tier', tier.toLowerCase())
           innerEmblem.setAttribute('ranked-division', emblemDivision)
         }
@@ -199,7 +274,10 @@ function overrideText(rank) {
     }
 
     var tooltipTier = tooltipQueues[q].querySelector('.ranked-tooltip-queue-tier')
-    if (tooltipTier && tooltipTier.textContent !== text) tooltipTier.textContent = text
+    if (tooltipTier && tooltipTier.textContent !== text) {
+      rememberText(tooltipTier)
+      tooltipTier.textContent = text
+    }
   }
 }
 
@@ -214,25 +292,37 @@ function patchEmblemAttributes(rank) {
     var crests = wrappers[i].querySelectorAll('lol-regalia-crest-v2-element')
     for (var c = 0; c < crests.length; c++) {
       var crest = crests[c]
+      rememberAttribute(crest, 'ranked-tier')
+      rememberAttribute(crest, 'ranked-division')
+      rememberAttribute(crest, 'crest-type')
       crest.setAttribute('ranked-tier', tierLower)
       crest.setAttribute('ranked-division', rank.division)
       crest.setAttribute('crest-type', 'ranked')
       if (crest.shadowRoot) {
         var divEl = crest.shadowRoot.querySelector('.lol-regalia-rank-division-text')
-        if (divEl && divEl.textContent !== rank.division) divEl.textContent = rank.division
+        if (divEl && divEl.textContent !== rank.division) {
+          rememberText(divEl)
+          divEl.textContent = rank.division
+        }
       }
     }
 
     var emblems = wrappers[i].querySelectorAll('lol-regalia-emblem-element')
     for (var e = 0; e < emblems.length; e++) {
-      emblems[e].setAttribute('ranked-tier', rank.tier)
-      emblems[e].setAttribute('queue-type', rank.queue)
+        rememberAttribute(emblems[e], 'ranked-tier')
+        rememberAttribute(emblems[e], 'queue-type')
+        emblems[e].setAttribute('ranked-tier', rank.tier)
+        emblems[e].setAttribute('queue-type', rank.queue)
     }
   }
 }
 
 function applyRank(rank) {
-  if (!overviewEnabled || !rank) return
+  if (!overviewEnabled || !rank) {
+    restoreOverrides()
+    removeCSS()
+    return
+  }
   injectCSS()
   overrideText(rank)
   patchEmblemAttributes(rank)
@@ -242,12 +332,17 @@ function startPolling() {
   setTimeout(function() { applyRank(overrideRank) }, 2000)
   setTimeout(function() { applyRank(overrideRank) }, 5000)
   setInterval(function() {
-    fetchDesiredRank().then(function(newRank) {
-      if (newRank && overrideRank &&
-          (newRank.tier !== overrideRank.tier || newRank.division !== overrideRank.division || newRank.queue !== overrideRank.queue)) {
-        log('Rank changed -> reapplying')
-        overrideRank = newRank
+    Promise.all([fetchDesiredRank(), fetchOverviewSetting()]).then(function(values) {
+      var newRank = values[0]
+      var newOverviewEnabled = values[1]
+      if (newRank !== null || overrideRank !== null) {
+        if (!newRank || !overrideRank ||
+            newRank.tier !== overrideRank.tier || newRank.division !== overrideRank.division || newRank.queue !== overrideRank.queue) {
+          log('Rank changed -> reapplying')
+          overrideRank = newRank
+        }
       }
+      overviewEnabled = newOverviewEnabled
       applyRank(overrideRank)
     })
   }, 5000)
@@ -258,9 +353,9 @@ function init() {
   Promise.all([fetchDesiredRank(), fetchOverviewSetting()]).then(function(values) {
     var rank = values[0]
     overviewEnabled = values[1]
-    if (!rank) { log('No rank found'); return }
     overrideRank = rank
-    log('Rank: ' + rank.tier + ' ' + rank.division + ' (' + rank.queue + ')')
+    if (rank) log('Rank: ' + rank.tier + ' ' + rank.division + ' (' + rank.queue + ')')
+    else log('No rank found; waiting for config changes')
     log('Profile Overview override: ' + (overviewEnabled ? 'enabled' : 'disabled'))
 
     installFetchInterceptor()

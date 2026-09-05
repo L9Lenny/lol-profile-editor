@@ -128,6 +128,23 @@ describe('SettingsTab', () => {
         });
     });
 
+    it('should clear the Pengu rank and overview override when rank is cleared', async () => {
+        localStorage.setItem('pengu_overview_override_v1', 'true');
+        render(<SettingsTab {...mockProps} showToast={vi.fn()} />);
+        fireEvent.click(screen.getByText('Clear Saved Data'));
+        fireEvent.click(screen.getByText('Clear Selected'));
+
+        await waitFor(() => {
+            expect(localStorage.getItem('pengu_overview_override_v1')).toBeNull();
+            expect(mockInvoke).toHaveBeenCalledWith('save_rank_config', {
+                tier: 'NONE',
+                division: 'I',
+                queue: 'RANKED_SOLO_5x5',
+                overviewEnabled: false,
+            });
+        });
+    });
+
     it('should not call lcuRequest when all options are unchecked', () => {
         const lcuReq = vi.fn(() => Promise.resolve({ lol: {} }));
         render(<SettingsTab {...mockProps} lcuRequest={lcuReq} showToast={vi.fn()} />);

@@ -10,6 +10,7 @@ let pluginFs = null
 let observer = null
 let currentRank = null
 let pollInterval = null
+let touchedElements = []
 
 const EMBLEM_BASE = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/ranked-emblems'
 
@@ -19,6 +20,39 @@ const QUEUE_MAP = {
   'RANKED_PREMADE_5x5': 'ranked',
   'RANKED_TFT': 'tft',
   'RANKED_TFT_DOUBLE_UP': 'tft'
+}
+
+function rememberAttribute(element, name) {
+  if (!element.__rankOverrideOriginal) {
+    element.__rankOverrideOriginal = {}
+    touchedElements.push(element)
+  }
+  if (!(name in element.__rankOverrideOriginal)) element.__rankOverrideOriginal[name] = element.getAttribute(name)
+}
+
+function rememberProperty(element, name) {
+  if (!element.__rankOverrideOriginal) {
+    element.__rankOverrideOriginal = {}
+    touchedElements.push(element)
+  }
+  if (!(name in element.__rankOverrideOriginal)) element.__rankOverrideOriginal[name] = element[name]
+}
+
+function restoreOverrides() {
+  for (const element of touchedElements) {
+    const original = element.__rankOverrideOriginal
+    if (!original) continue
+    for (const [name, value] of Object.entries(original)) {
+      if (name in element) element[name] = value
+      else if (value === null) element.removeAttribute(name)
+      else element.setAttribute(name, value)
+    }
+    if (element.isConnected && (element.tagName === 'LOL-REGALIA-CREST-V2-ELEMENT' || element.tagName === 'LOL-REGALIA-EMBLEM-ELEMENT')) {
+      element.replaceWith(element.cloneNode(true))
+    }
+    delete element.__rankOverrideOriginal
+  }
+  touchedElements = []
 }
 
 function getEmblemUrl(tier) {
@@ -113,6 +147,9 @@ function overrideCrest(crest, rank) {
   const div = rank.division
 
   // Set attributes on the crest element
+  rememberAttribute(crest, 'ranked-tier')
+  rememberAttribute(crest, 'ranked-division')
+  rememberAttribute(crest, 'crest-type')
   crest.setAttribute('ranked-tier', tier)
   crest.setAttribute('ranked-division', div)
   crest.setAttribute('crest-type', QUEUE_MAP[rank.queue] || 'ranked')
@@ -122,6 +159,7 @@ function overrideCrest(crest, rank) {
   // Find and update division text
   const divisionEl = crest.shadowRoot.querySelector('.lol-regalia-rank-division-text')
   if (divisionEl) {
+    rememberProperty(divisionEl, 'textContent')
     divisionEl.textContent = div
     log(`Updated division text to: ${div}`)
   }
@@ -129,12 +167,17 @@ function overrideCrest(crest, rank) {
   // Find and update tier text (if exists)
   const tierEl = crest.shadowRoot.querySelector('.lol-regalia-ranked-tier-text')
   if (tierEl) {
+    rememberProperty(tierEl, 'textContent')
     tierEl.textContent = rank.tier
   }
 
   // Find and override emblem image
   const emblemEl = crest.shadowRoot.querySelector('.regalia-emblem')
   if (emblemEl) {
+    rememberProperty(emblemEl.style, 'backgroundImage')
+    rememberProperty(emblemEl.style, 'backgroundSize')
+    rememberProperty(emblemEl.style, 'backgroundRepeat')
+    rememberProperty(emblemEl.style, 'backgroundPosition')
     const url = getEmblemUrl(rank.tier)
     emblemEl.style.backgroundImage = `url("${url}")`
     emblemEl.style.backgroundSize = 'contain'
@@ -147,6 +190,7 @@ function overrideCrest(crest, rank) {
   const imgs = crest.shadowRoot.querySelectorAll('img')
   for (const img of imgs) {
     if (img.src && (img.src.includes('ranked') || img.src.includes('emblem') || img.src.includes('tier'))) {
+      rememberProperty(img, 'src')
       img.src = getEmblemUrl(rank.tier)
       log(`Updated img src to: ${getEmblemUrl(rank.tier)}`)
     }
@@ -163,10 +207,13 @@ function overrideCrest(crest, rank) {
   for (const el of allShadow) {
     // Update division text in nested shadows
     if (el.classList && el.classList.contains('lol-regalia-rank-division-text')) {
+      rememberProperty(el, 'textContent')
       el.textContent = div
     }
     // Update emblem in nested shadows
     if (el.classList && el.classList.contains('regalia-emblem')) {
+      rememberProperty(el.style, 'backgroundImage')
+      rememberProperty(el.style, 'backgroundSize')
       const url = getEmblemUrl(rank.tier)
       el.style.backgroundImage = `url("${url}")`
       el.style.backgroundSize = 'contain'
@@ -269,7 +316,9 @@ function overrideProfileText() {
       (currentRank.queue === 'RANKED_FLEX_SR' && labelText.includes('flex')) ||
       (currentRank.queue === 'RANKED_PREMADE_5x5' && labelText.includes('5v5') && !labelText.includes('flex')) ||
       (currentRank.queue === 'RANKED_TFT' && labelText.includes('tft') && !labelText.includes('double')) ||
-      (currentRank.queue === 'RANKED_TFT_DOUBLE_UP' && labelText.includes('double'))
+      (currentRank.queue === 'RANKED_TFT_DOUBLE_UP' &&
+        (labelText.includes('double') || labelText.includes('2v2') ||
+          (labelText.includes('tft') && labelText.includes('duo'))))
 
     if (!isTargetQueue) continue
 
@@ -284,6 +333,10 @@ function overrideProfileText() {
  * Apply all rank overrides
  */
 function applyAllOverrides() {
+  if (!currentRank) {
+    restoreOverrides()
+    return
+  }
   overrideProfileRegalia()
   overrideHovercardRegalia()
   overridePartyCreasts()
@@ -316,14 +369,14 @@ export async function startRankOverride(writeLog, fs) {
   // Poll for config changes
   pollInterval = setInterval(async () => {
     const newRank = await readConfig()
-    if (newRank && (
+    if ((newRank === null && currentRank !== null) || (newRank && (
       !currentRank ||
       newRank.tier !== currentRank.tier ||
       newRank.division !== currentRank.division ||
       newRank.queue !== currentRank.queue
-    )) {
+    ))) {
       currentRank = newRank
-      log(`Config changed: ${currentRank.tier} ${currentRank.division} (${currentRank.queue})`)
+      log(`Config changed: ${currentRank ? `${currentRank.tier} ${currentRank.division} (${currentRank.queue})` : 'cleared'}`)
       applyAllOverrides()
     }
   }, 3000)

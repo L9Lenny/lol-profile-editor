@@ -3,7 +3,7 @@ import { RefreshCw, Cpu, Trash2, X, Check, Download, Upload, Puzzle, FolderOpen,
 import { enable, disable } from "@tauri-apps/plugin-autostart";
 import { save, open } from "@tauri-apps/plugin-dialog";
 import { invoke } from "@tauri-apps/api/core";
-import { SAVED_AUTO_ENFORCE_KEY, SAVED_ENFORCE_OFFLINE_KEY, SAVED_ICON_KEY, ALL_SAVED_KEYS, PENGU_PLUGIN_INSTALLED_KEY } from '../../storageKeys';
+import { SAVED_AUTO_ENFORCE_KEY, SAVED_ENFORCE_OFFLINE_KEY, SAVED_ICON_KEY, ALL_SAVED_KEYS, PENGU_PLUGIN_INSTALLED_KEY, PENGU_OVERVIEW_OVERRIDE_KEY } from '../../storageKeys';
 import { patchChatLol } from '../../utils/chatMe';
 
 const MAX_STORAGE_VALUE_LENGTH = 10000;
@@ -108,6 +108,21 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         if (resetChecks.enforcer) {
             ALL_SAVED_KEYS.forEach(key => localStorage.removeItem(key));
             setAutoEnforce(false);
+        }
+
+        if (resetChecks.rank) {
+            localStorage.removeItem(PENGU_OVERVIEW_OVERRIDE_KEY);
+            try {
+                await invoke("save_rank_config", {
+                    tier: "NONE",
+                    division: "I",
+                    queue: "RANKED_SOLO_5x5",
+                    overviewEnabled: false,
+                });
+            } catch (err) {
+                // Pengu Loader may not be installed; the LCU reset still proceeds.
+                addLog(`Rank override config reset skipped: ${err}`);
+            }
         }
 
         if (!lcuRequest) {
