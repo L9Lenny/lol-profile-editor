@@ -61,14 +61,27 @@ describe('RankTab', () => {
         expect(goldElements.length).toBeGreaterThan(0);
     });
 
+    it('should offer the current ranked queue types', async () => {
+        const props = createMockProps();
+        render(<RankTab {...props} />);
+
+        expect(screen.getByRole('button', { name: 'Solo/Duo' })).toBeDefined();
+        expect(screen.getByRole('button', { name: 'Flex 5v5' })).toBeDefined();
+        expect(screen.getByRole('button', { name: '5v5' })).toBeDefined();
+        expect(screen.getByRole('button', { name: 'TFT' })).toBeDefined();
+        expect(screen.getByRole('button', { name: 'Double Up' })).toBeDefined();
+        expect(screen.queryByRole('button', { name: 'Flex 3v3' })).toBeNull();
+        await waitFor(() => expect(props.addLog).toHaveBeenCalledWith('Rank status synced successfully.'));
+    });
+
     it('should explain the Pengu requirement for the Overview override', async () => {
         const props = createMockProps();
         render(<RankTab {...props} />);
 
-        expect(screen.getByText('PenguLoader Overview Override')).toBeDefined();
-        expect(screen.getByText('Setup required')).toBeDefined();
-        expect(screen.getByText('How to enable the Overview override')).toBeDefined();
-        expect(screen.getByText(/Settings > Pengu Loader/)).toBeDefined();
+        expect(screen.getAllByText('Profile Overview').length).toBeGreaterThan(0);
+        expect(screen.getByText('Setup')).toBeDefined();
+        expect(screen.getByText(/Profile Overview.*Setup Guide/)).toBeDefined();
+        expect(screen.getAllByText(/Settings > Pengu Loader/).length).toBeGreaterThan(0);
         await waitFor(() => expect(props.addLog).toHaveBeenCalledWith('Rank status synced successfully.'));
     });
 
@@ -76,12 +89,10 @@ describe('RankTab', () => {
         const props = createMockProps();
         render(<RankTab {...props} />);
 
-        const overviewToggle = screen.getByText('Toggle Profile Overview rank override').closest('label')?.querySelector('input');
-        if (!overviewToggle) throw new Error('Overview toggle not found');
+        const overviewToggle = screen.getByRole('button', { name: 'Toggle Profile Overview rank override' });
         fireEvent.click(overviewToggle);
-        expect(screen.queryByText('How to enable the Overview override')).toBeNull();
 
-        const applyButton = screen.getByText('APPLY RANK OVERRIDES') as HTMLButtonElement;
+        const applyButton = screen.getByText('APPLY') as HTMLButtonElement;
         await waitFor(() => expect(applyButton.disabled).toBe(false));
         fireEvent.click(applyButton);
 
@@ -98,7 +109,7 @@ describe('RankTab', () => {
         const props = createMockProps();
         render(<RankTab {...props} />);
 
-        const applyBtn = await screen.findByText('APPLY RANK OVERRIDES');
+        const applyBtn = await screen.findByText('APPLY');
         fireEvent.click(applyBtn);
 
         await waitFor(() => {
@@ -124,7 +135,7 @@ describe('RankTab', () => {
 
         render(<RankTab {...props} />);
 
-        const applyBtn = await screen.findByText('APPLY RANK OVERRIDES');
+        const applyBtn = await screen.findByText('APPLY');
         fireEvent.click(applyBtn);
 
         await waitFor(() => {
@@ -138,7 +149,31 @@ describe('RankTab', () => {
         props.lcu = null;
 
         render(<RankTab {...props} />);
-        const applyBtn = screen.getByText('APPLY RANK OVERRIDES');
+        const applyBtn = screen.getByText('APPLY');
         expect((applyBtn as HTMLButtonElement).disabled).toBe(true);
+    });
+
+    it('should sync the selected queue from current ranked stats', async () => {
+        const props = createMockProps();
+        props.lcuRequest.mockImplementation((method, endpoint) => {
+            if (method === 'GET' && endpoint === '/lol-ranked/v1/current-ranked-stats') {
+                return Promise.resolve({
+                    queueMap: {
+                        RANKED_SOLO_5x5: { tier: 'GOLD', division: 'II' },
+                    },
+                });
+            }
+            return Promise.resolve({});
+        });
+
+        render(<RankTab {...props} />);
+
+        await waitFor(() => {
+            expect(screen.getByTitle('GOLD rank tier')).toHaveAttribute('aria-pressed', 'true');
+            expect(props.lcuRequest).toHaveBeenCalledWith('GET', '/lol-ranked/v1/current-ranked-stats');
+        });
+
+        fireEvent.click(screen.getByTitle('Read the current rank for the selected queue from the League Client'));
+        await waitFor(() => expect(props.showToast).toHaveBeenCalledWith('Rank synced from League Client', 'success'));
     });
 });

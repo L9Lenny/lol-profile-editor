@@ -16,8 +16,9 @@ const EMBLEM_BASE = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-g
 const QUEUE_MAP = {
   'RANKED_SOLO_5x5': 'ranked',
   'RANKED_FLEX_SR': 'flex',
-  'RANKED_FLEX_TT': 'flex',
-  'RANKED_TFT': 'tft'
+  'RANKED_PREMADE_5x5': 'ranked',
+  'RANKED_TFT': 'tft',
+  'RANKED_TFT_DOUBLE_UP': 'tft'
 }
 
 function getEmblemUrl(tier) {
@@ -265,7 +266,10 @@ function overrideProfileText() {
     const labelText = queueLabel.textContent.toLowerCase()
     const isTargetQueue =
       (currentRank.queue === 'RANKED_SOLO_5x5' && (labelText.includes('solo') || labelText.includes('duo'))) ||
-      (currentRank.queue === 'RANKED_FLEX_SR' && labelText.includes('flex'))
+      (currentRank.queue === 'RANKED_FLEX_SR' && labelText.includes('flex')) ||
+      (currentRank.queue === 'RANKED_PREMADE_5x5' && labelText.includes('5v5') && !labelText.includes('flex')) ||
+      (currentRank.queue === 'RANKED_TFT' && labelText.includes('tft') && !labelText.includes('double')) ||
+      (currentRank.queue === 'RANKED_TFT_DOUBLE_UP' && labelText.includes('double'))
 
     if (!isTargetQueue) continue
 

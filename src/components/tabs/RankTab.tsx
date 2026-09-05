@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { LcuInfo } from '../../hooks/useLcu';
-import { LcuRequestFn, patchChatLol } from '../../utils/chatMe';
+import { getCurrentRankedStats, LcuRequestFn, patchChatLol } from '../../utils/chatMe';
 import { 
     SAVED_RANK_QUEUE_KEY, 
     SAVED_RANK_TIER_KEY, 
@@ -23,8 +23,9 @@ const DIVISIONS = ["I", "II", "III", "IV"];
 const QUEUES = [
     { value: "RANKED_SOLO_5x5", label: "Solo/Duo" },
     { value: "RANKED_FLEX_SR", label: "Flex 5v5" },
-    { value: "RANKED_FLEX_TT", label: "Flex 3v3" },
-    { value: "RANKED_TFT", label: "TFT" }
+    { value: "RANKED_PREMADE_5x5", label: "5v5" },
+    { value: "RANKED_TFT", label: "TFT" },
+    { value: "RANKED_TFT_DOUBLE_UP", label: "Double Up" }
 ];
 const TIER_COLORS: Record<string, string> = {
     NONE: "#595959",
@@ -51,35 +52,60 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const [overviewEnabled, setOverviewEnabled] = useState(() => localStorage.getItem(PENGU_OVERVIEW_OVERRIDE_KEY) !== 'false');
     const pluginInstalled = localStorage.getItem(PENGU_PLUGIN_INSTALLED_KEY) === 'true';
 
-    const applyLolData = useCallback((raw: string | Record<string, unknown>) => {
+    const applyLolData = useCallback((raw: string | Record<string, unknown>): boolean => {
         const lol = typeof raw === 'string' ? JSON.parse(raw) as Record<string, unknown> : raw;
-        if (lol.rankedLeagueTier) setSoloTier(lol.rankedLeagueTier as string);
-        if (lol.rankedLeagueDivision) setSoloDiv(lol.rankedLeagueDivision as string);
-        if (lol.rankedLeagueQueue) setQueueType(lol.rankedLeagueQueue as string);
+        const tier = String(lol.rankedLeagueTier || '').toUpperCase();
+        const division = String(lol.rankedLeagueDivision || '').toUpperCase();
+        const queue = String(lol.rankedLeagueQueue || '');
+        if (!TIERS.includes(tier)) return false;
+        setSoloTier(tier);
+        if (DIVISIONS.includes(division)) setSoloDiv(division);
+        if (QUEUES.some(item => item.value === queue)) setQueueType(queue);
+        return true;
     }, []);
 
-    const fetchCurrentData = useCallback(async () => {
+    const fetchCurrentData = useCallback(async (targetQueue: string, notify = false) => {
         if (!lcu) return;
         setFetching(true);
         try {
             addLog("Syncing rank status from LCU...");
-            
-            const chatRes = await lcuRequest("GET", "/lol-chat/v1/me") as { lol?: string | Record<string, unknown> } | null;
-            if (chatRes?.lol) {
-                applyLolData(chatRes.lol);
+
+            let synced = false;
+            const rankedStats = await getCurrentRankedStats(lcuRequest);
+            const queueMap = rankedStats?.queueMap;
+            if (queueMap && typeof queueMap === 'object') {
+                const entry = (queueMap as Record<string, unknown>)[targetQueue];
+                if (entry && typeof entry === 'object') {
+                    const rank = entry as Record<string, unknown>;
+                    const tier = String(rank.tier || '').toUpperCase();
+                    const division = String(rank.division || '').toUpperCase();
+                    if (TIERS.includes(tier)) {
+                        setSoloTier(tier);
+                        if (DIVISIONS.includes(division)) setSoloDiv(division);
+                        synced = true;
+                    }
+                }
             }
 
+            if (!synced) {
+                const chatRes = await lcuRequest("GET", "/lol-chat/v1/me") as { lol?: string | Record<string, unknown> } | null;
+                if (chatRes?.lol) synced = applyLolData(chatRes.lol);
+            }
+
+            if (!synced) throw new Error(`No rank data found for ${QUEUES.find(item => item.value === targetQueue)?.label || targetQueue}`);
             addLog("Rank status synced successfully.");
+            if (notify) showToast("Rank synced from League Client", "success");
         } catch (err) {
             addLog(`Failed to fetch current status: ${err}`);
+            if (notify) showToast(`Rank sync failed: ${err instanceof Error ? err.message : String(err)}`, "error");
         } finally {
             setFetching(false);
         }
-    }, [lcu, lcuRequest, addLog, applyLolData]);
+    }, [lcu, lcuRequest, addLog, applyLolData, showToast]);
 
     useEffect(() => {
         if (lcu) {
-            fetchCurrentData();
+            fetchCurrentData("RANKED_SOLO_5x5");
         }
     }, [lcu, fetchCurrentData]);
 
@@ -147,7 +173,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                         </div>
                         <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Queue</span>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
                         {QUEUES.map(q => (
                             <button type="button"
                                 key={q.value}
@@ -168,9 +194,8 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     </div>
                 </div>
 
-                {/* Tier + Division Row */}
-                <div style={{ display: 'grid', gridTemplateColumns: hasDivision ? '1fr 220px' : '1fr', gap: '16px' }}>
-                    {/* Tier Card */}
+                {/* Tier + Division Card */}
+                <div>
                     <div className="card" style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexShrink: 0 }}>
                             <div style={{ 
@@ -190,6 +215,8 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                         key={t}
                                         onClick={() => setSoloTier(t)}
                                         disabled={!lcu}
+                                        aria-pressed={isActive}
+                                        title={`${t} rank tier`}
                                         style={{
                                             display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px',
                                             padding: '8px 10px', borderRadius: '6px',
@@ -207,41 +234,41 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 );
                             })}
                         </div>
-                    </div>
-
-                    {/* Division Card */}
-                    {hasDivision && (
-                        <div className="card" style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexShrink: 0 }}>
-                                <div style={{ 
-                                    width: '30px', height: '30px', borderRadius: '8px', 
-                                    background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                }}>
-                                    <Shield size={16} style={{ color: 'var(--hextech-gold)' }} />
+                        {hasDivision && (
+                            <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid var(--glass-border)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexShrink: 0 }}>
+                                    <div style={{
+                                        width: '30px', height: '30px', borderRadius: '8px',
+                                        background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                    }}>
+                                        <Shield size={16} style={{ color: 'var(--hextech-gold)' }} />
+                                    </div>
+                                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Division</span>
                                 </div>
-                                <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Division</span>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+                                    {DIVISIONS.map(d => (
+                                        <button type="button"
+                                            key={d}
+                                            onClick={() => setSoloDiv(d)}
+                                            disabled={!lcu}
+                                            aria-pressed={soloDiv === d}
+                                            title={`Division ${d}`}
+                                            style={{
+                                                padding: '8px', borderRadius: '6px',
+                                                border: soloDiv === d ? '1px solid var(--hextech-gold)' : '1px solid var(--glass-border)',
+                                                background: soloDiv === d ? 'rgba(59, 130, 246, 0.12)' : 'rgba(0, 0, 0, 0.28)',
+                                                color: soloDiv === d ? 'var(--hextech-gold)' : 'var(--text-secondary)',
+                                                fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
+                                                transition: 'all 0.15s'
+                                            }}
+                                        >
+                                            {d}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
-                                {DIVISIONS.map(d => (
-                                    <button type="button"
-                                        key={d}
-                                        onClick={() => setSoloDiv(d)}
-                                        disabled={!lcu}
-                                        style={{
-                                            padding: '8px', borderRadius: '6px',
-                                            border: soloDiv === d ? '1px solid var(--hextech-gold)' : '1px solid var(--glass-border)',
-                                            background: soloDiv === d ? 'rgba(59, 130, 246, 0.12)' : 'rgba(0, 0, 0, 0.28)',
-                                            color: soloDiv === d ? 'var(--hextech-gold)' : 'var(--text-secondary)',
-                                            fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
-                                            transition: 'all 0.15s'
-                                        }}
-                                    >
-                                        {d}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
 
                 {/* Bottom — PenguLoader Toggle + Actions */}
@@ -261,6 +288,8 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                             <button
                                 type="button"
                                 onClick={() => setOverviewEnabled(!overviewEnabled)}
+                                aria-label="Toggle Profile Overview rank override"
+                                aria-pressed={overviewEnabled}
                                 style={{
                                     width: '40px', height: '22px', borderRadius: '11px', border: 'none', cursor: 'pointer',
                                     background: overviewEnabled ? 'var(--hextech-gold)' : 'rgba(255, 255, 255, 0.1)',
@@ -282,8 +311,8 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 style={{ padding: '9px 20px', fontSize: '0.85rem', borderRadius: '8px', whiteSpace: 'nowrap' }}>
                                 {loading ? '...' : 'APPLY'}
                             </button>
-                            <button type="button" onClick={fetchCurrentData} disabled={!lcu || fetching}
-                                title="Read current rank, queue and overview from the League Client and fill the form"
+                            <button type="button" onClick={() => fetchCurrentData(queueType, true)} disabled={!lcu || fetching}
+                                title="Read the current rank for the selected queue from the League Client"
                                 style={{
                                     padding: '9px 20px', fontSize: '0.85rem', fontWeight: 800, borderRadius: '8px',
                                     border: '1px solid var(--glass-border)', background: 'rgba(0,0,0,0.2)',

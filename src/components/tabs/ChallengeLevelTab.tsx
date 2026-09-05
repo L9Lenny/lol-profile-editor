@@ -27,29 +27,82 @@ const TIER_COLORS: Record<string, string> = {
     CHALLENGER: '#00ffff',
 };
 
+const extractChallengePoints = (data: Record<string, unknown>): string | null => {
+    const nestedCurrent = (value: unknown): unknown => {
+        if (!value || typeof value !== 'object') return undefined;
+        return (value as Record<string, unknown>).current;
+    };
+    const candidates = [
+        data.totalChallengeScore,
+        data.overallChallengePoints,
+        nestedCurrent(data.totalPoints),
+        nestedCurrent(data.challengePoints),
+        data.challengePoints,
+    ];
+    for (const candidate of candidates) {
+        if (typeof candidate !== 'number' && typeof candidate !== 'string') continue;
+        if (typeof candidate === 'string' && !candidate.trim()) continue;
+        const points = Number(candidate);
+        if (Number.isFinite(points) && points >= 0) return String(points);
+    }
+    return null;
+};
+
 const ChallengeLevelTab: React.FC<ChallengeLevelTabProps> = ({ lcu, showToast, addLog, lcuRequest }) => {
     const [crystalLevel, setCrystalLevel] = useState('CHALLENGER');
     const [challengePoints, setChallengePoints] = useState('1200');
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(false);
 
-    const fetchCurrentData = useCallback(async () => {
+    const applyChallengeData = useCallback((data: Record<string, unknown>) => {
+        const level = String(data.overallChallengeLevel ?? data.challengeCrystalLevel ?? '').toUpperCase();
+        const points = extractChallengePoints(data);
+        let levelSynced = false;
+        let pointsSynced = false;
+        if (CRYSTAL_TIERS.includes(level)) {
+            setCrystalLevel(level);
+            levelSynced = true;
+        }
+        if (points !== null) {
+            setChallengePoints(points);
+            pointsSynced = true;
+        }
+        return { levelSynced, pointsSynced };
+    }, []);
+
+    const fetchCurrentData = useCallback(async (notify = false) => {
         if (!lcu) return;
         setFetching(true);
         try {
-            const chat = await lcuRequest('GET', '/lol-chat/v1/me') as { lol?: string | Record<string, unknown> } | null;
-            if (chat?.lol) {
-                const lol = typeof chat.lol === 'string' ? JSON.parse(chat.lol) as Record<string, unknown> : chat.lol;
-                if (lol.challengeCrystalLevel) setCrystalLevel(String(lol.challengeCrystalLevel));
-                if (lol.challengePoints !== undefined) setChallengePoints(String(lol.challengePoints));
+            let levelSynced = false;
+            let pointsSynced = false;
+            try {
+                const summary = await lcuRequest('GET', '/lol-challenges/v1/summary-player-data/local-player') as Record<string, unknown> | null;
+                if (summary) ({ levelSynced, pointsSynced } = applyChallengeData(summary));
+            } catch (err) {
+                addLog(`Challenge summary unavailable, falling back to chat presence: ${err}`);
             }
+
+            if (!levelSynced || !pointsSynced) {
+                const chat = await lcuRequest('GET', '/lol-chat/v1/me') as { lol?: string | Record<string, unknown> } | null;
+                if (chat?.lol) {
+                    const lol = typeof chat.lol === 'string' ? JSON.parse(chat.lol) as Record<string, unknown> : chat.lol;
+                    const fallback = applyChallengeData(lol);
+                    levelSynced ||= fallback.levelSynced;
+                    pointsSynced ||= fallback.pointsSynced;
+                }
+            }
+
+            if (!levelSynced || !pointsSynced) throw new Error('Incomplete challenge level data returned by League Client');
             addLog('Challenge level synced successfully.');
+            if (notify) showToast('Challenge level synced from League Client', 'success');
         } catch (err) {
             addLog(`Failed to sync challenge level: ${err}`);
+            if (notify) showToast(`Challenge sync failed: ${err instanceof Error ? err.message : String(err)}`, 'error');
         } finally {
             setFetching(false);
         }
-    }, [lcu, lcuRequest, addLog]);
+    }, [lcu, lcuRequest, addLog, applyChallengeData, showToast]);
 
     useEffect(() => {
         if (lcu) fetchCurrentData();
@@ -171,7 +224,7 @@ const ChallengeLevelTab: React.FC<ChallengeLevelTabProps> = ({ lcu, showToast, a
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', alignItems: 'center', marginTop: '12px' }}>
                                 <button
                                     type="button"
-                                    onClick={fetchCurrentData}
+                                    onClick={() => fetchCurrentData(true)}
                                     disabled={!lcu || fetching}
                                     title="Read the current challenge crystal and points from the League Client"
                                     style={{

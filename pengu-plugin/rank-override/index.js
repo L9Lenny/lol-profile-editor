@@ -42,7 +42,10 @@ function isTargetWrapper(wrapper, rank) {
   if (!title) return false
   var titleText = title.textContent.toLowerCase()
   return (rank.queue === 'RANKED_SOLO_5x5' && (titleText.indexOf('solo') >= 0 || titleText.indexOf('duo') >= 0)) ||
-         (rank.queue === 'RANKED_FLEX_SR' && titleText.indexOf('flex') >= 0)
+         (rank.queue === 'RANKED_FLEX_SR' && titleText.indexOf('flex') >= 0) ||
+         (rank.queue === 'RANKED_PREMADE_5x5' && titleText.indexOf('5v5') >= 0 && titleText.indexOf('flex') < 0) ||
+         (rank.queue === 'RANKED_TFT' && titleText.indexOf('tft') >= 0 && titleText.indexOf('double') < 0) ||
+         (rank.queue === 'RANKED_TFT_DOUBLE_UP' && titleText.indexOf('double') >= 0)
 }
 
 async function fetchOverviewSetting() {
@@ -175,7 +178,10 @@ function overrideText(rank) {
     var labelText = queueLabel.textContent.toLowerCase()
     var isTargetQueue =
       (rank.queue === 'RANKED_SOLO_5x5' && (labelText.indexOf('solo') >= 0 || labelText.indexOf('duo') >= 0)) ||
-      (rank.queue === 'RANKED_FLEX_SR' && labelText.indexOf('flex') >= 0)
+      (rank.queue === 'RANKED_FLEX_SR' && labelText.indexOf('flex') >= 0) ||
+      (rank.queue === 'RANKED_PREMADE_5x5' && labelText.indexOf('5v5') >= 0 && labelText.indexOf('flex') < 0) ||
+      (rank.queue === 'RANKED_TFT' && labelText.indexOf('tft') >= 0 && labelText.indexOf('double') < 0) ||
+      (rank.queue === 'RANKED_TFT_DOUBLE_UP' && labelText.indexOf('double') >= 0)
     if (!isTargetQueue) continue
 
     var emblem = tooltipQueues[q].querySelector('lol-regalia-emblem-element')
