@@ -22,7 +22,7 @@
     "@tauri-apps/plugin-notification": "^2.3.3",
     "@tauri-apps/plugin-opener": "^2.5.5",
     "@tauri-apps/plugin-process": "^2.3.1",
-    "@tauri-apps/plugin-updater": "^2.10.1",
+    "@tauri-apps/plugin-updater": "^2.11.0",
     "lucide-react": "^1.38.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.8",
