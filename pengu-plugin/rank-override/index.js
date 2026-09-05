@@ -9,6 +9,7 @@ var observer = null
 var cssInjected = false
 var overviewEnabled = true
 var touchedElements = []
+var hoverApplyTimer = null
 
 function log(msg) { console.log('[RankOverride] ' + msg) }
 
@@ -162,7 +163,8 @@ function interceptRankedData(data, rank) {
   if (data.queueMap && data.queueMap[rank.queue]) patchRankedQueues([data.queueMap[rank.queue]], rank)
   if (data.highestRankedEntry && data.highestRankedEntry.queueType === rank.queue) patchRankedQueues([data.highestRankedEntry], rank)
   if (data.highestRankedEntrySR && data.highestRankedEntrySR.queueType === rank.queue) patchRankedQueues([data.highestRankedEntrySR], rank)
-  if (data.highestPreviousSeasonEndTier !== undefined) data.highestPreviousSeasonEndTier = rank.lastSeasonTier
+  data.highestPreviousSeasonEndTier = rank.lastSeasonTier
+  data.highestPreviousSeasonEndDivision = 'I'
   if (data.rankedLeagueTier !== undefined) data.rankedLeagueTier = rank.tier
   if (data.rankedLeagueDivision !== undefined) data.rankedLeagueDivision = rank.division
   if (data.highestAchievedSeasonTier !== undefined) data.highestAchievedSeasonTier = rank.tier
@@ -236,7 +238,6 @@ function overrideText(rank) {
   var div = rank.division
   var noDiv = ['MASTER', 'GRANDMASTER', 'CHALLENGER'].indexOf(tier) >= 0
   var text = noDiv ? tier : tier + ' ' + div
-  var lastSeasonText = rank.lastSeasonTier.charAt(0) + rank.lastSeasonTier.slice(1).toLowerCase()
 
   var wrappers = document.querySelectorAll('.style-profile-emblem-wrapper')
   for (var i = 0; i < wrappers.length; i++) {
@@ -348,6 +349,7 @@ function applyRank(rank) {
     return
   }
 
+  var lastSeasonText = rank.lastSeasonTier.charAt(0) + rank.lastSeasonTier.slice(1).toLowerCase()
   var lastSeasonSections = queryAllDeep(document, '.ranked-tooltip-last-season')
   for (var s = 0; s < lastSeasonSections.length; s++) {
     var lastEmblem = lastSeasonSections[s].querySelector('lol-regalia-emblem-element')
@@ -356,6 +358,15 @@ function applyRank(rank) {
       rememberAttribute(lastEmblem, 'ranked-division')
       lastEmblem.setAttribute('ranked-tier', rank.lastSeasonTier.toLowerCase())
       lastEmblem.setAttribute('ranked-division', 'I')
+      if (lastEmblem.shadowRoot) {
+        var lastInnerEmblem = lastEmblem.shadowRoot.querySelector('div > div')
+        if (lastInnerEmblem) {
+          rememberAttribute(lastInnerEmblem, 'ranked-tier')
+          rememberAttribute(lastInnerEmblem, 'ranked-division')
+          lastInnerEmblem.setAttribute('ranked-tier', rank.lastSeasonTier.toLowerCase())
+          lastInnerEmblem.setAttribute('ranked-division', 'I')
+        }
+      }
     }
     var lastTier = lastSeasonSections[s].querySelector('.ranked-tooltip-queue-tier')
     if (lastTier && lastTier.textContent !== lastSeasonText) {
@@ -408,6 +419,10 @@ function init() {
       injectCSS()
       observer = new MutationObserver(function() { applyRank(overrideRank) })
       observer.observe(document.body, { childList: true, subtree: true })
+      document.addEventListener('mouseover', function() {
+        if (hoverApplyTimer) clearTimeout(hoverApplyTimer)
+        hoverApplyTimer = setTimeout(function() { applyRank(overrideRank) }, 150)
+      }, true)
       log('Observer attached')
       startPolling()
     }
