@@ -62,7 +62,8 @@ async function fetchDesiredRank() {
         tier: config.tier,
         division: config.division || 'I',
         queue: config.queue || 'RANKED_SOLO_5x5',
-        leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0)
+        leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0),
+        lastSeasonTier: config.lastSeasonTier || 'UNRANKED'
       }
     }
   } catch (e) {}
@@ -78,7 +79,8 @@ async function fetchDesiredRank() {
         tier: lol.rankedLeagueTier,
         division: lol.rankedLeagueDivision || 'I',
         queue: lol.rankedLeagueQueue || 'RANKED_SOLO_5x5',
-        leaguePoints: 0
+        leaguePoints: 0,
+        lastSeasonTier: 'UNRANKED'
       }
     }
     return null
@@ -143,10 +145,12 @@ function patchRankedQueues(queues, rank) {
         q.set('tier', rank.tier)
         q.set('division', rank.division)
         q.set('leaguePoints', rank.leaguePoints)
+        q.set('previousSeasonEndTier', rank.lastSeasonTier)
       } else {
         q.tier = rank.tier
         q.division = rank.division
         q.leaguePoints = rank.leaguePoints
+        q.previousSeasonEndTier = rank.lastSeasonTier
       }
     }
   }
@@ -158,6 +162,7 @@ function interceptRankedData(data, rank) {
   if (data.queueMap && data.queueMap[rank.queue]) patchRankedQueues([data.queueMap[rank.queue]], rank)
   if (data.highestRankedEntry && data.highestRankedEntry.queueType === rank.queue) patchRankedQueues([data.highestRankedEntry], rank)
   if (data.highestRankedEntrySR && data.highestRankedEntrySR.queueType === rank.queue) patchRankedQueues([data.highestRankedEntrySR], rank)
+  if (data.highestPreviousSeasonEndTier !== undefined) data.highestPreviousSeasonEndTier = rank.lastSeasonTier
   if (data.rankedLeagueTier !== undefined) data.rankedLeagueTier = rank.tier
   if (data.rankedLeagueDivision !== undefined) data.rankedLeagueDivision = rank.division
   if (data.highestAchievedSeasonTier !== undefined) data.highestAchievedSeasonTier = rank.tier
@@ -231,6 +236,7 @@ function overrideText(rank) {
   var div = rank.division
   var noDiv = ['MASTER', 'GRANDMASTER', 'CHALLENGER'].indexOf(tier) >= 0
   var text = noDiv ? tier : tier + ' ' + div
+  var lastSeasonText = rank.lastSeasonTier.charAt(0) + rank.lastSeasonTier.slice(1).toLowerCase()
 
   var wrappers = document.querySelectorAll('.style-profile-emblem-wrapper')
   for (var i = 0; i < wrappers.length; i++) {
@@ -341,6 +347,22 @@ function applyRank(rank) {
     removeCSS()
     return
   }
+
+  var lastSeasonSections = queryAllDeep(document, '.ranked-tooltip-last-season')
+  for (var s = 0; s < lastSeasonSections.length; s++) {
+    var lastEmblem = lastSeasonSections[s].querySelector('lol-regalia-emblem-element')
+    if (lastEmblem) {
+      rememberAttribute(lastEmblem, 'ranked-tier')
+      rememberAttribute(lastEmblem, 'ranked-division')
+      lastEmblem.setAttribute('ranked-tier', rank.lastSeasonTier.toLowerCase())
+      lastEmblem.setAttribute('ranked-division', 'I')
+    }
+    var lastTier = lastSeasonSections[s].querySelector('.ranked-tooltip-queue-tier')
+    if (lastTier && lastTier.textContent !== lastSeasonText) {
+      rememberText(lastTier)
+      lastTier.textContent = lastSeasonText
+    }
+  }
   injectCSS()
   overrideText(rank)
   patchEmblemAttributes(rank)
@@ -356,7 +378,8 @@ function startPolling() {
       if (newRank !== null || overrideRank !== null) {
         if (!newRank || !overrideRank ||
             newRank.tier !== overrideRank.tier || newRank.division !== overrideRank.division ||
-            newRank.queue !== overrideRank.queue || newRank.leaguePoints !== overrideRank.leaguePoints) {
+            newRank.queue !== overrideRank.queue || newRank.leaguePoints !== overrideRank.leaguePoints ||
+            newRank.lastSeasonTier !== overrideRank.lastSeasonTier) {
           log('Rank changed -> reapplying')
           overrideRank = newRank
         }

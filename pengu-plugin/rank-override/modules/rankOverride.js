@@ -70,7 +70,8 @@ async function readConfig() {
         tier: config.tier,
         division: config.division || 'I',
         queue: config.queue || 'RANKED_SOLO_5x5',
-        leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0)
+        leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0),
+        lastSeasonTier: config.lastSeasonTier || 'UNRANKED'
       }
     }
     return null
@@ -375,7 +376,8 @@ export async function startRankOverride(writeLog, fs) {
       newRank.tier !== currentRank.tier ||
       newRank.division !== currentRank.division ||
       newRank.queue !== currentRank.queue ||
-      newRank.leaguePoints !== currentRank.leaguePoints
+      newRank.leaguePoints !== currentRank.leaguePoints ||
+      newRank.lastSeasonTier !== currentRank.lastSeasonTier
     ))) {
       currentRank = newRank
       log(`Config changed: ${currentRank ? `${currentRank.tier} ${currentRank.division} (${currentRank.queue})` : 'cleared'}`)

@@ -141,6 +141,7 @@ describe('SettingsTab', () => {
                 division: 'I',
                 queue: 'RANKED_SOLO_5x5',
                 leaguePoints: 0,
+                lastSeasonTier: 'UNRANKED',
                 overviewEnabled: false,
             });
         });

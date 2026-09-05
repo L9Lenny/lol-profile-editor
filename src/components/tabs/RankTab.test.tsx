@@ -77,6 +77,22 @@ describe('RankTab', () => {
         });
     });
 
+    it('should apply a custom Last Season Rank to the overview config', async () => {
+        const props = createMockProps();
+        render(<RankTab {...props} />);
+
+        await waitFor(() => expect(props.addLog).toHaveBeenCalledWith('Rank status synced successfully.'));
+        fireEvent.change(screen.getByLabelText('Last Season Rank'), { target: { value: 'DIAMOND' } });
+        fireEvent.click(screen.getByText('APPLY'));
+
+        await waitFor(() => {
+            expect(localStorage.getItem('profile_saved_last_season_rank_v1')).toBe('DIAMOND');
+            expect(mockInvoke).toHaveBeenCalledWith('save_rank_config', expect.objectContaining({
+                lastSeasonTier: 'DIAMOND',
+            }));
+        });
+    });
+
     it('should offer the current ranked queue types', async () => {
         const props = createMockProps();
         render(<RankTab {...props} />);
@@ -174,6 +190,7 @@ describe('RankTab', () => {
         props.lcuRequest.mockImplementation((method, endpoint) => {
             if (method === 'GET' && endpoint === '/lol-ranked/v1/current-ranked-stats') {
                 return Promise.resolve({
+                    highestPreviousSeasonEndTier: 'PLATINUM',
                     queueMap: {
                         RANKED_SOLO_5x5: { tier: 'GOLD', division: 'II', leaguePoints: 64 },
                     },
@@ -187,6 +204,7 @@ describe('RankTab', () => {
         await waitFor(() => {
             expect(screen.getByTitle('GOLD rank tier')).toHaveAttribute('aria-pressed', 'true');
             expect(screen.getByLabelText('League Points')).toHaveValue(64);
+            expect(screen.getByLabelText('Last Season Rank')).toHaveValue('PLATINUM');
             expect(props.lcuRequest).toHaveBeenCalledWith('GET', '/lol-ranked/v1/current-ranked-stats');
         });
 

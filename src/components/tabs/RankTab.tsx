@@ -7,6 +7,7 @@ import {
     SAVED_RANK_TIER_KEY, 
     SAVED_RANK_DIV_KEY, 
     SAVED_RANK_LP_KEY,
+    SAVED_LAST_SEASON_RANK_KEY,
     PENGU_OVERVIEW_OVERRIDE_KEY,
     PENGU_PLUGIN_INSTALLED_KEY,
 } from '../../storageKeys';
@@ -20,6 +21,7 @@ interface RankTabProps {
 }
 
 const TIERS = ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"];
+const LAST_SEASON_TIERS = ["UNRANKED", ...TIERS];
 const DIVISIONS = ["I", "II", "III", "IV"];
 const QUEUES = [
     { value: "RANKED_SOLO_5x5", label: "Solo/Duo" },
@@ -50,6 +52,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const [soloTier, setSoloTier] = useState("CHALLENGER");
     const [soloDiv, setSoloDiv] = useState("I");
     const [leaguePoints, setLeaguePoints] = useState(0);
+    const [lastSeasonTier, setLastSeasonTier] = useState("UNRANKED");
     const [queueType, setQueueType] = useState("RANKED_SOLO_5x5");
     const [overviewEnabled, setOverviewEnabled] = useState(() => localStorage.getItem(PENGU_OVERVIEW_OVERRIDE_KEY) !== 'false');
     const pluginInstalled = localStorage.getItem(PENGU_PLUGIN_INSTALLED_KEY) === 'true';
@@ -74,6 +77,8 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
 
             let synced = false;
             const rankedStats = await getCurrentRankedStats(lcuRequest);
+            const previousTier = String(rankedStats?.highestPreviousSeasonEndTier || '').toUpperCase();
+            if (LAST_SEASON_TIERS.includes(previousTier)) setLastSeasonTier(previousTier);
             const queueMap = rankedStats?.queueMap;
             if (queueMap && typeof queueMap === 'object') {
                 const entry = (queueMap as Record<string, unknown>)[targetQueue];
@@ -131,6 +136,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
             localStorage.setItem(SAVED_RANK_TIER_KEY, soloTier);
             localStorage.setItem(SAVED_RANK_DIV_KEY, soloDiv);
             localStorage.setItem(SAVED_RANK_LP_KEY, leaguePoints.toString());
+            localStorage.setItem(SAVED_LAST_SEASON_RANK_KEY, lastSeasonTier);
             localStorage.setItem(PENGU_OVERVIEW_OVERRIDE_KEY, overviewEnabled.toString());
 
             // Write config for Pengu Loader plugin
@@ -140,6 +146,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     division: soloDiv,
                     queue: queueType,
                     leaguePoints,
+                    lastSeasonTier,
                     overviewEnabled,
                 });
             } catch (e) {
@@ -289,6 +296,20 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 onChange={(event) => setLeaguePoints(Math.min(9999, Math.max(0, Number.parseInt(event.target.value, 10) || 0)))}
                                 style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: '7px', border: '1px solid var(--glass-border)', background: 'rgba(0, 0, 0, 0.28)', color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 700 }}
                             />
+                        </div>
+                        <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid var(--glass-border)' }}>
+                            <label htmlFor="last-season-rank" style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                Last Season Rank
+                            </label>
+                            <select
+                                id="last-season-rank"
+                                value={lastSeasonTier}
+                                disabled={!lcu}
+                                onChange={(event) => setLastSeasonTier(event.target.value)}
+                                style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: '7px', border: '1px solid var(--glass-border)', background: '#111318', color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 700 }}
+                            >
+                                {LAST_SEASON_TIERS.map(tier => <option key={tier} value={tier}>{tier}</option>)}
+                            </select>
                         </div>
                     </div>
                 </div>
