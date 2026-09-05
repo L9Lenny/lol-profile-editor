@@ -61,7 +61,8 @@ async function fetchDesiredRank() {
       return {
         tier: config.tier,
         division: config.division || 'I',
-        queue: config.queue || 'RANKED_SOLO_5x5'
+        queue: config.queue || 'RANKED_SOLO_5x5',
+        leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0)
       }
     }
   } catch (e) {}
@@ -76,7 +77,8 @@ async function fetchDesiredRank() {
       return {
         tier: lol.rankedLeagueTier,
         division: lol.rankedLeagueDivision || 'I',
-        queue: lol.rankedLeagueQueue || 'RANKED_SOLO_5x5'
+        queue: lol.rankedLeagueQueue || 'RANKED_SOLO_5x5',
+        leaguePoints: 0
       }
     }
     return null
@@ -140,9 +142,11 @@ function patchRankedQueues(queues, rank) {
       if (q.set) {
         q.set('tier', rank.tier)
         q.set('division', rank.division)
+        q.set('leaguePoints', rank.leaguePoints)
       } else {
         q.tier = rank.tier
         q.division = rank.division
+        q.leaguePoints = rank.leaguePoints
       }
     }
   }
@@ -151,6 +155,9 @@ function patchRankedQueues(queues, rank) {
 function interceptRankedData(data, rank) {
   if (!data || !rank) return data
   if (data.queues) patchRankedQueues(data.queues, rank)
+  if (data.queueMap && data.queueMap[rank.queue]) patchRankedQueues([data.queueMap[rank.queue]], rank)
+  if (data.highestRankedEntry && data.highestRankedEntry.queueType === rank.queue) patchRankedQueues([data.highestRankedEntry], rank)
+  if (data.highestRankedEntrySR && data.highestRankedEntrySR.queueType === rank.queue) patchRankedQueues([data.highestRankedEntrySR], rank)
   if (data.rankedLeagueTier !== undefined) data.rankedLeagueTier = rank.tier
   if (data.rankedLeagueDivision !== undefined) data.rankedLeagueDivision = rank.division
   if (data.highestAchievedSeasonTier !== undefined) data.highestAchievedSeasonTier = rank.tier
@@ -238,6 +245,11 @@ function overrideText(rank) {
       rememberText(ranked)
       ranked.innerText = text
     }
+    var masteryScore = wrappers[i].querySelector('.style-profile-champion-mastery-score')
+    if (masteryScore && masteryScore.textContent !== String(rank.leaguePoints)) {
+      rememberText(masteryScore)
+      masteryScore.textContent = String(rank.leaguePoints)
+    }
   }
 
   var tooltipQueues = queryAllDeep(document, '.ranked-tooltip-queue')
@@ -277,6 +289,12 @@ function overrideText(rank) {
     if (tooltipTier && tooltipTier.textContent !== text) {
       rememberText(tooltipTier)
       tooltipTier.textContent = text
+    }
+    var lpContainer = tooltipQueues[q].querySelector('.style-profile-ranked-crest-tooltip-lp')
+    var lpSpans = lpContainer ? lpContainer.querySelectorAll('span') : []
+    if (lpSpans[1] && lpSpans[1].textContent !== String(rank.leaguePoints)) {
+      rememberText(lpSpans[1])
+      lpSpans[1].textContent = String(rank.leaguePoints)
     }
   }
 }
@@ -337,7 +355,8 @@ function startPolling() {
       var newOverviewEnabled = values[1]
       if (newRank !== null || overrideRank !== null) {
         if (!newRank || !overrideRank ||
-            newRank.tier !== overrideRank.tier || newRank.division !== overrideRank.division || newRank.queue !== overrideRank.queue) {
+            newRank.tier !== overrideRank.tier || newRank.division !== overrideRank.division ||
+            newRank.queue !== overrideRank.queue || newRank.leaguePoints !== overrideRank.leaguePoints) {
           log('Rank changed -> reapplying')
           overrideRank = newRank
         }

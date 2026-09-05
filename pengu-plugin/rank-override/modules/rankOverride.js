@@ -69,7 +69,8 @@ async function readConfig() {
       return {
         tier: config.tier,
         division: config.division || 'I',
-        queue: config.queue || 'RANKED_SOLO_5x5'
+        queue: config.queue || 'RANKED_SOLO_5x5',
+        leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0)
       }
     }
     return null
@@ -373,7 +374,8 @@ export async function startRankOverride(writeLog, fs) {
       !currentRank ||
       newRank.tier !== currentRank.tier ||
       newRank.division !== currentRank.division ||
-      newRank.queue !== currentRank.queue
+      newRank.queue !== currentRank.queue ||
+      newRank.leaguePoints !== currentRank.leaguePoints
     ))) {
       currentRank = newRank
       log(`Config changed: ${currentRank ? `${currentRank.tier} ${currentRank.division} (${currentRank.queue})` : 'cleared'}`)

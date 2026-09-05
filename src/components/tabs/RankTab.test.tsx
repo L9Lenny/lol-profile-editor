@@ -61,6 +61,22 @@ describe('RankTab', () => {
         expect(goldElements.length).toBeGreaterThan(0);
     });
 
+    it('should apply a custom League Points value to the overview config', async () => {
+        const props = createMockProps();
+        render(<RankTab {...props} />);
+
+        await waitFor(() => expect(props.addLog).toHaveBeenCalledWith('Rank status synced successfully.'));
+        fireEvent.change(screen.getByLabelText('League Points'), { target: { value: '742' } });
+        fireEvent.click(screen.getByText('APPLY'));
+
+        await waitFor(() => {
+            expect(localStorage.getItem('profile_saved_rank_lp_v1')).toBe('742');
+            expect(mockInvoke).toHaveBeenCalledWith('save_rank_config', expect.objectContaining({
+                leaguePoints: 742,
+            }));
+        });
+    });
+
     it('should offer the current ranked queue types', async () => {
         const props = createMockProps();
         render(<RankTab {...props} />);
@@ -159,7 +175,7 @@ describe('RankTab', () => {
             if (method === 'GET' && endpoint === '/lol-ranked/v1/current-ranked-stats') {
                 return Promise.resolve({
                     queueMap: {
-                        RANKED_SOLO_5x5: { tier: 'GOLD', division: 'II' },
+                        RANKED_SOLO_5x5: { tier: 'GOLD', division: 'II', leaguePoints: 64 },
                     },
                 });
             }
@@ -170,6 +186,7 @@ describe('RankTab', () => {
 
         await waitFor(() => {
             expect(screen.getByTitle('GOLD rank tier')).toHaveAttribute('aria-pressed', 'true');
+            expect(screen.getByLabelText('League Points')).toHaveValue(64);
             expect(props.lcuRequest).toHaveBeenCalledWith('GET', '/lol-ranked/v1/current-ranked-stats');
         });
 

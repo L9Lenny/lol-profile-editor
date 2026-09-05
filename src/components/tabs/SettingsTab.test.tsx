@@ -140,6 +140,7 @@ describe('SettingsTab', () => {
                 tier: 'NONE',
                 division: 'I',
                 queue: 'RANKED_SOLO_5x5',
+                leaguePoints: 0,
                 overviewEnabled: false,
             });
         });

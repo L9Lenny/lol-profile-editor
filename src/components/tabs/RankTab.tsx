@@ -6,6 +6,7 @@ import {
     SAVED_RANK_QUEUE_KEY, 
     SAVED_RANK_TIER_KEY, 
     SAVED_RANK_DIV_KEY, 
+    SAVED_RANK_LP_KEY,
     PENGU_OVERVIEW_OVERRIDE_KEY,
     PENGU_PLUGIN_INSTALLED_KEY,
 } from '../../storageKeys';
@@ -48,6 +49,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     // Rank states
     const [soloTier, setSoloTier] = useState("CHALLENGER");
     const [soloDiv, setSoloDiv] = useState("I");
+    const [leaguePoints, setLeaguePoints] = useState(0);
     const [queueType, setQueueType] = useState("RANKED_SOLO_5x5");
     const [overviewEnabled, setOverviewEnabled] = useState(() => localStorage.getItem(PENGU_OVERVIEW_OVERRIDE_KEY) !== 'false');
     const pluginInstalled = localStorage.getItem(PENGU_PLUGIN_INSTALLED_KEY) === 'true';
@@ -79,9 +81,11 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     const rank = entry as Record<string, unknown>;
                     const tier = String(rank.tier || '').toUpperCase();
                     const division = String(rank.division || '').toUpperCase();
+                    const points = Number(rank.leaguePoints);
                     if (TIERS.includes(tier)) {
                         setSoloTier(tier);
                         if (DIVISIONS.includes(division)) setSoloDiv(division);
+                        if (Number.isFinite(points)) setLeaguePoints(Math.max(0, Math.trunc(points)));
                         synced = true;
                     }
                 }
@@ -126,6 +130,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
             localStorage.setItem(SAVED_RANK_QUEUE_KEY, queueType);
             localStorage.setItem(SAVED_RANK_TIER_KEY, soloTier);
             localStorage.setItem(SAVED_RANK_DIV_KEY, soloDiv);
+            localStorage.setItem(SAVED_RANK_LP_KEY, leaguePoints.toString());
             localStorage.setItem(PENGU_OVERVIEW_OVERRIDE_KEY, overviewEnabled.toString());
 
             // Write config for Pengu Loader plugin
@@ -134,6 +139,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     tier: soloTier,
                     division: soloDiv,
                     queue: queueType,
+                    leaguePoints,
                     overviewEnabled,
                 });
             } catch (e) {
@@ -268,6 +274,22 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 </div>
                             </div>
                         )}
+                        <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid var(--glass-border)' }}>
+                            <label htmlFor="rank-league-points" style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                League Points
+                            </label>
+                            <input
+                                id="rank-league-points"
+                                type="number"
+                                min="0"
+                                max="9999"
+                                step="1"
+                                value={leaguePoints}
+                                disabled={!lcu}
+                                onChange={(event) => setLeaguePoints(Math.min(9999, Math.max(0, Number.parseInt(event.target.value, 10) || 0)))}
+                                style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: '7px', border: '1px solid var(--glass-border)', background: 'rgba(0, 0, 0, 0.28)', color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 700 }}
+                            />
+                        </div>
                     </div>
                 </div>
 
