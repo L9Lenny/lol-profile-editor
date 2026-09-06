@@ -3,7 +3,7 @@ import { RefreshCw, Cpu, Trash2, X, Check, Download, Upload, Puzzle, FolderOpen,
 import { enable, disable } from "@tauri-apps/plugin-autostart";
 import { save, open } from "@tauri-apps/plugin-dialog";
 import { invoke } from "@tauri-apps/api/core";
-import { SAVED_AUTO_ENFORCE_KEY, SAVED_ENFORCE_OFFLINE_KEY, SAVED_ICON_KEY, ALL_SAVED_KEYS, PENGU_PLUGIN_INSTALLED_KEY, PENGU_OVERVIEW_OVERRIDE_KEY, SAVED_RANK_QUEUE_KEY, SAVED_RANK_TIER_KEY, SAVED_RANK_DIV_KEY, SAVED_RANK_LP_KEY, SAVED_LAST_SEASON_RANK_KEY } from '../../storageKeys';
+import { SAVED_AUTO_ENFORCE_KEY, SAVED_ENFORCE_OFFLINE_KEY, SAVED_ICON_KEY, ALL_SAVED_KEYS, PENGU_PLUGIN_INSTALLED_KEY, PENGU_OVERVIEW_OVERRIDE_KEY, SAVED_RANK_QUEUE_KEY, SAVED_RANK_TIER_KEY, SAVED_RANK_DIV_KEY, SAVED_RANK_LP_KEY, SAVED_LAST_SEASON_RANK_KEY, SAVED_RANK_BORDER_KEY } from '../../storageKeys';
 import { patchChatLol } from '../../utils/chatMe';
 
 const MAX_STORAGE_VALUE_LENGTH = 10000;
@@ -111,7 +111,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         }
 
         if (resetChecks.rank) {
-            [SAVED_RANK_QUEUE_KEY, SAVED_RANK_TIER_KEY, SAVED_RANK_DIV_KEY, SAVED_RANK_LP_KEY, SAVED_LAST_SEASON_RANK_KEY].forEach(key => localStorage.removeItem(key));
+            [SAVED_RANK_QUEUE_KEY, SAVED_RANK_TIER_KEY, SAVED_RANK_DIV_KEY, SAVED_RANK_LP_KEY, SAVED_LAST_SEASON_RANK_KEY, SAVED_RANK_BORDER_KEY].forEach(key => localStorage.removeItem(key));
             localStorage.removeItem(PENGU_OVERVIEW_OVERRIDE_KEY);
             try {
                 await invoke("save_rank_config", {
@@ -120,6 +120,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
                     queue: "RANKED_SOLO_5x5",
                     leaguePoints: 0,
                     lastSeasonTier: "UNRANKED",
+                    borderTier: "AUTO",
                     overviewEnabled: false,
                 });
             } catch (err) {

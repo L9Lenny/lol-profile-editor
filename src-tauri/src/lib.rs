@@ -290,6 +290,7 @@ fn save_rank_config(
     queue: String,
     league_points: u32,
     last_season_tier: String,
+    border_tier: String,
     overview_enabled: bool,
 ) -> Result<String, String> {
     let possible_paths = [
@@ -317,6 +318,7 @@ fn save_rank_config(
         "queue": queue,
         "leaguePoints": league_points,
         "lastSeasonTier": last_season_tier,
+        "borderTier": border_tier,
         "overviewEnabled": overview_enabled,
     });
 

@@ -93,6 +93,22 @@ describe('RankTab', () => {
         });
     });
 
+    it('should apply an independently selected rank border', async () => {
+        const props = createMockProps();
+        render(<RankTab {...props} />);
+
+        await waitFor(() => expect(props.addLog).toHaveBeenCalledWith('Rank status synced successfully.'));
+        fireEvent.change(screen.getByLabelText('Rank Border'), { target: { value: 'MASTER' } });
+        fireEvent.click(screen.getByText('APPLY'));
+
+        await waitFor(() => {
+            expect(localStorage.getItem('profile_saved_rank_border_v1')).toBe('MASTER');
+            expect(mockInvoke).toHaveBeenCalledWith('save_rank_config', expect.objectContaining({
+                borderTier: 'MASTER',
+            }));
+        });
+    });
+
     it('should offer the current ranked queue types', async () => {
         const props = createMockProps();
         render(<RankTab {...props} />);

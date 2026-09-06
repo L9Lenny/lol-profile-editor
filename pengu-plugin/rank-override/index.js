@@ -64,7 +64,8 @@ async function fetchDesiredRank() {
         division: config.division || 'I',
         queue: config.queue || 'RANKED_SOLO_5x5',
         leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0),
-        lastSeasonTier: config.lastSeasonTier || 'UNRANKED'
+        lastSeasonTier: config.lastSeasonTier || 'UNRANKED',
+        borderTier: config.borderTier || 'AUTO'
       }
     }
   } catch (e) {}
@@ -81,7 +82,8 @@ async function fetchDesiredRank() {
         division: lol.rankedLeagueDivision || 'I',
         queue: lol.rankedLeagueQueue || 'RANKED_SOLO_5x5',
         leaguePoints: 0,
-        lastSeasonTier: 'UNRANKED'
+        lastSeasonTier: 'UNRANKED',
+        borderTier: 'AUTO'
       }
     }
     return null
@@ -101,6 +103,46 @@ function removeCSS() {
   var style = document.getElementById('rank-override-css')
   if (style) style.remove()
   cssInjected = false
+}
+
+function clearRankBorderStyles() {
+  var styles = queryAllDeep(document, '#rank-override-border-css')
+  for (var i = 0; i < styles.length; i++) styles[i].remove()
+}
+
+function applyRankBorder(rank) {
+  if (!rank) return
+  var tier = (rank.borderTier === 'AUTO' ? rank.tier : rank.borderTier).toLowerCase()
+  var wings = '/fe/lol-static-assets/images/ranked-emblem/wings/wings_' + tier + '.png'
+  var profiles = queryAllDeep(document, 'lol-regalia-profile-v2-element')
+
+  for (var i = 0; i < profiles.length; i++) {
+    if (!profiles[i].shadowRoot) continue
+    var crests = queryAllDeep(profiles[i].shadowRoot, 'lol-regalia-crest-v2-element.regalia-profile-crest-element')
+    for (var c = 0; c < crests.length; c++) {
+      if (!crests[c].shadowRoot) continue
+      var style = crests[c].shadowRoot.querySelector('#rank-override-border-css')
+      if (!style) {
+        style = document.createElement('style')
+        style.id = 'rank-override-border-css'
+        crests[c].shadowRoot.appendChild(style)
+      }
+      style.textContent =
+        '.lol-regalia-ranked-border-container {' +
+        'display: block !important;' +
+        'background-image: url("' + wings + '") !important;' +
+        'background-size: contain !important;' +
+        'background-position: center !important;' +
+        'background-repeat: no-repeat !important;' +
+        '}' +
+        '.regalia-crest-wing, .regalia-crest-idle {' +
+        'display: none !important;' +
+        '}' +
+        '.lol-regalia-none-border-container, .lol-regalia-themed-level-ring {' +
+        'display: none !important;' +
+        '}'
+    }
+  }
 }
 
 function isTargetWrapper(wrapper, rank) {
@@ -345,6 +387,7 @@ function patchEmblemAttributes(rank) {
 function applyRank(rank) {
   if (!overviewEnabled || !rank) {
     restoreOverrides()
+    clearRankBorderStyles()
     removeCSS()
     return
   }
@@ -377,6 +420,7 @@ function applyRank(rank) {
   injectCSS()
   overrideText(rank)
   patchEmblemAttributes(rank)
+  applyRankBorder(rank)
 }
 
 function startPolling() {
@@ -390,7 +434,7 @@ function startPolling() {
         if (!newRank || !overrideRank ||
             newRank.tier !== overrideRank.tier || newRank.division !== overrideRank.division ||
             newRank.queue !== overrideRank.queue || newRank.leaguePoints !== overrideRank.leaguePoints ||
-            newRank.lastSeasonTier !== overrideRank.lastSeasonTier) {
+            newRank.lastSeasonTier !== overrideRank.lastSeasonTier || newRank.borderTier !== overrideRank.borderTier) {
           log('Rank changed -> reapplying')
           overrideRank = newRank
         }

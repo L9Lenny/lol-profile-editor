@@ -8,6 +8,7 @@ import {
     SAVED_RANK_DIV_KEY, 
     SAVED_RANK_LP_KEY,
     SAVED_LAST_SEASON_RANK_KEY,
+    SAVED_RANK_BORDER_KEY,
     PENGU_OVERVIEW_OVERRIDE_KEY,
     PENGU_PLUGIN_INSTALLED_KEY,
 } from '../../storageKeys';
@@ -22,6 +23,7 @@ interface RankTabProps {
 
 const TIERS = ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"];
 const LAST_SEASON_TIERS = ["UNRANKED", ...TIERS];
+const BORDER_TIERS = ["AUTO", ...TIERS];
 const DIVISIONS = ["I", "II", "III", "IV"];
 const QUEUES = [
     { value: "RANKED_SOLO_5x5", label: "Solo/Duo" },
@@ -53,6 +55,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const [soloDiv, setSoloDiv] = useState("I");
     const [leaguePoints, setLeaguePoints] = useState(0);
     const [lastSeasonTier, setLastSeasonTier] = useState("UNRANKED");
+    const [borderTier, setBorderTier] = useState("AUTO");
     const [queueType, setQueueType] = useState("RANKED_SOLO_5x5");
     const [overviewEnabled, setOverviewEnabled] = useState(() => localStorage.getItem(PENGU_OVERVIEW_OVERRIDE_KEY) !== 'false');
     const pluginInstalled = localStorage.getItem(PENGU_PLUGIN_INSTALLED_KEY) === 'true';
@@ -137,6 +140,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
             localStorage.setItem(SAVED_RANK_DIV_KEY, soloDiv);
             localStorage.setItem(SAVED_RANK_LP_KEY, leaguePoints.toString());
             localStorage.setItem(SAVED_LAST_SEASON_RANK_KEY, lastSeasonTier);
+            localStorage.setItem(SAVED_RANK_BORDER_KEY, borderTier);
             localStorage.setItem(PENGU_OVERVIEW_OVERRIDE_KEY, overviewEnabled.toString());
 
             // Write config for Pengu Loader plugin
@@ -147,6 +151,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     queue: queueType,
                     leaguePoints,
                     lastSeasonTier,
+                    borderTier,
                     overviewEnabled,
                 });
             } catch (e) {
@@ -309,6 +314,20 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: '7px', border: '1px solid var(--glass-border)', background: '#111318', color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 700 }}
                             >
                                 {LAST_SEASON_TIERS.map(tier => <option key={tier} value={tier}>{tier}</option>)}
+                            </select>
+                        </div>
+                        <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid var(--glass-border)' }}>
+                            <label htmlFor="rank-border" style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                Rank Border
+                            </label>
+                            <select
+                                id="rank-border"
+                                value={borderTier}
+                                disabled={!lcu}
+                                onChange={(event) => setBorderTier(event.target.value)}
+                                style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: '7px', border: '1px solid var(--glass-border)', background: '#111318', color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 700 }}
+                            >
+                                {BORDER_TIERS.map(tier => <option key={tier} value={tier}>{tier === 'AUTO' ? 'AUTOMATIC (SAME AS RANK)' : tier}</option>)}
                             </select>
                         </div>
                     </div>
