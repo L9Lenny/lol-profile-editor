@@ -143,6 +143,7 @@ describe('SettingsTab', () => {
                 leaguePoints: 0,
                 lastSeasonTier: 'UNRANKED',
                 borderTier: 'AUTO',
+                bannerTier: 'AUTO',
                 overviewEnabled: false,
             });
         });

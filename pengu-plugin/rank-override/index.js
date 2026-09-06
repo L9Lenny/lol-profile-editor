@@ -65,7 +65,8 @@ async function fetchDesiredRank() {
         queue: config.queue || 'RANKED_SOLO_5x5',
         leaguePoints: Math.max(0, parseInt(config.leaguePoints, 10) || 0),
         lastSeasonTier: config.lastSeasonTier || 'UNRANKED',
-        borderTier: config.borderTier || 'AUTO'
+        borderTier: config.borderTier || 'AUTO',
+        bannerTier: config.bannerTier || 'AUTO'
       }
     }
   } catch (e) {}
@@ -83,7 +84,8 @@ async function fetchDesiredRank() {
         queue: lol.rankedLeagueQueue || 'RANKED_SOLO_5x5',
         leaguePoints: 0,
         lastSeasonTier: 'UNRANKED',
-        borderTier: 'AUTO'
+        borderTier: 'AUTO',
+        bannerTier: 'AUTO'
       }
     }
     return null
@@ -140,6 +142,37 @@ function applyRankBorder(rank) {
         '}' +
         '.lol-regalia-none-border-container, .lol-regalia-themed-level-ring {' +
         'display: none !important;' +
+        '}'
+    }
+  }
+}
+
+function clearRankBannerStyles() {
+  var styles = queryAllDeep(document, '#rank-override-banner-css')
+  for (var i = 0; i < styles.length; i++) styles[i].remove()
+}
+
+function applyRankBanner(rank) {
+  if (!rank) return
+  var selected = rank.bannerTier === 'AUTO' ? rank.lastSeasonTier : rank.bannerTier
+  var assetName = selected === 'DEFAULT' || selected === 'UNRANKED' ? 'default' : selected.toLowerCase()
+  var asset = '/lol-game-data/assets/ASSETS/Regalia/BannerSkins/' + assetName + '.png'
+  var profiles = queryAllDeep(document, 'lol-regalia-profile-v2-element')
+
+  for (var i = 0; i < profiles.length; i++) {
+    if (!profiles[i].shadowRoot) continue
+    var banners = queryAllDeep(profiles[i].shadowRoot, 'lol-regalia-banner-v2-element.regalia-profile-banner-backdrop')
+    for (var b = 0; b < banners.length; b++) {
+      if (!banners[b].shadowRoot) continue
+      var style = banners[b].shadowRoot.querySelector('#rank-override-banner-css')
+      if (!style) {
+        style = document.createElement('style')
+        style.id = 'rank-override-banner-css'
+        banners[b].shadowRoot.appendChild(style)
+      }
+      style.textContent =
+        '.regalia-banner-asset-static-image {' +
+        'content: url("' + asset + '") !important;' +
         '}'
     }
   }
@@ -388,6 +421,7 @@ function applyRank(rank) {
   if (!overviewEnabled || !rank) {
     restoreOverrides()
     clearRankBorderStyles()
+    clearRankBannerStyles()
     removeCSS()
     return
   }
@@ -421,6 +455,7 @@ function applyRank(rank) {
   overrideText(rank)
   patchEmblemAttributes(rank)
   applyRankBorder(rank)
+  applyRankBanner(rank)
 }
 
 function startPolling() {
@@ -434,7 +469,8 @@ function startPolling() {
         if (!newRank || !overrideRank ||
             newRank.tier !== overrideRank.tier || newRank.division !== overrideRank.division ||
             newRank.queue !== overrideRank.queue || newRank.leaguePoints !== overrideRank.leaguePoints ||
-            newRank.lastSeasonTier !== overrideRank.lastSeasonTier || newRank.borderTier !== overrideRank.borderTier) {
+            newRank.lastSeasonTier !== overrideRank.lastSeasonTier || newRank.borderTier !== overrideRank.borderTier ||
+            newRank.bannerTier !== overrideRank.bannerTier) {
           log('Rank changed -> reapplying')
           overrideRank = newRank
         }

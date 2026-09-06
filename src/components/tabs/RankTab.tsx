@@ -9,6 +9,7 @@ import {
     SAVED_RANK_LP_KEY,
     SAVED_LAST_SEASON_RANK_KEY,
     SAVED_RANK_BORDER_KEY,
+    SAVED_RANK_BANNER_KEY,
     PENGU_OVERVIEW_OVERRIDE_KEY,
     PENGU_PLUGIN_INSTALLED_KEY,
 } from '../../storageKeys';
@@ -24,6 +25,7 @@ interface RankTabProps {
 const TIERS = ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"];
 const LAST_SEASON_TIERS = ["UNRANKED", ...TIERS];
 const BORDER_TIERS = ["AUTO", ...TIERS];
+const BANNER_TIERS = ["AUTO", "DEFAULT", ...TIERS];
 const DIVISIONS = ["I", "II", "III", "IV"];
 const QUEUES = [
     { value: "RANKED_SOLO_5x5", label: "Solo/Duo" },
@@ -56,6 +58,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
     const [leaguePoints, setLeaguePoints] = useState(0);
     const [lastSeasonTier, setLastSeasonTier] = useState("UNRANKED");
     const [borderTier, setBorderTier] = useState("AUTO");
+    const [bannerTier, setBannerTier] = useState("AUTO");
     const [queueType, setQueueType] = useState("RANKED_SOLO_5x5");
     const [overviewEnabled, setOverviewEnabled] = useState(() => localStorage.getItem(PENGU_OVERVIEW_OVERRIDE_KEY) !== 'false');
     const pluginInstalled = localStorage.getItem(PENGU_PLUGIN_INSTALLED_KEY) === 'true';
@@ -141,6 +144,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
             localStorage.setItem(SAVED_RANK_LP_KEY, leaguePoints.toString());
             localStorage.setItem(SAVED_LAST_SEASON_RANK_KEY, lastSeasonTier);
             localStorage.setItem(SAVED_RANK_BORDER_KEY, borderTier);
+            localStorage.setItem(SAVED_RANK_BANNER_KEY, bannerTier);
             localStorage.setItem(PENGU_OVERVIEW_OVERRIDE_KEY, overviewEnabled.toString());
 
             // Write config for Pengu Loader plugin
@@ -152,6 +156,7 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                     leaguePoints,
                     lastSeasonTier,
                     borderTier,
+                    bannerTier,
                     overviewEnabled,
                 });
             } catch (e) {
@@ -314,6 +319,24 @@ const RankTab: React.FC<RankTabProps> = ({ lcu, showToast, addLog, lcuRequest })
                                 style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: '7px', border: '1px solid var(--glass-border)', background: '#111318', color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 700 }}
                             >
                                 {LAST_SEASON_TIERS.map(tier => <option key={tier} value={tier}>{tier}</option>)}
+                            </select>
+                        </div>
+                        <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid var(--glass-border)' }}>
+                            <label htmlFor="rank-banner" style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                Rank Banner
+                            </label>
+                            <select
+                                id="rank-banner"
+                                value={bannerTier}
+                                disabled={!lcu}
+                                onChange={(event) => setBannerTier(event.target.value)}
+                                style={{ width: '100%', boxSizing: 'border-box', padding: '10px 12px', borderRadius: '7px', border: '1px solid var(--glass-border)', background: '#111318', color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: 700 }}
+                            >
+                                {BANNER_TIERS.map(tier => (
+                                    <option key={tier} value={tier}>
+                                        {tier === 'AUTO' ? 'AUTOMATIC (SAME AS LAST SEASON)' : tier}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid var(--glass-border)' }}>

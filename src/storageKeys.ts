@@ -15,6 +15,7 @@ export const SAVED_RANK_DIV_KEY     = "profile_saved_rank_div_v1";
 export const SAVED_RANK_LP_KEY      = "profile_saved_rank_lp_v1";
 export const SAVED_LAST_SEASON_RANK_KEY = "profile_saved_last_season_rank_v1";
 export const SAVED_RANK_BORDER_KEY  = "profile_saved_rank_border_v1";
+export const SAVED_RANK_BANNER_KEY  = "profile_saved_rank_banner_v1";
 export const SAVED_CHALLENGE_CRYSTAL_KEY = "profile_saved_challenge_crystal_v1";
 export const SAVED_CHALLENGE_POINTS_KEY  = "profile_saved_challenge_points_v1";
 
@@ -56,6 +57,7 @@ export const ALL_SAVED_KEYS: string[] = [
     SAVED_RANK_LP_KEY,
     SAVED_LAST_SEASON_RANK_KEY,
     SAVED_RANK_BORDER_KEY,
+    SAVED_RANK_BANNER_KEY,
     SAVED_CHALLENGE_CRYSTAL_KEY,
     SAVED_CHALLENGE_POINTS_KEY,
     SAVED_ENFORCE_OFFLINE_KEY,

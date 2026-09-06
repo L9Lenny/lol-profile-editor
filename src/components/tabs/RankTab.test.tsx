@@ -109,6 +109,22 @@ describe('RankTab', () => {
         });
     });
 
+    it('should apply an independently selected rank banner', async () => {
+        const props = createMockProps();
+        render(<RankTab {...props} />);
+
+        await waitFor(() => expect(props.addLog).toHaveBeenCalledWith('Rank status synced successfully.'));
+        fireEvent.change(screen.getByLabelText('Rank Banner'), { target: { value: 'CHALLENGER' } });
+        fireEvent.click(screen.getByText('APPLY'));
+
+        await waitFor(() => {
+            expect(localStorage.getItem('profile_saved_rank_banner_v1')).toBe('CHALLENGER');
+            expect(mockInvoke).toHaveBeenCalledWith('save_rank_config', expect.objectContaining({
+                bannerTier: 'CHALLENGER',
+            }));
+        });
+    });
+
     it('should offer the current ranked queue types', async () => {
         const props = createMockProps();
         render(<RankTab {...props} />);
